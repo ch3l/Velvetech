@@ -25,9 +25,7 @@ namespace Velvetech.Server.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder
-					.UseLazyLoadingProxies()
-					.UseSqlServer("Server=.\\SQLExpress;Database=Velvetech;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Velvetech;Trusted_Connection=True;");
             }
         }
 
@@ -45,6 +43,18 @@ namespace Velvetech.Server.Models
             modelBuilder.Entity<Grouping>(entity =>
             {
                 entity.HasKey(e => new { e.StudentId, e.GroupId });
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Grouping)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Grouping_Group");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Grouping)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Grouping_Student");
             });
 
             modelBuilder.Entity<Sex>(entity =>

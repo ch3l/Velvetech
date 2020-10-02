@@ -1,0 +1,39 @@
+﻿@page "/groups"
+@using Velvetech.Shared
+@inject HttpClient Http
+
+<h1>Groups</h1>
+
+@if (students == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Group name</th>
+				<th>Students in group</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var student in students)
+			{
+				<tr>
+					<td>@student.Name</td>
+					<td>@student.Count</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private IEnumerable<GroupWrapper> students;
+
+	protected override async Task OnInitializedAsync()
+	{
+		students = await Http.GetFromJsonAsync<IEnumerable<GroupWrapper>>("api/Groups");
+	}
+}

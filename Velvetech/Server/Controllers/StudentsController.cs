@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Server.Models;
+using Velvetech.Shared;
 
 namespace Velvetech.Server.Controllers
 {
@@ -24,9 +24,28 @@ namespace Velvetech.Server.Controllers
 
 		// GET: api/Students
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+		public async Task<ActionResult<IEnumerable<StudentWrapper>>> GetStudent(
+			string sex = null, 
+			string fullName = null,
+			string callsign = null,
+			string group = null)
 		{
-			return await _context.Student.ToListAsync();
+			return await _context.Student
+				.Select(student => 
+					new StudentWrapper
+					{
+						Id = student.Id,
+						FullName = student.LastName + " " + student.Name + " " + student.Patronymic,
+						Callsign = student.Callsign,
+						Sex = student.Sex.Name,
+						Groups = from grouping in student.Grouping select grouping.Group.Name
+					})
+				.Where(wrapper => 
+					sex == null ? true : wrapper.Sex == sex &&
+					fullName == null ? true : wrapper.FullName.Contains(fullName, StringComparison.InvariantCultureIgnoreCase) &&
+					callsign == null ? true : wrapper.Callsign.Contains(callsign, StringComparison.InvariantCultureIgnoreCase) &&
+					group == null ? true : wrapper.Groups.Any(gr => gr.Contains(group, StringComparison.InvariantCultureIgnoreCase)))
+				.ToListAsync();
 		}
 
 		// GET: api/Students/5
