@@ -26,9 +26,7 @@ namespace Velvetech.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
 		{
-			return await _context.Student
-				
-				.ToListAsync();
+			return await _context.Student.ToListAsync();
 		}
 
 		// GET: api/Students/5

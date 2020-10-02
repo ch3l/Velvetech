@@ -10,7 +10,7 @@ namespace Velvetech.Server.Models
     {
         public Sex()
         {
-            //Student = new HashSet<Student>();
+            Student = new HashSet<Student>();
         }
 
         public int Id { get; set; }
