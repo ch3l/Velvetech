@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,12 @@ namespace Velvetech.Server.Controllers
 
 		// GET: api/Students
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Student>>> GetStudent() => await _context.Student.ToListAsync();
+		public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+		{
+			return await _context.Student
+				
+				.ToListAsync();
+		}
 
 		// GET: api/Students/5
 		[HttpGet("{id}")]

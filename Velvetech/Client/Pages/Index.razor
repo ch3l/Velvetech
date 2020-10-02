@@ -19,6 +19,7 @@ else
 				<th>Last name</th>
 				<th>Name</th>
 				<th>Pat</th>
+				<th>Sex</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,6 +29,7 @@ else
 					<td>@student.LastName</td>
 					<td>@student.Name</td>
 					<td>@student.Patronymic</td>
+					<td>@(student.Sex is null ? "<NULL>" : student.Sex.Name)</td>
 				</tr>
 			}
 		</tbody>
