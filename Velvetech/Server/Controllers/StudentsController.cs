@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Server.Models;
 using Velvetech.Shared;
+using Velvetech.Shared.Wrappers;
 
 namespace Velvetech.Server.Controllers
 {
@@ -25,13 +26,13 @@ namespace Velvetech.Server.Controllers
 		// GET: api/Students
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<StudentWrapper>>> GetStudent(
-			string sex = null, 
+			string sex = null,
 			string fullName = null,
 			string callsign = null,
 			string group = null)
 		{
 			return await _context.Student
-				.Select(student => 
+				.Select(student =>
 					new StudentWrapper
 					{
 						Id = student.Id,
@@ -40,11 +41,11 @@ namespace Velvetech.Server.Controllers
 						Sex = student.Sex.Name,
 						Groups = from grouping in student.Grouping select grouping.Group.Name
 					})
-				.Where(wrapper => 
-					sex == null ? true : wrapper.Sex == sex &&
-					fullName == null ? true : wrapper.FullName.Contains(fullName, StringComparison.InvariantCultureIgnoreCase) &&
-					callsign == null ? true : wrapper.Callsign.Contains(callsign, StringComparison.InvariantCultureIgnoreCase) &&
-					group == null ? true : wrapper.Groups.Any(gr => gr.Contains(group, StringComparison.InvariantCultureIgnoreCase)))
+				.Where(wrapper =>
+					(sex == null || wrapper.Sex == sex) &&
+					(fullName == null || wrapper.FullName.Contains(fullName)) &&
+					(callsign == null || wrapper.Callsign.Contains(callsign)) &&
+					(group == null || wrapper.Groups.Any(gr => gr.Contains(group))))
 				.ToListAsync();
 		}
 

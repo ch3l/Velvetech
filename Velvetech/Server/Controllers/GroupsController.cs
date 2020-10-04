@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Server.Models;
 using Velvetech.Shared;
+using Velvetech.Shared.Wrappers;
 
 namespace Velvetech.Server.Controllers
 {

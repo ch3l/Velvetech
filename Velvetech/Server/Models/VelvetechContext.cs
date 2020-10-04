@@ -25,7 +25,7 @@ namespace Velvetech.Server.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Velvetech;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;");
             }
         }
 
@@ -66,12 +66,13 @@ namespace Velvetech.Server.Models
 
             modelBuilder.Entity<Student>(entity =>
             {
+                entity.HasIndex(e => e.Callsign)
+                    .HasName("IX_Student_Unique_Callsign")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.Callsign)
-                    .IsRequired()
-                    .HasMaxLength(16)
-                    .IsFixedLength();
+                entity.Property(e => e.Callsign).HasMaxLength(16);
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
@@ -87,7 +88,7 @@ namespace Velvetech.Server.Models
                     .WithMany(p => p.Student)
                     .HasForeignKey(d => d.SexId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Student_Sex");
+                    .HasConstraintName("FK_Student_Student");
             });
 
             OnModelCreatingPartial(modelBuilder);

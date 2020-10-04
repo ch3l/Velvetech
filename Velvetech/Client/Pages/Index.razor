@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Velvetech.Shared
+@using Velvetech.Shared.Wrappers
 @inject HttpClient Http
 
 <h1>Students</h1>
@@ -38,6 +39,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		students = await Http.GetFromJsonAsync<IEnumerable<StudentWrapper>>("api/Students?sex=male");
+		students = await Http.GetFromJsonAsync<IEnumerable<StudentWrapper>>("api/Students");
 	}
 }

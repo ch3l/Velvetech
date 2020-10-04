@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;	
 
-
-namespace Velvetech.Shared
+namespace Velvetech.Shared.Wrappers
 {
 	public class GroupWrapper 
 	{
