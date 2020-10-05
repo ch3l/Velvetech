@@ -16,7 +16,6 @@ else
 			<tr>
 				<th>Full name</th>
 				<th>Callsign</th>
-				<th>Sex</th>
 				<th>Groups</th>
 			</tr>
 		</thead>
@@ -26,7 +25,6 @@ else
 				<tr>
 					<td>@student.FullName</td>
 					<td>@student.Callsign</td>
-					<td>@student.Sex</td>
 					<td>@(string.Join(", ", student.Groups))</td>
 				</tr>
 			}
@@ -39,6 +37,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		students = await Http.GetFromJsonAsync<IEnumerable<StudentWrapper>>("api/Students");
+		students = await Http.GetFromJsonAsync<IEnumerable<StudentWrapper>>("api/Students?groupname=fir&sex=male&callsign=1&fullname=2");
 	}
 }

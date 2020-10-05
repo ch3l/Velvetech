@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -29,23 +30,31 @@ namespace Velvetech.Server.Controllers
 			string sex = null,
 			string fullName = null,
 			string callsign = null,
-			string group = null)
+			string groupName = null)
 		{
 			return await _context.Student
-				.Select(student =>
+				.Select(student => 
+					new
+					{
+						Id = student.Id,
+						FullName = student.FirstName + " " + student.MiddleName + " " + student.Surname,
+						Sex = student.Sex.Name,
+						Callsign = student.Callsign,
+						GroupNames = student.Grouping.Select(gr => gr.Group.Name)
+					})
+				.Where(student =>
+					(sex == null || student.Sex == sex) &&
+					(fullName == null || student.FullName.Contains(fullName)) &&
+					(callsign == null || student.Callsign.Contains(callsign)) &&
+					(groupName == null || student.GroupNames.Any(gn => gn.Contains(groupName))))
+				.Select(student => 
 					new StudentWrapper
 					{
 						Id = student.Id,
-						FullName = student.LastName + " " + student.Name + " " + student.Patronymic,
+						FullName = student.FullName,
 						Callsign = student.Callsign,
-						Sex = student.Sex.Name,
-						Groups = from grouping in student.Grouping select grouping.Group.Name
-					})
-				.Where(wrapper =>
-					(sex == null || wrapper.Sex == sex) &&
-					(fullName == null || wrapper.FullName.Contains(fullName)) &&
-					(callsign == null || wrapper.Callsign.Contains(callsign)) &&
-					(group == null || wrapper.Groups.Any(gr => gr.Contains(group))))
+						Groups = student.GroupNames
+					})				
 				.ToListAsync();
 		}
 

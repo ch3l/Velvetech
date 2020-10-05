@@ -41,7 +41,7 @@ namespace Velvetech.Server.Controllers
 					.ToListAsync();
 			else
 				return await (
-					from gr in _context.Group
+					from gr in _context.Group 
 					where gr.Name.Contains(name)
 					select new GroupWrapper
 					{

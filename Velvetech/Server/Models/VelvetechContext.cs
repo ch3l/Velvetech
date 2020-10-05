@@ -74,15 +74,15 @@ namespace Velvetech.Server.Models
 
                 entity.Property(e => e.Callsign).HasMaxLength(16);
 
-                entity.Property(e => e.LastName)
+                entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(40);
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.MiddleName).HasMaxLength(60);
+
+                entity.Property(e => e.Surname)
                     .IsRequired()
                     .HasMaxLength(40);
-
-                entity.Property(e => e.Patronymic).HasMaxLength(60);
 
                 entity.HasOne(d => d.Sex)
                     .WithMany(p => p.Student)

@@ -12,9 +12,9 @@ namespace Velvetech.Server.Models
 
         public Guid Id { get; set; }
         public int SexId { get; set; }
-        public string LastName { get; set; }
-        public string Name { get; set; }
-        public string Patronymic { get; set; }
+		public string Surname { get; set; }
+		public string FirstName { get; set; }
+		public string MiddleName { get; set; }
         public string Callsign { get; set; }
 
         public virtual Sex Sex { get; set; }
