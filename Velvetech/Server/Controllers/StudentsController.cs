@@ -24,6 +24,7 @@ namespace Velvetech.Server.Controllers
 			_context = context;
 		}
 
+		/*
 		// GET: api/Students
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<StudentCommon>>> GetStudent(
@@ -56,6 +57,22 @@ namespace Velvetech.Server.Controllers
 						Groups = student.GroupNames
 					})				
 				.ToListAsync();				
+		}
+		*/
+
+		public async Task<ActionResult<IEnumerable<Student>>> GetStudent(
+			string sex = null,
+			string fullName = null,
+			string callsign = null,
+			string groupName = null)
+		{
+			return await _context.Student
+				.Where(student =>
+					(sex == null || student.Sex.Name == sex) &&
+					(fullName == null || (student.FirstName + " " + student.MiddleName + " " + student.Surname).Contains(fullName)) &&
+					(callsign == null || student.Callsign.Contains(callsign)) &&
+					(groupName == null || student.Grouping.Any(grouping => grouping.Group.Name.Contains(groupName))))
+				.ToListAsync();
 		}
 
 		// GET: api/Students/5

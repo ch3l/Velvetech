@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Velvetech.Server.Models
 @using Velvetech.Shared
 @using Velvetech.Shared.Wrappers
 @inject HttpClient Http
@@ -13,6 +14,44 @@
 }
 else
 {
+	/*
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Full name</th>
+					<th>Callsign</th>
+					<th>Groups</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					counter = 0;
+				}
+				@foreach (var student in students)
+				{
+					var i = counter;
+
+					<tr class="">
+						<td>@student.FullName</td>
+						<td>@student.Callsign</td>
+						<td>@(string.Join(", ", student.Groups))</td>
+						<td>
+							<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						</td>
+						<td>
+							<button class="btn btn-primary" @onclick="() => Remove(i)">Remove</button>
+						</td>
+					</tr>
+
+					{
+						counter++;
+					}
+				}
+			</tbody>
+		</table>*/
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -31,19 +70,19 @@ else
 			{
 				var i = counter;
 
-				<tr class="">
-					<td>@student.FullName</td>
-					<td>@student.Callsign</td>
-					<td>@(string.Join(", ", student.Groups))</td>
-					<td>
-						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-					</td>
-					<td>
-						<button class="btn btn-primary" @onclick="() => Remove(i)">Remove</button>
-					</td>
-				</tr>
-				
-				{ 
+			<tr class="">
+				<td>@(student.FirstName + " " + student.MiddleName + " " + student.Surname)</td>
+				<td>@student.Callsign</td>
+				<td>@(student.Grouping.Count)</td>
+				<td>
+					<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+				</td>
+				<td>
+					<button class="btn btn-primary" @onclick="() => Remove(i)">Remove</button>
+				</td>
+			</tr>
+
+				{
 					counter++;
 				}
 			}
@@ -53,7 +92,7 @@ else
 
 @code {
 	int counter;
-	private StudentCommon[] students;
+	private Student[] students;
 	string Title = "";
 
 	void Edit(int index)
@@ -70,7 +109,15 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		students = (await Http.GetFromJsonAsync<IEnumerable<Student>>("api/Students")).ToArray();
+		//students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students?groupname=third&sex=male&callsign=1&fullname=2")).ToArray();
+	}
+
+	/*
+	protected override async Task OnInitializedAsync()
+	{
 		students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students")).ToArray();
 		//students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students?groupname=third&sex=male&callsign=1&fullname=2")).ToArray();
 	}
+	*/
 }
