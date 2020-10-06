@@ -5,6 +5,8 @@
 
 <h1>Students</h1>
 
+<p><em>@Title</em></p>
+
 @if (students == null)
 {
 	<p><em>Loading...</em></p>
@@ -17,26 +19,58 @@ else
 				<th>Full name</th>
 				<th>Callsign</th>
 				<th>Groups</th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
+			@{
+				counter = 0;
+			}
 			@foreach (var student in students)
 			{
-				<tr>
+				var i = counter;
+
+				<tr class="">
 					<td>@student.FullName</td>
 					<td>@student.Callsign</td>
 					<td>@(string.Join(", ", student.Groups))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+					</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Remove(i)">Remove</button>
+					</td>
 				</tr>
+				
+				{ 
+					counter++;
+				}
 			}
 		</tbody>
 	</table>
 }
 
 @code {
-	private IEnumerable<StudentWrapper> students;
+	int counter;
+	private StudentCommon[] students;
+	string Title = "";
+
+	void Edit(int index)
+	{
+		var guid = students[index].Id;
+		Title = "Edit " + guid.ToString();
+	}
+
+	void Remove(int index)
+	{
+		var guid = students[index].Id;
+		Title = "Remove " + guid.ToString();
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		students = await Http.GetFromJsonAsync<IEnumerable<StudentWrapper>>("api/Students?groupname=fir&sex=male&callsign=1&fullname=2");
+		students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students")).ToArray();
+		//students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students?groupname=third&sex=male&callsign=1&fullname=2")).ToArray();
 	}
 }

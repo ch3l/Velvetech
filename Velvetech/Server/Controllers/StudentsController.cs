@@ -26,7 +26,7 @@ namespace Velvetech.Server.Controllers
 
 		// GET: api/Students
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<StudentWrapper>>> GetStudent(
+		public async Task<ActionResult<IEnumerable<StudentCommon>>> GetStudent(
 			string sex = null,
 			string fullName = null,
 			string callsign = null,
@@ -48,14 +48,14 @@ namespace Velvetech.Server.Controllers
 					(callsign == null || student.Callsign.Contains(callsign)) &&
 					(groupName == null || student.GroupNames.Any(gn => gn.Contains(groupName))))
 				.Select(student => 
-					new StudentWrapper
+					new StudentCommon
 					{
 						Id = student.Id,
 						FullName = student.FullName,
 						Callsign = student.Callsign,
 						Groups = student.GroupNames
 					})				
-				.ToListAsync();
+				.ToListAsync();				
 		}
 
 		// GET: api/Students/5
@@ -107,6 +107,7 @@ namespace Velvetech.Server.Controllers
 		// POST: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		/*
 		[HttpPost]
 		public async Task<ActionResult<Student>> PostStudent(Student student)
 		{
@@ -115,6 +116,24 @@ namespace Velvetech.Server.Controllers
 
 			return CreatedAtAction("GetStudent", new { id = student.Id }, student);
 		}
+		*/
+
+		
+		[HttpPost]
+		public async Task<ActionResult> PostStudent(StudentCommon student)
+		{
+			await Task.Delay(1000);
+			/*
+			_context.Student.Add(student);
+			await _context.SaveChangesAsync();
+
+			return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+			*/
+			return Ok();
+		}
+		
+
+
 
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]

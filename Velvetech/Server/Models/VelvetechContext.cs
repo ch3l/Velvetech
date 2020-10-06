@@ -34,10 +34,6 @@ namespace Velvetech.Server.Models
             modelBuilder.Entity<Group>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(25);
             });
 
             modelBuilder.Entity<Grouping>(entity =>
@@ -59,9 +55,7 @@ namespace Velvetech.Server.Models
 
             modelBuilder.Entity<Sex>(entity =>
             {
-                entity.Property(e => e.Name)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Name).IsFixedLength();
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -71,18 +65,6 @@ namespace Velvetech.Server.Models
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Callsign).HasMaxLength(16);
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(40);
-
-                entity.Property(e => e.MiddleName).HasMaxLength(60);
-
-                entity.Property(e => e.Surname)
-                    .IsRequired()
-                    .HasMaxLength(40);
 
                 entity.HasOne(d => d.Sex)
                     .WithMany(p => p.Student)

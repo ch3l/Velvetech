@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Velvetech.Server.Models
 {
@@ -10,9 +12,13 @@ namespace Velvetech.Server.Models
             Grouping = new HashSet<Grouping>();
         }
 
+        [Key]
         public Guid Id { get; set; }
+        [Required]
+        [StringLength(25)]
         public string Name { get; set; }
 
+        [InverseProperty("Group")]
         public virtual ICollection<Grouping> Grouping { get; set; }
     }
 }

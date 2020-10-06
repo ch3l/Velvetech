@@ -1,0 +1,12 @@
+﻿@page "/poststudent"
+@using Velvetech.Shared
+@using Velvetech.Shared.Wrappers
+@inject HttpClient Http
+
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		await Http.PostAsJsonAsync<StudentCommon>("api/Students", new StudentCommon() { FullName = "Test"});
+	}
+}
