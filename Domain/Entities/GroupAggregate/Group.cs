@@ -9,17 +9,19 @@ namespace Velvetech.Domain.Entities.GroupAggregate
 {
 	public class Group : Entity<Guid>, IAggregateRoot
 	{
+		/*
+		private readonly List<Student> _student = new List<Student>();
+		public IEnumerable<Student> Student => _student.AsReadOnly(); 
+		*/
+
 		public string Name { get; private set; }
 
-		List<Student> _students = new List<Student>();
+		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
 
-		public IEnumerable<Student> Students => _students;
-
-		public List<GroupStudent> Grouping { get; set; } = new List<GroupStudent>();
-
+		/*
 		public void AddStudent(Student student)
 		{
-			_students.Add(student);
-		}
+			_student.Add(student);
+		}*/
 	}
 }

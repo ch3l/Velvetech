@@ -15,10 +15,11 @@ namespace Velvetech.Data
 		}
 
 
-		public DbSet<GroupStudent> Grouping { get; set; }
 		public DbSet<Group> Group { get; set; }
 		public DbSet<Student> Student { get; set; }
 		public DbSet<Sex> Sex { get; set; }
+		public DbSet<Grouping> Grouping { get; set; }
+
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

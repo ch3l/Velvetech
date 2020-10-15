@@ -6,8 +6,10 @@ using Velvetech.Domain.Common;
 
 namespace Velvetech.Domain.Entities.StudentAggregate
 {
-	public class Sex : Entity<int>, IAggregateRoot
+	public class Sex : Entity<int>
 	{
 		public string Name { get; set; }
+
+		public virtual List<Student> Student { get; set; }
 	}
 }

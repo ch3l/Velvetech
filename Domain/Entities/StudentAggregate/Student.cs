@@ -10,17 +10,20 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 {
 	public class Student : Entity<Guid>, IAggregateRoot
 	{
-		private List<Group> _groups = new List<Group>();
-		public IReadOnlyList<Group> Groups => _groups.AsReadOnly();
+		/*
+		private readonly List<Group> _group = new List<Group>();
+		public IReadOnlyList<Group> Group => _group.AsReadOnly();  
+		*/
 
-		public Sex Sex { get; private set; }
+		public int SexId { get; private set; }
 		public string FirstName { get; private set; }
 		public string MiddleName { get; private set; }
 		public string LastName { get; private set; }
 		public string Callsign { get; private set; }
 
-		public List<GroupStudent> Grouping { get; set; } = new List<GroupStudent>();
+		public virtual Sex Sex { get; private set; }
+		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
 
-		public string FullName => FirstName + " " + MiddleName + " " + LastName;
+		public string Fullname() => FirstName + " " + MiddleName + " " + LastName;
 	}
 }

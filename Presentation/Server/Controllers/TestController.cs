@@ -14,15 +14,11 @@ namespace Velvetech.Presentation.Server.Controllers
 	[ApiController]
 	public class TestController : ControllerBase
 	{
-		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Sex, int> _sexRepository;
 		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> _studentRepository;
 		private readonly IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> _groupRepository;
 
-		public TestController(
-			IAsyncRepository<Domain.Entities.StudentAggregate.Sex, int> sexRepository,
-			IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> groupRepository, IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> studentRepository)
+		public TestController(	IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> groupRepository, IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> studentRepository)
 		{
-			_sexRepository = sexRepository;
 			_groupRepository = groupRepository;
 			_studentRepository = studentRepository;
 		}
@@ -31,9 +27,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<string[]>> StringsAsync()
 		{
-			//var x = await _sexRepository.ListAllAsync();
-			var x = await _groupRepository.ListAllAsync();
-			return x.Select(x => x.Grouping.Count().ToString()).ToArray();
+			var x = await _studentRepository.ListAllAsync();
+			//var x = await _groupRepository.ListAllAsync();
+			return x.Select(x => x.FirstName).ToArray();
 
 			//return Enumerable.Range(0,10).Select(x=>x.ToString()).ToArray();
 		}

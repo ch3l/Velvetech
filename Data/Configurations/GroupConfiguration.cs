@@ -5,12 +5,12 @@ using Velvetech.Domain.Entities.GroupAggregate;
 
 namespace Velvetech.Data.Configurations
 {									   	
-	internal class GroupConfiguration
+	public class GroupConfiguration : IEntityTypeConfiguration<Group>
 	{
 		public void Configure(EntityTypeBuilder<Group> builder)
 		{
-			var navigation = builder.Metadata.FindNavigation(nameof(Group.Students));
-			navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+			/*var x = builder.Metadata.FindNavigation(nameof(Group.Student));
+			x.SetPropertyAccessMode(PropertyAccessMode.Field);*/
 
 			builder.Property(b => b.Id)
 				.IsRequired();

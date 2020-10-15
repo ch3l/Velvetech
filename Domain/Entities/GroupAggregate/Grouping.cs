@@ -8,7 +8,7 @@ using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Domain.Entities.GroupAggregate
 {
-	public class GroupStudent : Entity<Guid>, IAggregateRoot
+	public class Grouping 
 	{
 		public Guid StudentId { get; set; }
 		public Guid GroupId { get; set; }

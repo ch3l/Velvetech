@@ -8,13 +8,10 @@ using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Data.Configurations
 {
-	class SexConfiguration
+	public class SexConfiguration : IEntityTypeConfiguration<Sex>
 	{
 		public void Configure(EntityTypeBuilder<Sex> builder)
 		{
-			builder.Property(b => b.Id)
-				.IsRequired();
-
 			builder.Property(b => b.Name)
 				.IsRequired()
 				.HasMaxLength(10)

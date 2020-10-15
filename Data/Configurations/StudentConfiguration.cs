@@ -5,12 +5,12 @@ using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Data.Configurations
 {
-	internal class StudentConfiguration
+	public class StudentConfiguration : IEntityTypeConfiguration<Student>
 	{
 		public void Configure(EntityTypeBuilder<Student> builder)
 		{
-			var navigation = builder.Metadata.FindNavigation(nameof(Student.Groups));
-			navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+			/*var x = builder.Metadata.FindNavigation(nameof(Student.Group));
+			/*x.SetPropertyAccessMode(PropertyAccessMode.Field); */
 
 			builder.HasIndex(e => e.Callsign)
 				.HasName("IX_Student_Unique_Callsign")
@@ -32,6 +32,12 @@ namespace Velvetech.Data.Configurations
 
 			builder.Property(e => e.MiddleName)
 				.HasMaxLength(60);
+
+			builder.HasOne(d => d.Sex)
+				.WithMany(p => p.Student)
+				.HasForeignKey(d => d.SexId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("FK_Student_Student");
 		}
 	}
 }
