@@ -22,7 +22,7 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 		public string Callsign { get; private set; }
 
 		public virtual Sex Sex { get; private set; }
-		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
+		public virtual List<Grouping> Grouping { get; set; } = new List<Grouping>();
 
 		public string Fullname() => FirstName + " " + MiddleName + " " + LastName;
 	}

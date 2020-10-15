@@ -29,7 +29,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		{
 			var x = await _studentRepository.ListAllAsync();
 			//var x = await _groupRepository.ListAllAsync();
-			return x.Select(x => x.FirstName).ToArray();
+			return x.Select(x => x.Sex?.Name ?? "<NULL>").ToArray();
 
 			//return Enumerable.Range(0,10).Select(x=>x.ToString()).ToArray();
 		}
