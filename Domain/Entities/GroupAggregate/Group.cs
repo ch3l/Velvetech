@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Domain.Common;
-using Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Common;
+using Velvetech.Domain.Entities.StudentAggregate;
 
-namespace Domain.Entities.GroupAggregate
+namespace Velvetech.Domain.Entities.GroupAggregate
 {
 	class Group : Entity<Guid>, IAggregateRoot
 	{

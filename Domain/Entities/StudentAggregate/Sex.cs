@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Domain.Common;
+using Velvetech.Domain.Common;
 
-namespace Domain.Entities.StudentAggregate
+namespace Velvetech.Domain.Entities.StudentAggregate
 {
 	class Sex : Entity<int>
 	{

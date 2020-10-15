@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using Domain.Common;
-using Domain.Entities.GroupAggregate;	  
+using Velvetech.Domain.Common;
+using Velvetech.Domain.Entities.GroupAggregate;	  
 
-namespace Domain.Entities.StudentAggregate
+namespace Velvetech.Domain.Entities.StudentAggregate
 {
 	internal class Student : Entity<Guid>, IAggregateRoot
 	{

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Velvetech.Presentation.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Presentation.Shared.csproj" />
   </ItemGroup>
 
 </Project>
