@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Velvetech.Domain.Common
 {
-	interface IAggregateRoot
+	public interface IAggregateRoot
 	{
 	}
 }

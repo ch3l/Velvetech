@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
+using Velvetech.Domain.Common;
 using Velvetech.Presentation.Server.Models;
-using Velvetech.Presentation.Shared;
 
 
 namespace Velvetech.Presentation.Server.Controllers
@@ -17,19 +14,29 @@ namespace Velvetech.Presentation.Server.Controllers
 	[ApiController]
 	public class TestController : ControllerBase
 	{
-		private readonly VelvetechContext _context;
+		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Sex, int> _sexRepository;
+		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> _studentRepository;
+		private readonly IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> _groupRepository;
 
-		public TestController(VelvetechContext context)
+		public TestController(
+			IAsyncRepository<Domain.Entities.StudentAggregate.Sex, int> sexRepository,
+			IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> groupRepository, IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> studentRepository)
 		{
-			_context = context;
+			_sexRepository = sexRepository;
+			_groupRepository = groupRepository;
+			_studentRepository = studentRepository;
 		}
 
 		// GET: api/Students
 		[HttpGet]
-		public ActionResult<string[]> Strings()
+		public async Task<ActionResult<string[]>> StringsAsync()
 		{
-			return Enumerable.Range(0,10).Select(x=>x.ToString()).ToArray();
-		}		
+			//var x = await _sexRepository.ListAllAsync();
+			var x = await _groupRepository.ListAllAsync();
+			return x.Select(x => x.Grouping.Count().ToString()).ToArray();
+
+			//return Enumerable.Range(0,10).Select(x=>x.ToString()).ToArray();
+		}
 
 		/*
 		// GET: api/Students
@@ -116,7 +123,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			return Ok();
 		}	
 		*/
-		
+
 
 
 		/*
@@ -138,5 +145,5 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		private bool StudentExists(Guid id) => _context.Student.Any(e => e.Id == id);
 		*/
-	}	   
+	}
 }

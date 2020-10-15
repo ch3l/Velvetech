@@ -1,13 +1,14 @@
-using System.Text.Json.Serialization;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using Newtonsoft.Json;
-
+using Velvetech.Data;
+using Velvetech.Data.Repositories;
+using Velvetech.Domain.Common;
 using Velvetech.Presentation.Server.Models;
 
 namespace Velvetech.Presentation.Server
@@ -26,9 +27,13 @@ namespace Velvetech.Presentation.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
-				//.AddNewtonsoftJson(options => 
-				//	options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+			//.AddNewtonsoftJson(options => 
+			//	options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 			services.AddDbContext<VelvetechContext>();
+
+			services.AddDbContext<AppDbContext>();
+
+			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
