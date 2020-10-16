@@ -39,10 +39,12 @@ namespace Velvetech.Data.Repositories
 				IQueryable<Student> student => student
 					.Include(s => s.Sex) 
 					.Include(s => s.Grouping)
+						.ThenInclude(g => g.Group)
 					.Cast<TEntity>(),
 
 				IQueryable<Group> group => group
 					.Include(s => s.Grouping)
+						.ThenInclude(g => g.Student)
 					.Cast<TEntity>(),
 
 				_ => entity

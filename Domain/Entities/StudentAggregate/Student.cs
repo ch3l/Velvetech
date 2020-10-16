@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.GroupAggregate;	  
+using Velvetech.Domain.Entities.GroupAggregate;
 
 namespace Velvetech.Domain.Entities.StudentAggregate
 {
@@ -22,7 +20,7 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 		public string Callsign { get; private set; }
 
 		public Sex Sex { get; private set; }
-		public List<Grouping> Grouping { get; set; }= new List<Grouping>();
+		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
 
 		public string Fullname => FirstName + " " + MiddleName + " " + LastName;
 	}
