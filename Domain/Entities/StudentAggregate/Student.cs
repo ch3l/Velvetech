@@ -21,9 +21,9 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 		public string LastName { get; private set; }
 		public string Callsign { get; private set; }
 
-		public virtual Sex Sex { get; private set; }
-		public virtual List<Grouping> Grouping { get; set; } = new List<Grouping>();
+		public Sex Sex { get; private set; }
+		public List<Grouping> Grouping { get; set; }= new List<Grouping>();
 
-		public string Fullname() => FirstName + " " + MiddleName + " " + LastName;
+		public string Fullname => FirstName + " " + MiddleName + " " + LastName;
 	}
 }

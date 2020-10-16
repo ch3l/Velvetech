@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Velvetech.Domain.Common;
+
 namespace Velvetech.Presentation.Server.Models
 {
-    public partial class Group
-    {
+	public partial class Group : Entity<Guid>
+	{
         public Group()
         {
             Grouping = new HashSet<Grouping>();
         }
 
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Grouping> Grouping { get; set; }
+        public ICollection<Grouping> Grouping { get; set; }
     }
 }

@@ -27,11 +27,14 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<string[]>> StringsAsync()
 		{
-			var x = await _studentRepository.ListAllAsync();
-			//var x = await _groupRepository.ListAllAsync();
-			return x.Select(x => x.Sex?.Name ?? "<NULL>").ToArray();
-
-			//return Enumerable.Range(0,10).Select(x=>x.ToString()).ToArray();
+			//var x = await _studentRepository.ListAllAsync();
+			var x = await _groupRepository.ListAllAsync();
+			return x.Select(x => 
+				x.Name + ": " + 
+				x.Grouping.Count()
+					//.Select(g => g.Student.Fullname)
+					//.FirstOrDefault()
+					).ToArray();
 		}
 
 		/*

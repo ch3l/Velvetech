@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Velvetech.Domain.Entities.GroupAggregate;
 
 namespace Velvetech.Data.Configurations
-{			
-	public class GroupingConfiguration : IEntityTypeConfiguration<Grouping>
+{
+	internal class GroupingConfiguration : IEntityTypeConfiguration<Grouping>
 	{
 		public void Configure(EntityTypeBuilder<Grouping> entity)
 		{

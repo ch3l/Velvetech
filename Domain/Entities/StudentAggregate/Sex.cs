@@ -10,6 +10,6 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 	{
 		public string Name { get; set; }
 
-		public virtual List<Student> Student { get; set; }
+		public List<Student> Student { get; set; } = new List<Student>();
 	}
 }

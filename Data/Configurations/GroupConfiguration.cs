@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Cryptography.X509Certificates;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Velvetech.Domain.Entities.GroupAggregate;
 
 namespace Velvetech.Data.Configurations
-{									   	
-	public class GroupConfiguration : IEntityTypeConfiguration<Group>
+{
+	internal class GroupConfiguration : IEntityTypeConfiguration<Group>
 	{
 		public void Configure(EntityTypeBuilder<Group> builder)
 		{

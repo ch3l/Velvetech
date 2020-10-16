@@ -8,7 +8,7 @@ using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Data.Configurations
 {
-	public class SexConfiguration : IEntityTypeConfiguration<Sex>
+	internal class SexConfiguration : IEntityTypeConfiguration<Sex>
 	{
 		public void Configure(EntityTypeBuilder<Sex> builder)
 		{

@@ -15,10 +15,10 @@ namespace Velvetech.Presentation.Server.Models
         {
         }
 
-        public virtual DbSet<Group> Group { get; set; }
-        public virtual DbSet<Grouping> Grouping { get; set; }
-        public virtual DbSet<Sex> Sex { get; set; }
-        public virtual DbSet<Student> Student { get; set; }
+        public DbSet<Group> Group { get; set; }
+        public DbSet<Grouping> Grouping { get; set; }
+        public DbSet<Sex> Sex { get; set; }
+        public DbSet<Student> Student { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

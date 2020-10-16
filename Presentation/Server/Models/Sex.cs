@@ -14,6 +14,6 @@ namespace Velvetech.Presentation.Server.Models
 
         public string Name { get; set; }
 
-        public virtual ICollection<Student> Student { get; set; }
+        public ICollection<Student> Student { get; set; }
     }
 }

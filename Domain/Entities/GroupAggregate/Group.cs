@@ -16,7 +16,8 @@ namespace Velvetech.Domain.Entities.GroupAggregate
 
 		public string Name { get; private set; }
 
-		public virtual List<Grouping> Grouping { get; set; } = new List<Grouping>();
+		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
+		//public virtual List<Student> Student { get; set; } = new List<Student>();
 
 		/*
 		public void AddStudent(Student student)

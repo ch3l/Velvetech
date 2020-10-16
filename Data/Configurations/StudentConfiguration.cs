@@ -5,7 +5,7 @@ using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Data.Configurations
 {
-	public class StudentConfiguration : IEntityTypeConfiguration<Student>
+	internal class StudentConfiguration : IEntityTypeConfiguration<Student>
 	{
 		public void Configure(EntityTypeBuilder<Student> builder)
 		{
@@ -33,7 +33,7 @@ namespace Velvetech.Data.Configurations
 			builder.Property(e => e.MiddleName)
 				.HasMaxLength(60);
 
-			builder.HasOne(d => d.Sex)
+			builder.HasOne(d => d.Sex)				
 				.WithMany(p => p.Student)
 				.HasForeignKey(d => d.SexId)
 				.OnDelete(DeleteBehavior.ClientSetNull)

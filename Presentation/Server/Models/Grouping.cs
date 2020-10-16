@@ -8,7 +8,7 @@ namespace Velvetech.Presentation.Server.Models
         public Guid StudentId { get; set; }
         public Guid GroupId { get; set; }
 
-        public virtual Group Group { get; set; }
-        public virtual Student Student { get; set; }
+        public Group Group { get; set; }
+        public Student Student { get; set; }
     }
 }
