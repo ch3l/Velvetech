@@ -12,6 +12,10 @@ namespace Velvetech.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Sex> builder)
 		{
+			builder.Metadata
+				.FindNavigation(nameof(Sex.Student))
+				.SetPropertyAccessMode(PropertyAccessMode.Field); 
+
 			builder.Property(b => b.Name)
 				.IsRequired()
 				.HasMaxLength(10)

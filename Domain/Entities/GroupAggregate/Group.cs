@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using Velvetech.Domain.Common;
@@ -9,20 +10,17 @@ namespace Velvetech.Domain.Entities.GroupAggregate
 {
 	public class Group : Entity<Guid>, IAggregateRoot
 	{
-		/*
-		private readonly List<Student> _student = new List<Student>();
-		public IEnumerable<Student> Student => _student.AsReadOnly(); 
-		*/
+		private List<Grouping> _grouping = new List<Grouping>();
+		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public string Name { get; private set; }
 
-		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
-		//public virtual List<Student> Student { get; set; } = new List<Student>();
-
-		/*
 		public void AddStudent(Student student)
 		{
-			_student.Add(student);
-		}*/
+			if (Grouping.FirstOrDefault(gr => gr.StudentId == student.Id) != null)
+				return;
+
+			_grouping.Add(new Grouping(student, this));
+		}
 	}
 }

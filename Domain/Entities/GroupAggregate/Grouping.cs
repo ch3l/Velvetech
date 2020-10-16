@@ -10,10 +10,21 @@ namespace Velvetech.Domain.Entities.GroupAggregate
 {
 	public class Grouping 
 	{
-		public Guid StudentId { get; set; }
-		public Guid GroupId { get; set; }
+		public Grouping(Guid studentId, Guid groupId)
+		{
+			StudentId = studentId;
+			GroupId = groupId;
+		}
 
-		public Student Student { get; set; }
-		public Group Group { get; set; }
+		public Grouping(Student student, Group group)
+			: this(student.Id, group.Id)
+		{				
+		}
+
+		public Guid StudentId { get; private set; }
+		public Guid GroupId { get; private set; }
+
+		public Student Student { get; private set; }
+		public Group Group { get; private set; }
 	}
 }

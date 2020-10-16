@@ -8,8 +8,10 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 {
 	public class Sex : Entity<int>
 	{
-		public string Name { get; set; }
+		private List<Student> _student = new List<Student>();
+		public IReadOnlyList<Student> Student => _student.AsReadOnly();
 
-		public List<Student> Student { get; set; } = new List<Student>();
+		public string Name { get; private set; }
+
 	}
 }

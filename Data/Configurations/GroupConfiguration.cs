@@ -11,8 +11,9 @@ namespace Velvetech.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Group> builder)
 		{
-			/*var x = builder.Metadata.FindNavigation(nameof(Group.Student));
-			x.SetPropertyAccessMode(PropertyAccessMode.Field);*/
+			builder.Metadata
+				.FindNavigation(nameof(Group.Grouping))
+				.SetPropertyAccessMode(PropertyAccessMode.Field);
 
 			builder.Property(b => b.Id)
 				.IsRequired();

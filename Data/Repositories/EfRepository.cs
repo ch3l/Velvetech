@@ -12,6 +12,7 @@ using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities.StudentAggregate;
 using Velvetech.Domain.Entities.GroupAggregate;
 using Microsoft.EntityFrameworkCore.InMemory.Query.Internal;
+using System.Diagnostics;
 
 namespace Velvetech.Data.Repositories
 {
@@ -22,7 +23,6 @@ namespace Velvetech.Data.Repositories
     /// <typeparam name="T"></typeparam>
     public class EfRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey> 
 		where TEntity : Entity<TKey>, IAggregateRoot 
-		where TKey: IEquatable<TKey>
     {
         protected readonly AppDbContext _dbContext;
 
@@ -80,5 +80,10 @@ namespace Velvetech.Data.Repositories
             _dbContext.Set<TEntity>().Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
-    }
+
+		public async Task<int> CountAsync()
+		{
+			return await GetEntity().CountAsync();
+		}
+	}
 }

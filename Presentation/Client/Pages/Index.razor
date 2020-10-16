@@ -7,6 +7,9 @@
 
 <p><em>@Title</em></p>
 
+<button class="btn btn-primary" @onclick="GenerateStudent">AddStudent (@studentCounter)</button>
+<button class="btn btn-primary" @onclick="GenerateStudent">AddStudent (@studentCounter)</button>
+
 @if (students == null)
 {
 	<p><em>Loading...</em></p>
@@ -17,9 +20,8 @@ else
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Full name</th>
+				<th>First name</th>
 				<th>Callsign</th>
-				<th>Groups</th>
 				<th></th>
 				<th></th>
 			</tr>
@@ -33,9 +35,8 @@ else
 				var i = counter;
 
 				<tr class="">
-					<td>@student.FullName</td>
+					<td>@student.FirstName</td>
 					<td>@student.Callsign</td>
-					<td>@(string.Join(", ", student.Groups))</td>
 					<td>
 						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
 					</td>
@@ -77,11 +78,10 @@ else
 }
 
 @code {
-	int counter;
-	private StudentCommon[] students;
+	int counter, studentCounter;
+	Presentation.Shared.Dtos.StudentDto[] students;
 	private string[] strings;
 	string Title = "";
-
 	async Task Edit(int index)
 	{
 		//Title = "\"" + (await Http.GetFromJsonAsync<Student>($"api/Students/{students[index].Id}")).FullName + "\"";
@@ -89,8 +89,21 @@ else
 
 	void Remove(int index)
 	{
-		var guid = students[index].Id;
+		var guid = students[index].Callsign;
 		Title = "Remove " + guid.ToString();
+	}
+
+	async Task GenerateStudent()
+	{
+		studentCounter = await Http.GetFromJsonAsync<int>("api/Test/StudentsCount");
+		studentCounter++;
+		await Http.PostAsJsonAsync("api/Test/AddStudent",
+			new Presentation.Shared.Requests.AddStudentRequest(
+				1,
+				"First name " + studentCounter,
+				"Middle name " + studentCounter,
+				"Last name " + studentCounter,
+				"Callsign " + studentCounter));
 	}
 
 	/*
@@ -103,8 +116,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		students = await Http.GetFromJsonAsync<StudentCommon[]>("api/Students");
 		strings = await Http.GetFromJsonAsync<string[]>("api/Test/Strings");
-		//students = (await Http.GetFromJsonAsync<IEnumerable<StudentCommon>>("api/Students?groupname=third&sex=male&callsign=1&fullname=2")).ToArray();
+		students = await Http.GetFromJsonAsync<Presentation.Shared.Dtos.StudentDto[]>("api/Test/Students");
 	}
 }
