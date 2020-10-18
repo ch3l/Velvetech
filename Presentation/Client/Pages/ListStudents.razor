@@ -1,0 +1,96 @@
+﻿@inject HttpClient Http
+
+@using Presentation.Shared.Dtos
+
+@inherits ComponentBase
+@namespace Presentation.Client.Pages
+
+<h1>Students</h1>
+<h1>@Title</h1>
+
+@*<button class="btn btn-primary" @onclick="GenerateStudentAsync">Generate student</button>
+<br/>*@
+<button class="btn btn-primary" @onclick="AddStudentAsync">Add student</button>
+
+@if (students == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Callsign</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				counter = 0;
+			}
+			@foreach (var student in students)
+			{
+				var i = counter++;
+
+				<tr class="">
+					<td>@student.FirstName</td>
+					<td>@student.Callsign</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => EditAsync(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="() => RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	int counter, studentCounter;
+	StudentDto[] students;
+	string Title = string.Empty;
+
+	async Task AddStudentAsync()
+	{
+
+	}
+
+	async Task EditAsync(int index)
+	{
+		await Task.FromResult(Title = index.ToString());
+	}
+
+	async Task RemoveAsync(int index)
+	{
+		var guid = students[index].Callsign;
+		Title = "Remove " + guid.ToString();
+	}
+
+	async Task GenerateStudentAsync()
+	{
+		studentCounter = await Http.GetFromJsonAsync<int>("api/Students/StudentsCount");
+		studentCounter++;
+		await Http.PostAsJsonAsync("api/Students/AddStudent",
+			new Presentation.Shared.Requests.AddStudentRequest(
+				1,
+				"First name " + studentCounter,
+				"Middle name " + studentCounter,
+				"Last name " + studentCounter,
+				"Callsign " + studentCounter));
+
+		await LoadRecordsAsync();
+	}
+
+	async Task LoadRecordsAsync()
+	{
+		students = await Http.GetFromJsonAsync<Presentation.Shared.Dtos.StudentDto[]>($"api/Students/Students");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadRecordsAsync();
+	}
+}

@@ -53,12 +53,12 @@ namespace Velvetech.Data.Repositories
 
         public async Task<TEntity> GetByIdAsync(TKey id)
         {
-			return await GetEntity().SingleOrDefaultAsync(e => e.Id.Equals(id));
+			return await GetEntity().FirstOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-		public async Task<IReadOnlyList<TEntity>> ListAllAsync()
-        {
-			return await GetEntity().ToListAsync();
+		public async Task<TEntity[]> GetAllAsync()        
+		{
+			return await GetEntity().ToArrayAsync();
         }				     
 
         public async Task<TEntity> AddAsync(TEntity entity)

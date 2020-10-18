@@ -1,4 +1,5 @@
-﻿using System.Reflection.Emit;
+﻿using System;
+using System.Reflection.Emit;
 
 namespace Presentation.Shared.Dtos
 {
@@ -10,6 +11,7 @@ namespace Presentation.Shared.Dtos
 		}
 
 		public StudentDto(
+			Guid id,
 			string firstName,
 			string middleName,
 			string lastName,
@@ -18,6 +20,7 @@ namespace Presentation.Shared.Dtos
 			GroupDto[] groups
 			)
 		{
+			Id = id;
 			FirstName = firstName;
 			MiddleName = middleName;
 			LastName = lastName;
@@ -26,6 +29,7 @@ namespace Presentation.Shared.Dtos
 			Groups = groups;
 		}
 
+		public Guid Id { get; set; }
 		public string FirstName { get; set; }
 		public string MiddleName { get; set; }
 		public string LastName { get; set; }

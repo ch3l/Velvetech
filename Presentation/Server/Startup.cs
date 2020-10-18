@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Velvetech.Data;
 using Velvetech.Data.Repositories;
 using Velvetech.Domain.Common;
-using Velvetech.Presentation.Server.Models;
 
 namespace Velvetech.Presentation.Server
 {
@@ -28,7 +27,6 @@ namespace Velvetech.Presentation.Server
 			services.AddMvc();
 			//.AddNewtonsoftJson(options => 
 			//	options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-			services.AddDbContext<VelvetechContext>();
 
 			services.AddDbContext<AppDbContext>();
 

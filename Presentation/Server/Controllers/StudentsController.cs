@@ -5,76 +5,132 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using Velvetech.Presentation.Server.Models;
-using Velvetech.Presentation.Shared;
+using Presentation.Shared.Dtos;
+using Presentation.Shared.Requests;
+
+using Velvetech.Domain.Common;
 
 
 namespace Velvetech.Presentation.Server.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class StudentsController : ControllerBase
 	{
-		private readonly VelvetechContext _context;
+		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> _studentRepository;
+		private readonly IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> _groupRepository;
 
-		public StudentsController(VelvetechContext context)
+		public StudentsController(	IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> groupRepository, IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> studentRepository)
 		{
-			_context = context;
+			_groupRepository = groupRepository;
+			_studentRepository = studentRepository;
 		}
 
-		// GET: api/Students
+		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<StudentCommon[]>> GetStudentCommon(
-			string sex = null,
-			string fullName = null,
-			string callsign = null,
-			string groupName = null)
+		public async Task<ActionResult<StudentDto[]>> StudentsAsync()
 		{
-			return await _context.Student
-				.Select(student => 
-					new
-					{
-						Id = student.Id,
-						FullName = student.FirstName + " " + student.MiddleName + " " + student.LastName,
-						Sex = student.Sex.Name,
-						Callsign = student.Callsign,
-						GroupNames = student.Grouping.Select(gr => gr.Group.Name)
-					})
-				.Where(student =>
-					(sex == null || student.Sex == sex) &&
-					(fullName == null || student.FullName.Contains(fullName)) &&
-					(callsign == null || student.Callsign.Contains(callsign)) &&
-					(groupName == null || student.GroupNames.Any(gn => gn.Contains(groupName))))
-				.Select(student => 
-					new StudentCommon
-					{
-						Id = student.Id,
-						FullName = student.FullName,
-						Callsign = student.Callsign,
-						Groups = student.GroupNames
-					})				
-				.ToArrayAsync();				
-		}		
+			//var x = from student in _studentRepository.GetAllAsync()
+			//		select new StudentDto(
+			//				student.Id,
+			//				student.FirstName,
+			//				student.MiddleName,
+			//				student.LastName,
+			//				student.Callsign,
+			//				new SexDto(student.Sex.Id, student.Sex.Name),
+			//				student.Grouping
+			//					.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
+			//					.ToArray());
 
-		// GET: api/Students
-		[HttpGet("db")]
-		public async Task<ActionResult<IEnumerable<Student>>> GetStudent(
-			string sex,
-			string fullName,
-			string callsign,
-			string groupName)
-		{
-			return await _context.Student
-				.Where(student =>
-					(sex == null || student.Sex.Name == sex) &&
-					(fullName == null || (student.FirstName + " " + student.MiddleName + " " + student.LastName).Contains(fullName)) &&
-					(callsign == null || student.Callsign.Contains(callsign)) &&
-					(groupName == null || student.Grouping.Any(grouping => grouping.Group.Name.Contains(groupName))))
-				.ToListAsync();
+			var students = _studentRepository.GetAllAsync();
+
+
+			return (await students)
+				.Select(student => new StudentDto(
+					student.Id,
+					student.FirstName,
+					student.MiddleName,
+					student.LastName,
+					student.Callsign,
+					new SexDto(student.Sex.Id, student.Sex.Name),
+					student.Grouping
+						.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
+						.ToArray()))
+				.ToArray();	
 		}
 
+		// GET: api/Test/Strings
+		[HttpGet]
+		public async Task<ActionResult<GroupDto[]>> StudentGroups(StudentByIdRequest request)
+		{
+			return (await _studentRepository.GetByIdAsync(request.Id))
+				.Grouping
+				.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
+				.ToArray();
+		}
+
+		// GET: api/Test/Strings
+		[HttpGet]
+		public async Task<ActionResult<int>> StudentsCountAsync()
+		{
+			return await _studentRepository.CountAsync();
+		}
+
+		// GET: api/Test/Strings
+		[HttpGet]
+		public async Task<ActionResult<string[]>> StringsAsync()
+		{
+			var student = await _studentRepository.GetAllAsync();
+			var group = await _groupRepository.GetAllAsync();
+			return student
+				.Select(s =>
+					s.GetFullname() + $" ({s.Grouping.Count}): " +
+					s.Grouping
+						.Select(gp => gp.Group.Name)
+						.Join(", "))
+				.Prepend("============== STUDENTS============== ")
+				.Append("============== GROUPS ============== ")
+				.Concat(group
+					.Select(g =>
+						g.Name + $" ({g.Grouping.Count}): " +
+						g.Grouping
+							.Select(gp => gp.Student.GetFullname())
+							.Join(", ")))
+				.ToArray();
+		}
+
+		// GET: api/Test/AddStudent
+		[HttpPost]
+		public async Task<ActionResult> AddStudent(AddStudentRequest request)
+		{
+			await _studentRepository.AddAsync(
+				new Velvetech.Domain.Entities.StudentAggregate.Student(
+					request.SexId, 
+					request.FirstName,
+					request.MiddleName,
+					request.LastName,
+					request.Callsign));
+			return Ok();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddStudentToGroup(AddStudentRequestToGroupRequest request)
+		{
+			var student = await _studentRepository.GetByIdAsync(request.StudentId);
+			if (student is null)
+				return NotFound(0);
+
+			var group = await _groupRepository.GetByIdAsync(request.GroupId);
+			if (group is null)
+				return NotFound(1);
+
+			group.AddStudent(student);
+			await _groupRepository.UpdateAsync(group);
+			return Ok();
+		}
+
+		/*
 		// GET: api/Students/5
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Student>> GetStudent(Guid id)
@@ -87,8 +143,9 @@ namespace Velvetech.Presentation.Server.Controllers
 			}
 
 			return student;
-		}
+		} */
 
+		/*
 		// PUT: api/Students/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -119,7 +176,8 @@ namespace Velvetech.Presentation.Server.Controllers
 			}
 
 			return NoContent();
-		}
+		}  
+		*/
 
 		// POST: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -135,23 +193,24 @@ namespace Velvetech.Presentation.Server.Controllers
 		}
 		*/
 
-		
+		/*
 		[HttpPost]
 		public async Task<ActionResult> PostStudent(StudentCommon student)
 		{
 			await Task.Delay(1000);
-			/*
+			
 			_context.Student.Add(student);
 			await _context.SaveChangesAsync();
 
 			return CreatedAtAction("GetStudent", new { id = student.Id }, student);
-			*/
+			
 			return Ok();
-		}
-		
+		}	
+		*/
 
 
 
+		/*
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult<Student>> DeleteStudent(Guid id)
@@ -169,5 +228,6 @@ namespace Velvetech.Presentation.Server.Controllers
 		}
 
 		private bool StudentExists(Guid id) => _context.Student.Any(e => e.Id == id);
+		*/
 	}
 }
