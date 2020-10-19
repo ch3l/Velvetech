@@ -13,6 +13,7 @@ using Velvetech.Domain.Entities.StudentAggregate;
 using Velvetech.Domain.Entities.GroupAggregate;
 using Microsoft.EntityFrameworkCore.InMemory.Query.Internal;
 using System.Diagnostics;
+using System.Collections.Immutable;
 
 namespace Velvetech.Data.Repositories
 {
@@ -59,9 +60,14 @@ namespace Velvetech.Data.Repositories
 		public async Task<TEntity[]> GetAllAsync()        
 		{
 			return await GetEntity().ToArrayAsync();
-        }				     
+        }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+		public async Task<TEntity[]> GetRangeAsync(int skip, int take)
+		{
+			return await GetEntity().Skip(skip).Take(take).ToArrayAsync();
+		}
+
+		public async Task<TEntity> AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();

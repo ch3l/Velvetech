@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+
+using Domain.Services.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +13,7 @@ using Presentation.Shared.Dtos;
 using Presentation.Shared.Requests;
 
 using Velvetech.Domain.Common;
-
+using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
@@ -18,56 +21,58 @@ namespace Velvetech.Presentation.Server.Controllers
 	[ApiController]
 	public class StudentsController : ControllerBase
 	{
-		private readonly IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> _studentRepository;
-		private readonly IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> _groupRepository;
+		ICrudService<Student, Guid> _studentCrudService;
+		IAsyncRepository<Student, Guid> _studentRepository;
 
-		public StudentsController(	IAsyncRepository<Domain.Entities.GroupAggregate.Group, Guid> groupRepository, IAsyncRepository<Domain.Entities.StudentAggregate.Student, Guid> studentRepository)
+		public StudentsController(ICrudService<Student, Guid> studentCrudService, IAsyncRepository<Student, Guid> studentRepository)
 		{
-			_groupRepository = groupRepository;
+			_studentCrudService = studentCrudService;
 			_studentRepository = studentRepository;
 		}
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<StudentDto[]>> StudentsAsync()
+		public async Task<StudentDto[]> StudentsAsync(int skip = 0, int take = int.MaxValue)
 		{
-			//var x = from student in _studentRepository.GetAllAsync()
-			//		select new StudentDto(
-			//				student.Id,
-			//				student.FirstName,
-			//				student.MiddleName,
-			//				student.LastName,
-			//				student.Callsign,
-			//				new SexDto(student.Sex.Id, student.Sex.Name),
-			//				student.Grouping
-			//					.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
-			//					.ToArray());
-
-			var students = _studentRepository.GetAllAsync();
-
-
-			return (await students)
-				.Select(student => new StudentDto(
-					student.Id,
-					student.FirstName,
-					student.MiddleName,
-					student.LastName,
-					student.Callsign,
-					new SexDto(student.Sex.Id, student.Sex.Name),
-					student.Grouping
-						.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
-						.ToArray()))
-				.ToArray();	
+			return (await _studentCrudService.GetAllAsync())
+				.Select(student => 
+					new StudentDto
+					{
+						Id = student.Id,
+						FirstName = student.FirstName,
+						MiddleName = student.MiddleName,
+						LastName = student.LastName,
+						Callsign = student.Callsign,
+						Sex = 
+							new SexDto
+							{
+								Id = student.Sex.Id,
+								Name = student.Sex.Name
+							},
+						Groups = student
+							.Grouping
+							.Select(grouping =>
+								new GroupDto
+								{
+									Id = grouping.Group.Id,
+									Name = grouping.Group.Name
+								})
+					})
+					.ToArray();
 		}
 
-		// GET: api/Test/Strings
-		[HttpGet]
-		public async Task<ActionResult<GroupDto[]>> StudentGroups(StudentByIdRequest request)
+		// GET: api/Test/AddStudent
+		[HttpPost]
+		public async Task<ActionResult> AddStudent(AddStudentRequest request)
 		{
-			return (await _studentRepository.GetByIdAsync(request.Id))
-				.Grouping
-				.Select(grouping => new GroupDto(grouping.Group.Id, grouping.Group.Name))
-				.ToArray();
+			await _studentCrudService.AddAsync(
+				new Student(
+					request.SexId,
+					request.FirstName,
+					request.MiddleName,
+					request.LastName,
+					request.Callsign));
+			return Ok();
 		}
 
 		// GET: api/Test/Strings
@@ -77,6 +82,26 @@ namespace Velvetech.Presentation.Server.Controllers
 			return await _studentRepository.CountAsync();
 		}
 
+		/*
+		// GET: api/Test/Strings
+		[HttpGet]
+		public async Task<ActionResult<GroupDto[]>> StudentGroups(StudentByIdRequest request)
+		{
+			return (await _studentRepository.GetByIdAsync(request.Id))
+				.Grouping
+				.Select(grouping => 
+					new GroupDto
+					{
+						Id = grouping.Group.Id,
+						Name = grouping.Group.Name
+					})
+				.ToArray();
+		}
+		*/
+
+
+
+		/*
 		// GET: api/Test/Strings
 		[HttpGet]
 		public async Task<ActionResult<string[]>> StringsAsync()
@@ -98,22 +123,12 @@ namespace Velvetech.Presentation.Server.Controllers
 							.Select(gp => gp.Student.GetFullname())
 							.Join(", ")))
 				.ToArray();
-		}
+		}  */
 
-		// GET: api/Test/AddStudent
-		[HttpPost]
-		public async Task<ActionResult> AddStudent(AddStudentRequest request)
-		{
-			await _studentRepository.AddAsync(
-				new Velvetech.Domain.Entities.StudentAggregate.Student(
-					request.SexId, 
-					request.FirstName,
-					request.MiddleName,
-					request.LastName,
-					request.Callsign));
-			return Ok();
-		}
 
+
+
+		/*
 		[HttpPost]
 		public async Task<ActionResult> AddStudentToGroup(AddStudentRequestToGroupRequest request)
 		{
@@ -125,10 +140,11 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (group is null)
 				return NotFound(1);
 
-			group.AddStudent(student);
+			//group.AddStudent(student);
 			await _groupRepository.UpdateAsync(group);
 			return Ok();
-		}
+		}	
+		*/
 
 		/*
 		// GET: api/Students/5

@@ -5,10 +5,11 @@ using System.Text;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities.GroupAggregate;
 
-namespace Velvetech.Domain.Entities.GroupAggregate
+namespace Velvetech.Domain.Entities.StudentGroupAggregate
 {
-	public class Grouping 
+	public class Grouping //: Entity<(Guid, Guid)>, IAggregateRoot
 	{
 		public Grouping(Guid studentId, Guid groupId)
 		{

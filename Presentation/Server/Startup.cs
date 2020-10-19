@@ -1,3 +1,9 @@
+using System;
+
+using Domain.Common;
+using Domain.Services;
+using Domain.Services.Interfaces;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +14,8 @@ using Microsoft.Extensions.Hosting;
 using Velvetech.Data;
 using Velvetech.Data.Repositories;
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Entities.GroupAggregate;
+using Velvetech.Domain.Entities.StudentAggregate;
 
 namespace Velvetech.Presentation.Server
 {
@@ -31,6 +39,9 @@ namespace Velvetech.Presentation.Server
 			services.AddDbContext<AppDbContext>();
 
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
+			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
+			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
+			services.AddScoped(typeof(IStudentGroupingService), typeof(StudentGroupingService));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

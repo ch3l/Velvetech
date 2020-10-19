@@ -4,23 +4,21 @@ using System.Linq;
 using System.Text;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities.StudentGroupAggregate;
 
 namespace Velvetech.Domain.Entities.GroupAggregate
 {
 	public class Group : Entity<Guid>, IAggregateRoot
 	{
+		public string Name { get; private set; }
+
 		private List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
-		public string Name { get; private set; }
-
-		public void AddStudent(Student student)
+		public Group(Guid id, string name)
 		{
-			if (Grouping.FirstOrDefault(gr => gr.StudentId == student.Id) != null)
-				return;
-
-			_grouping.Add(new Grouping(student, this));
+			Id = id;
+			Name = name;
 		}
 	}
 }
