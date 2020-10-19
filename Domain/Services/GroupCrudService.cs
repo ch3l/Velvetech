@@ -47,5 +47,8 @@ namespace Domain.Services
 			await _groupRepository.DeleteAsync(entity);
 			await _studentGroupingService.OnGroupDelete(entity.Id);
 		}
+
+		public async Task<int> CountAsync() =>
+			await _groupRepository.CountAsync();
 	}
 }

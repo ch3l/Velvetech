@@ -15,5 +15,6 @@ namespace Domain.Services.Interfaces
 		public Task<TEntity> AddAsync(TEntity entity);
 		public Task UpdateAsync(TEntity entity);
 		public Task DeleteAsync(TKey id);
+		public Task<int> CountAsync();
 	}
 }

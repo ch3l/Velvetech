@@ -22,12 +22,10 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class StudentsController : ControllerBase
 	{
 		ICrudService<Student, Guid> _studentCrudService;
-		IAsyncRepository<Student, Guid> _studentRepository;
 
-		public StudentsController(ICrudService<Student, Guid> studentCrudService, IAsyncRepository<Student, Guid> studentRepository)
+		public StudentsController(ICrudService<Student, Guid> studentCrudService)
 		{
 			_studentCrudService = studentCrudService;
-			_studentRepository = studentRepository;
 		}
 
 		// GET: api/Test/Students
@@ -79,7 +77,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<int>> StudentsCountAsync()
 		{
-			return await _studentRepository.CountAsync();
+			return await _studentCrudService.CountAsync();
 		}
 
 		/*

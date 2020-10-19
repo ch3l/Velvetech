@@ -40,8 +40,13 @@ namespace Domain.Services
 			var entity = await _studentRepository.GetByIdAsync(id);
 			if (entity is null)
 				return;
+
 			await _studentRepository.DeleteAsync(entity);
 			await _groupingService.OnStudentDelete(entity.Id);
 		}
+
+		public async Task<int> CountAsync() =>
+			await _studentRepository.CountAsync();
+
 	}
 }
