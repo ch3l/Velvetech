@@ -9,7 +9,7 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 	public class Sex : Entity<int>
 	{
 		private List<Student> _student = new List<Student>();
-		public IReadOnlyList<Student> Student => _student.AsReadOnly();
+		public virtual IReadOnlyList<Student> Student => _student.AsReadOnly();
 
 		public string Name { get; private set; }
 	}

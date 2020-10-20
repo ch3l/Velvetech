@@ -27,12 +27,20 @@ namespace Presentation.Client.Pages
 		{
 			var studentId = students[index].Id;
 			var student = await Http.GetFromJsonAsync<StudentDto>($"api/Students/Student/{studentId}");
-			title = student.Callsign;
+			title = 
+				student is null 
+					? "Student is NULL"
+					: student.Sex is null 
+						? "Student.Sex is NULL" 
+						: student.Sex.Name is null
+							? "Student.Sex.Name is NULL"
+							: student.Sex.Name;
 		}
 
 		async Task RemoveAsync(int index)
 		{
-			await Task.FromResult(title = "Remove: " + students[index].Id.ToString());
+			title = (students[index].Id ).ToString();
+			//await Task.FromResult(title = "Remove: " + index.ToString());
 		}
 
 		async Task GenerateStudentAsync()

@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.InMemory.Query.Internal;
 using System.Diagnostics;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Velvetech.Data.Repositories
 {
@@ -23,7 +24,7 @@ namespace Velvetech.Data.Repositories
     /// https://blogs.msdn.microsoft.com/pfxteam/2012/04/13/should-i-expose-synchronous-wrappers-for-asynchronous-methods/
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class EfRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey> 
+    public class EfRepository<TEntity> : IAsyncRepository<TEntity> 
 		where TEntity : BaseEntity, IAggregateRoot 
     {
         protected readonly AppDbContext _dbContext;
@@ -37,9 +38,9 @@ namespace Velvetech.Data.Repositories
 			_dbContext.Set<TEntity>();
 
 		/*
-		private IQueryable<TEntity> GetEntity()
+		private IQueryable<TEntity> GetQueryableEntity()
 		{
-			var entity = _dbContext.Set<TEntity>();
+			var entity = GetEntity();
 			return entity switch
 			{
 				IQueryable<Student> student => student
@@ -55,13 +56,37 @@ namespace Velvetech.Data.Repositories
 
 				_ => entity
 			};
-		} 
+		} 		
+
+		void NavigationLoad(IEnumerable<NavigationEntry> navigations)
+		{
+			foreach (var navigation in navigations)
+			{
+				if (navigation.IsLoaded)
+					continue;
+				navigation.Load();
+
+				NavigationLoad(_dbContext.Entry(navigation.EntityEntry).Navigations);
+			}
+		}	  
 		*/
 
-		public async Task<TEntity> GetByIdAsync(TKey id)
+		public async Task<TEntity> GetByIdAsync(params object[] id)
         {
 			return await GetEntity().FindAsync(id);
-        }
+			
+			/*
+			var entity = GetEntity();
+
+			var entry = await entity.FindAsync(id);
+			if (entry is null)
+				return await Task.FromResult<TEntity>(null);
+
+			NavigationLoad(_dbContext.Entry(entry).Navigations);
+
+			return entry;
+			*/
+		}
 
 		public async Task<TEntity[]> GetAllAsync()        
 		{

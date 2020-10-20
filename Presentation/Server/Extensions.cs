@@ -17,7 +17,7 @@ namespace Velvetech.Presentation.Server
 				MiddleName = source.MiddleName,
 				LastName = source.LastName,
 				Callsign = source.Callsign,
-				//Sex = source.Sex.ToDto(),
+				Sex = source.Sex.ToDto(),
 				Groups = source.Grouping.Select(grouping => grouping.Group.ToDto())
 			};
 

@@ -7,7 +7,7 @@ using Velvetech.Domain.Common;
 
 namespace Domain.Services.Interfaces
 {
-	public interface ICrudService<TEntity, TKey> where	TEntity : IEntity<TKey>
+	public interface ICrudService<TEntity, TKey> where	TEntity : BaseEntity
 	{
 		public Task<TEntity[]> GetAllAsync();
 		public Task<TEntity[]> GetRangeAsync(int skip, int take);

@@ -38,7 +38,7 @@ namespace Velvetech.Presentation.Server
 
 			services.AddDbContext<AppDbContext>();
 
-			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
+			services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));

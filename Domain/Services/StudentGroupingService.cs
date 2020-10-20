@@ -16,9 +16,9 @@ namespace Domain.Services
 	public class GroupingService : IGroupingService
 	{
 		
-		IAsyncRepository<Grouping, (Guid StudentId, Guid GroupId)> _groupingRepository;
+		IAsyncRepository<Grouping> _groupingRepository;
 
-		public GroupingService(IAsyncRepository<Grouping, (Guid StudentId, Guid GroupId)> groupingRepository)
+		public GroupingService(IAsyncRepository<Grouping> groupingRepository)
 		{
 			_groupingRepository = groupingRepository;
 		}

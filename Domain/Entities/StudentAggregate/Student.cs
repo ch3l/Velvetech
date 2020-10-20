@@ -15,10 +15,10 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
-		public Sex Sex { get; private set; }
+		public virtual Sex Sex { get; private set; }
 
 		private List<Grouping> _grouping = new List<Grouping>();
-		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
+		public virtual IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public Student(int sexId, string firstName, string middleName, string lastName, string callsign)
 		{

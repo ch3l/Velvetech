@@ -26,7 +26,7 @@ namespace Velvetech.Domain.Entities.StudentGroupAggregate
 		public Guid StudentId { get; private set; }
 		public Guid GroupId { get; private set; }
 
-		public Student Student { get; private set; }
-		public Group Group { get; private set; }
+		public virtual Student Student { get; private set; }
+		public virtual Group Group { get; private set; }
 	}
 }

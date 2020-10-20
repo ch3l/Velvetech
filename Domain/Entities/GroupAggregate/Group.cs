@@ -13,7 +13,7 @@ namespace Velvetech.Domain.Entities.GroupAggregate
 		public string Name { get; private set; }
 
 		private List<Grouping> _grouping = new List<Grouping>();
-		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
+		public virtual IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public Group(Guid id, string name)
 		{
