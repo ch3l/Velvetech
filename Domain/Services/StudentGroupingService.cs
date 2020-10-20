@@ -9,15 +9,18 @@ using Domain.Common;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities.GroupAggregate;
 using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities.StudentGroupAggregate;
 
 namespace Domain.Services
 {
-	public class StudentGroupingService : IStudentGroupingService
+	public class GroupingService : IGroupingService
 	{
 		
+		IAsyncRepository<Grouping, (Guid StudentId, Guid GroupId)> _groupingRepository;
 
-		public StudentGroupingService()
+		public GroupingService(IAsyncRepository<Grouping, (Guid StudentId, Guid GroupId)> groupingRepository)
 		{
+			_groupingRepository = groupingRepository;
 		}
 
 		public Task IncludeStudent(Guid groupId, Guid studentId) => throw new NotImplementedException();

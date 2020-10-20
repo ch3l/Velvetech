@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http.Json;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -13,22 +15,24 @@ namespace Presentation.Client.Pages
 	public partial class ListStudents : ComponentBase
 	{
 		int counter, studentCounter;
-		IEnumerable<StudentDto> students;
-		string Title = string.Empty;
+		StudentDto[] students;
+		string title = string.Empty;
 
 		async Task AddStudentAsync()
 		{
 
 		}
 
-		async Task EditAsync(Guid guid)
+		async Task EditAsync(int index)
 		{
-			await Task.FromResult(Title = "Edit: " + guid.ToString());
+			var studentId = students[index].Id;
+			var student = await Http.GetFromJsonAsync<StudentDto>($"api/Students/Student/{studentId}");
+			title = student.Callsign;
 		}
 
-		async Task RemoveAsync(Guid guid)
+		async Task RemoveAsync(int index)
 		{
-			await Task.FromResult(Title = "Remove: " + guid.ToString());
+			await Task.FromResult(title = "Remove: " + students[index].Id.ToString());
 		}
 
 		async Task GenerateStudentAsync()
@@ -49,7 +53,7 @@ namespace Presentation.Client.Pages
 
 		async Task LoadRecordsAsync()
 		{
-			students = await Http.GetFromJsonAsync<IEnumerable<StudentDto>>($"api/Students/Students");
+			students = (await Http.GetFromJsonAsync<IEnumerable<StudentDto>>($"api/Students/Students")).ToArray();
 		}
 
 		protected override async Task OnInitializedAsync()

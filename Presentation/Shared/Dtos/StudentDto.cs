@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices.ComTypes;
-
-using Presentation.Shared.Requests;
 
 namespace Presentation.Shared.Dtos
 {
@@ -17,7 +13,5 @@ namespace Presentation.Shared.Dtos
 
 		public SexDto Sex { get; set; }
 		public IEnumerable<GroupDto> Groups { get; set; }
-
-		public string FullName => FirstName + " " + MiddleName + " " + LastName;
 	}
 }

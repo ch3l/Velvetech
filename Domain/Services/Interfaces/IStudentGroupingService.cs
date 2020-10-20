@@ -8,7 +8,7 @@ using Velvetech.Domain.Entities.GroupAggregate;
 
 namespace Domain.Common
 {
-	public interface IStudentGroupingService
+	public interface IGroupingService
 	{
 		Task IncludeStudent(Guid groupId, Guid studentId);
 		Task ExcludeStudent(Guid groupId, Guid studentId);

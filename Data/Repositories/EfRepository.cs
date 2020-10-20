@@ -14,6 +14,7 @@ using Velvetech.Domain.Entities.GroupAggregate;
 using Microsoft.EntityFrameworkCore.InMemory.Query.Internal;
 using System.Diagnostics;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Velvetech.Data.Repositories
 {
@@ -23,7 +24,7 @@ namespace Velvetech.Data.Repositories
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class EfRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey> 
-		where TEntity : Entity<TKey>, IAggregateRoot 
+		where TEntity : BaseEntity, IAggregateRoot 
     {
         protected readonly AppDbContext _dbContext;
 
@@ -32,6 +33,10 @@ namespace Velvetech.Data.Repositories
             _dbContext = dbContext;
         }
 
+		private DbSet<TEntity> GetEntity() =>
+			_dbContext.Set<TEntity>();
+
+		/*
 		private IQueryable<TEntity> GetEntity()
 		{
 			var entity = _dbContext.Set<TEntity>();
@@ -50,11 +55,12 @@ namespace Velvetech.Data.Repositories
 
 				_ => entity
 			};
-		}
+		} 
+		*/
 
-        public async Task<TEntity> GetByIdAsync(TKey id)
+		public async Task<TEntity> GetByIdAsync(TKey id)
         {
-			return await GetEntity().FirstOrDefaultAsync(e => e.Id.Equals(id));
+			return await GetEntity().FindAsync(id);
         }
 
 		public async Task<TEntity[]> GetAllAsync()        

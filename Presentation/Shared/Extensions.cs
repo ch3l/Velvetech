@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Velvetech.Presentation.Server
+namespace Velvetech.Presentation.Shared
 {
 	public static class Extensions
 	{

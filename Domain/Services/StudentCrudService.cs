@@ -12,9 +12,9 @@ namespace Domain.Services
 	public class StudentCrudService : ICrudService<Student, Guid>
 	{
 		IAsyncRepository<Student, Guid> _studentRepository;
-		IStudentGroupingService _groupingService;
+		IGroupingService _groupingService;
 
-		public StudentCrudService(IAsyncRepository<Student, Guid> studentRepository, IStudentGroupingService groupingService)
+		public StudentCrudService(IAsyncRepository<Student, Guid> studentRepository, IGroupingService groupingService)
 		{
 			_studentRepository = studentRepository;
 			_groupingService = groupingService;

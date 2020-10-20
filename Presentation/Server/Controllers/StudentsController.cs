@@ -9,11 +9,13 @@ using Domain.Services.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Velvetech.Presentation.Server;
 using Presentation.Shared.Dtos;
 using Presentation.Shared.Requests;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities.StudentAggregate;
+using Domain.Common;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
@@ -22,10 +24,12 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class StudentsController : ControllerBase
 	{
 		ICrudService<Student, Guid> _studentCrudService;
+		IGroupingService _groupingService;
 
-		public StudentsController(ICrudService<Student, Guid> studentCrudService)
+		public StudentsController(ICrudService<Student, Guid> studentCrudService, IGroupingService groupingService)
 		{
 			_studentCrudService = studentCrudService;
+			_groupingService = groupingService;
 		}
 
 		// GET: api/Test/Students
@@ -33,31 +37,17 @@ namespace Velvetech.Presentation.Server.Controllers
 		public async Task<StudentDto[]> StudentsAsync(int skip = 0, int take = int.MaxValue)
 		{
 			return (await _studentCrudService.GetAllAsync())
-				.Select(student => 
-					new StudentDto
-					{
-						Id = student.Id,
-						FirstName = student.FirstName,
-						MiddleName = student.MiddleName,
-						LastName = student.LastName,
-						Callsign = student.Callsign,
-						Sex = 
-							new SexDto
-							{
-								Id = student.Sex.Id,
-								Name = student.Sex.Name
-							},
-						Groups = student
-							.Grouping
-							.Select(grouping =>
-								new GroupDto
-								{
-									Id = grouping.Group.Id,
-									Name = grouping.Group.Name
-								})
-					})
-					.ToArray();
+				.Select(Extensions.ToDto)
+				.ToArray();
 		}
+
+		// GET: api/Test/Students
+		[HttpGet("{id}")]
+		public async Task<StudentDto> StudentAsync(Guid id)
+		{
+			return (await _studentCrudService.GetByIdAsync(id)).ToDto();
+		}
+
 
 		// GET: api/Test/AddStudent
 		[HttpPost]

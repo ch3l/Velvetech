@@ -12,6 +12,5 @@ namespace Velvetech.Domain.Entities.StudentAggregate
 		public IReadOnlyList<Student> Student => _student.AsReadOnly();
 
 		public string Name { get; private set; }
-
 	}
 }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace Velvetech.Domain.Common
 {
-    public interface IAsyncRepository<TEntity, TKey> where TEntity : Entity<TKey>, IAggregateRoot
+    public interface IAsyncRepository<TEntity, TKey> where TEntity :  IAggregateRoot
     {
         Task<TEntity> GetByIdAsync(TKey id);
 		Task<TEntity[]> GetAllAsync();

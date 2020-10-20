@@ -7,7 +7,7 @@
 @namespace Presentation.Client.Pages
 
 <h1>Students</h1>
-<h1>@Title</h1>
+<h1>@title</h1>
 
 <button class="btn btn-primary" @onclick="GenerateStudentAsync">Generate student</button>
 <br />
@@ -19,13 +19,12 @@
 }
 else
 {
-
 	<table class="table">
 		<thead>
 			<tr>
 				<th>Full name</th>
 				<th>Callsign</th>
-				@*<th>Groups</th>*@
+				<th>Groups</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -37,15 +36,19 @@ else
 			{
 				var i = counter++;
 
-			<tr class="">
-				<td>@student.FirstName</td>
-				<td>@student.Callsign</td>
-				@*<td>@(string.Join(", ", student.Groups.Select(x => x.Name)))</td>*@
-				<td>
-					<button class="btn btn-primary" @onclick="() => EditAsync(student.Id)">Edit</button>
-					<button class="btn btn-primary" @onclick="() => RemoveAsync(student.Id)">Remove</button>
-				</td>
-			</tr>
+				<tr class="">
+					<td>@student.FirstName</td>
+					<td>@student.Callsign</td>
+					<td>@(string.Join(", ", student.Groups.Select(x => x.Name)))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => EditAsync(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="() => RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
+
+				{
+					counter++;
+				}
 			}
 		</tbody>
 	</table>
