@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Presentation.Server;
 using Presentation.Shared.Dtos;
-using Presentation.Shared.Requests;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -41,7 +40,7 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> StudentsAsync(int pageSize = 10, int pageIndex = 0)
+		public async Task<ActionResult<Page<StudentDto>>> ListAsync(int pageSize = 10, int pageIndex = 0)
 		{
 			if (pageSize < 10)
 				pageSize = 10;
@@ -82,26 +81,12 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet("{id}")]
-		public async Task<ActionResult<StudentDto>> StudentAsync(Guid? id)
+		public async Task<ActionResult<StudentDto>> GetAsync(Guid? id)
 		{
 			if (id is null)
 				return BadRequest("Corrupted Id");
 
 			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
-		}
-
-		// GET: api/Test/AddStudent
-		[HttpPost]
-		public async Task<ActionResult> AddStudent(AddStudentRequest request)
-		{
-			await _studentCrudService.AddAsync(
-				new Student(
-					request.SexId,
-					request.FirstName,
-					request.MiddleName,
-					request.LastName,
-					request.Callsign));
-			return Ok();
 		}
 
 		// GET: api/Test/Strings
@@ -111,41 +96,17 @@ namespace Velvetech.Presentation.Server.Controllers
 			return await _studentCrudService.CountAsync();
 		}
 
-		
-		// PUT: api/Students
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut]
-		public async Task<IActionResult> Update(StudentDto dto)
-		{
-			var student = dto.FromDto();			
-
-			try
-			{
-				await _studentCrudService.UpdateAsync(student);
-			}
-			catch (Exception)
-			{
-				if ((await _studentCrudService.GetByIdAsync(student.Id)) is null)
-					return NotFound();
-				else
-					throw;
-			}	
-
-			return Ok("Updated successfully");
-		}
-
 		// PUT: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<IActionResult> Add(StudentDto dto)
+		public async Task<IActionResult> AddAsync(StudentDto dto)
 		{
-			var student = dto.FromDto();
+			var item = dto.FromDto();
 
 			try
 			{
-				await _studentCrudService.AddAsync(student);
+				await _studentCrudService.AddAsync(item);
 			}
 			catch (Exception)
 			{
@@ -154,10 +115,36 @@ namespace Velvetech.Presentation.Server.Controllers
 
 			return Ok("Updated successfully");
 		}
+
+
+		// PUT: api/Students
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPut]
+		public async Task<IActionResult> UpdateAsync(StudentDto dto)
+		{
+			var item = dto.FromDto();			
+
+			try
+			{
+				await _studentCrudService.UpdateAsync(item);
+			}
+			catch (Exception)
+			{
+				if ((await _studentCrudService.GetByIdAsync(item.Id)) is null)
+					return NotFound();
+				else
+					throw;
+			}	
+
+			return Ok("Updated successfully");
+		}
+
+		
 		
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]
-		public async Task<ActionResult> Delete(Guid id)
+		public async Task<ActionResult> DeleteAsync(Guid id)
 		{
 			await _studentCrudService.DeleteAsync(id);
 			return Ok();
@@ -175,141 +162,5 @@ namespace Velvetech.Presentation.Server.Controllers
 			return student;
 			*/
 		}
-
-		
-		
-
-
-		/*
-		// GET: api/Test/Strings
-		[HttpGet]
-		public async Task<ActionResult<GroupDto[]>> StudentGroups(StudentByIdRequest request)
-		{
-			return (await _studentRepository.GetByIdAsync(request.Id))
-				.Grouping
-				.Select(grouping => 
-					new GroupDto
-					{
-						Id = grouping.Group.Id,
-						Name = grouping.Group.Name
-					})
-				.ToArray();
-		}
-		*/
-
-
-
-		/*
-		// GET: api/Test/Strings
-		[HttpGet]
-		public async Task<ActionResult<string[]>> StringsAsync()
-		{
-			var student = await _studentRepository.GetAllAsync();
-			var group = await _groupRepository.GetAllAsync();
-			return student
-				.Select(s =>
-					s.GetFullname() + $" ({s.Grouping.Count}): " +
-					s.Grouping
-						.Select(gp => gp.Group.Name)
-						.Join(", "))
-				.Prepend("============== STUDENTS============== ")
-				.Append("============== GROUPS ============== ")
-				.Concat(group
-					.Select(g =>
-						g.Name + $" ({g.Grouping.Count}): " +
-						g.Grouping
-							.Select(gp => gp.Student.GetFullname())
-							.Join(", ")))
-				.ToArray();
-		}  */
-
-
-
-
-		/*
-		[HttpPost]
-		public async Task<ActionResult> AddStudentToGroup(AddStudentRequestToGroupRequest request)
-		{
-			var student = await _studentRepository.GetByIdAsync(request.StudentId);
-			if (student is null)
-				return NotFound(0);
-
-			var group = await _groupRepository.GetByIdAsync(request.GroupId);
-			if (group is null)
-				return NotFound(1);
-
-			//group.AddStudent(student);
-			await _groupRepository.UpdateAsync(group);
-			return Ok();
-		}	
-		*/
-
-		/*
-		// GET: api/Students/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<Student>> GetStudent(Guid id)
-		{
-			var student = await _context.Student.FindAsync(id);
-
-			if (student == null)
-			{
-				return NotFound();
-			}
-
-			return student;
-		} */
-
-
-
-		// POST: api/Students
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		/*
-		[HttpPost]
-		public async Task<ActionResult<Student>> PostStudent(Student student)
-		{
-			_context.Student.Add(student);
-			await _context.SaveChangesAsync();
-
-			return CreatedAtAction("GetStudent", new { id = student.Id }, student);
-		}
-		*/
-
-		/*
-		[HttpPost]
-		public async Task<ActionResult> PostStudent(StudentCommon student)
-		{
-			await Task.Delay(1000);
-			
-			_context.Student.Add(student);
-			await _context.SaveChangesAsync();
-
-			return CreatedAtAction("GetStudent", new { id = student.Id }, student);
-			
-			return Ok();
-		}	
-		*/
-
-
-
-		/*
-		// DELETE: api/Students/5
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<Student>> DeleteStudent(Guid id)
-		{
-			var student = await _context.Student.FindAsync(id);
-			if (student == null)
-			{
-				return NotFound();
-			}
-
-			_context.Student.Remove(student);
-			await _context.SaveChangesAsync();
-
-			return student;
-		}
-
-		private bool StudentExists(Guid id) => _context.Student.Any(e => e.Id == id);
-		*/
 	}
 }

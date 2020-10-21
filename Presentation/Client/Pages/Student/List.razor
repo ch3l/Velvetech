@@ -1,4 +1,6 @@
-﻿@inject HttpClient Http
+﻿@page "/pages/students"
+
+@inject HttpClient Http
 @inject NavigationManager NavigationManager
 
 @using System.Linq
@@ -70,7 +72,7 @@ else
 	{
 		if (AddComponent is null)
 			return;
-		AddComponent.Student = new StudentDto() { SexId=1 };
+		AddComponent.Student = new StudentDto() { SexId = 1 };
 		AddComponent.Open();
 	}
 
@@ -89,22 +91,6 @@ else
 		await LoadPage(page.PageSize, page.PageIndex);
 	}
 
-	async Task GenerateStudentAsync()
-	{
-		studentCounter = await Http.GetFromJsonAsync<int>("api/Students/StudentsCount");
-		studentCounter++;
-
-		await Http.PostAsJsonAsync("api/Students/AddStudent",
-			new Presentation.Shared.Requests.AddStudentRequest(
-				1,
-				"First name " + studentCounter,
-				"Middle name " + studentCounter,
-				"Last name " + studentCounter,
-				"Callsign " + studentCounter));
-
-		await LoadFirstPage();
-	}
-
 	async Task NextPage()
 	{
 		if (page != null &&
@@ -121,12 +107,12 @@ else
 
 	async Task LoadFirstPage()
 	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/Students");
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List");
 	}
 
 	async Task LoadPage(int size, int index)
 	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/Students?pagesize={size}&pageindex={index}");
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List?pagesize={size}&pageindex={index}");
 	}
 
 	protected override async Task OnInitializedAsync()

@@ -44,5 +44,8 @@ namespace Velvetech.Presentation.Server
 				source.Middlename,
 				source.Lastname,
 				source.Callsign);
+
+		public static Group FromDto(this GroupDto source) =>
+			new Group(source.Id, source.Name);
 	}
 }

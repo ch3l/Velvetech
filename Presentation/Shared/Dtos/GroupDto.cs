@@ -6,5 +6,7 @@ namespace Presentation.Shared.Dtos
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
+		
+		//public int StudentsCount { get; set; }
 	}
 }
