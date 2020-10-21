@@ -10,8 +10,8 @@ namespace Velvetech.Domain.Common
     {
 		IQueryable<TEntity> GetEntity();
 		Task<TEntity> GetByIdAsync(params object[] id);
-		Task<TEntity[]> GetAllAsync();
-		Task<TEntity[]> GetRangeAsync(int skip, int take);
+		IAsyncEnumerable<TEntity> GetAllAsync();
+		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
 		Task<TEntity> AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task RemoveAsync(TEntity entity);

@@ -9,6 +9,6 @@ namespace Domain.Services.Interfaces
 {
 	public interface IListService<TEntity> where TEntity : BaseEntity
 	{
-		public Task<TEntity[]> GetAllAsync();
+		public IAsyncEnumerable<TEntity> GetAllAsync();
 	}
 }

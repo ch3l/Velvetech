@@ -51,13 +51,16 @@ namespace Velvetech.Presentation.Server.Controllers
 
 			var totalItems = await _studentCrudService.CountAsync();
 			var lastPageIndex = totalItems / pageSize;
-			
+
+			if (totalItems == pageSize * lastPageIndex)
+				lastPageIndex--;
+
 			if (pageIndex > lastPageIndex)
 				pageIndex = lastPageIndex;
 
-			var items = (await _studentCrudService.GetRangeAsync(pageSize*pageIndex, pageSize))
+			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize)
 				.Select(Extensions.ToDto)
-				.ToArray();
+				.ToArrayAsync();
 
 			return new Page<StudentDto>
 			{
@@ -72,9 +75,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<SexDto[]>> SexListAsync()
 		{
-			return (await _sexList.GetAllAsync())
+			return await (_sexList.GetAllAsync()
 				.Select(Extensions.ToDto)
-				.ToArray();
+				.ToArrayAsync());
 		}
 
 		// GET: api/Test/Students

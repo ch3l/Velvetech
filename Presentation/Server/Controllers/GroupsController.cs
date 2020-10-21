@@ -36,9 +36,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<GroupDto[]>> AllAsync()
 		{
-			return (await _groupCrudService.GetAllAsync())
+			return await (_groupCrudService.GetAllAsync()
 				.Select(Extensions.ToDto)
-				.ToArray();
+				.ToArrayAsync());
 		}		   		
 	}
 }

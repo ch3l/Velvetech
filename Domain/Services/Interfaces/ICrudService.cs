@@ -9,8 +9,8 @@ namespace Domain.Services.Interfaces
 {
 	public interface ICrudService<TEntity, TKey> where	TEntity : BaseEntity
 	{
-		public Task<TEntity[]> GetAllAsync();
-		public Task<TEntity[]> GetRangeAsync(int skip, int take);
+		public IAsyncEnumerable<TEntity> GetAllAsync();
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
 		public Task<TEntity> GetByIdAsync(Guid id);
 		public Task<TEntity> AddAsync(TEntity entity);
 		public Task UpdateAsync(TEntity entity);

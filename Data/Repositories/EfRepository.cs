@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -80,14 +81,14 @@ namespace Velvetech.Data.Repositories
 			*/
 		}
 
-		public async Task<TEntity[]> GetAllAsync()
+		public IAsyncEnumerable<TEntity> GetAllAsync()
 		{
-			return await GetTargetEntity().ToArrayAsync();
+			return GetTargetEntity().AsAsyncEnumerable();
 		}
 
-		public async Task<TEntity[]> GetRangeAsync(int skip, int take)
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take)
 		{
-			return await GetTargetEntity().Skip(skip).Take(take).ToArrayAsync();
+			return GetTargetEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
 		}
 
 		public async Task<TEntity> AddAsync(TEntity entity)
@@ -119,7 +120,7 @@ namespace Velvetech.Data.Repositories
 
 		public async Task<int> CountAsync()
 		{
-			return await GetTargetEntity().CountAsync();
+			return await GetTargetEntity().AsAsyncEnumerable().CountAsync();
 		}
 	}
 }

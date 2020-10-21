@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Domain.Common;
@@ -20,11 +22,11 @@ namespace Domain.Services
 			_groupingService = groupingService;
 		}
 
-		public async Task<Student[]> GetAllAsync() =>
-			await _studentRepository.GetAllAsync();
+		public IAsyncEnumerable<Student> GetAllAsync() =>
+			_studentRepository.GetAllAsync();
 
-		public async Task<Student[]> GetRangeAsync(int skip, int take) =>
-			await _studentRepository.GetRangeAsync(skip, take);
+		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
+			_studentRepository.GetRangeAsync(skip, take);
 
 		public async Task<Student> GetByIdAsync(Guid id) =>
 			await _studentRepository.GetByIdAsync(id);
