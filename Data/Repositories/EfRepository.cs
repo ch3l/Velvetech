@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using Velvetech.Domain.Common;
 
@@ -103,7 +104,7 @@ namespace Velvetech.Data.Repositories
 
 		public async Task DeleteAsync(TEntity entity)
 		{
-			_dbContext.Set<TEntity>().Remove(entity);
+			var result = _dbContext.Set<TEntity>().Remove(entity);
 			await _dbContext.SaveChangesAsync();
 		}
 

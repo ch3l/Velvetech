@@ -8,6 +8,7 @@ namespace Presentation.Shared
 	{
 		public bool IsLastPage { get; set; }
 		public int PageIndex { get; set; }
+		public int PageSize { get; set; }
 		public T[] Items { get; set; }
 
 	}

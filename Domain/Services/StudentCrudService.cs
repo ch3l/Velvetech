@@ -41,8 +41,8 @@ namespace Domain.Services
 			if (entity is null)
 				return;
 
-			await _studentRepository.DeleteAsync(entity);
 			await _groupingService.OnStudentDelete(entity.Id);
+			await _studentRepository.DeleteAsync(entity);
 		}
 
 		public async Task<int> CountAsync() =>

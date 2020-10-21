@@ -6,7 +6,7 @@
 @namespace Presentation.Client.Pages.Student
 
 @if (Student != null)
-{
+{	
 	<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -96,14 +96,14 @@
 }
 
 @code {
-	[Parameter]
-	public SexDto[] SexList { get; set; }
+		[Parameter]
+		public SexDto[] SexList { get; set; }
 
-	string SexId
+		string SexId
 	{
-		get => Student.SexId.ToString();
-		set => Student.SexId = int.Parse(value);
-	}
+			get => Student.SexId.ToString();
+			set => Student.SexId = int.Parse(value);
+		}
 
 	public StudentDto Student { get; set; }
 	string _modalDisplay = "block;";
@@ -118,7 +118,7 @@
 			return;
 		}
 
-		var result = await Http.PutAsJsonAsync($"api/Students/Update", Student);
+		var result = await Http.PostAsJsonAsync($"api/Students/Add", Student);
 		if (result.StatusCode == System.Net.HttpStatusCode.OK)
 			Close();
 		else

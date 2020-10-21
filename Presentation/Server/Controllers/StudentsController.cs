@@ -63,6 +63,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			{
 				IsLastPage = pageIndex == lastPageIndex,
 				PageIndex = pageIndex,
+				PageSize = pageSize,
 				Items = items,
 			};
 		}
@@ -108,7 +109,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		}
 
 		
-		// PUT: api/Students/5
+		// PUT: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut]
@@ -120,7 +121,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			{
 				await _studentCrudService.UpdateAsync(student);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				if ((await _studentCrudService.GetByIdAsync(student.Id)) is null)
 					return NotFound();
@@ -129,7 +130,51 @@ namespace Velvetech.Presentation.Server.Controllers
 			}	
 
 			return Ok("Updated successfully");
-		}  
+		}
+
+		// PUT: api/Students
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPost]
+		public async Task<IActionResult> Add(StudentDto dto)
+		{
+			var student = dto.FromDto();
+
+			try
+			{
+				await _studentCrudService.AddAsync(student);
+			}
+			catch (Exception)
+			{
+				return BadRequest();
+			}
+
+			return Ok("Updated successfully");
+		}
+		
+		// DELETE: api/Students/5
+		[HttpDelete("{id}")]
+		public async Task<ActionResult> Delete(Guid id)
+		{
+			await _studentCrudService.DeleteAsync(id);
+			return Ok();
+
+			/*
+			var student = await _context.Student.FindAsync(id);
+			if (student == null)
+			{
+				return NotFound();
+			}
+
+			_context.Student.Remove(student);
+			await _context.SaveChangesAsync();
+
+			return student;
+			*/
+		}
+
+		
+		
 
 
 		/*
