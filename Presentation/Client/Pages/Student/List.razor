@@ -23,7 +23,7 @@ else
 			<tr>
 				<th>Full name</th>
 				<th>Callsign</th>
-				@*<th>Groups</th>*@
+				<th>Groups</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -38,7 +38,7 @@ else
 				<tr class="">
 					<td>@student.Firstname</td>
 					<td>@student.Callsign</td>
-					@*<td>@(string.Join(", ", student.Groups.Select(x => x.Name)))</td>*@
+					<td>@(string.Join(", ", student.Groups.Select(x => x.Name)))</td>
 					<td>
 						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
 						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>

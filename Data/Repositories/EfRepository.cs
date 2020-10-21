@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data.Repositories
 {
@@ -28,7 +29,7 @@ namespace Velvetech.Data.Repositories
 		private DbSet<TEntity> GetTargetEntity() =>
 			_dbContext.Set<TEntity>();
 
-		/*
+		
 		private IQueryable<TEntity> GetQueryableEntity()
 		{
 			var entity = GetEntity();
@@ -49,6 +50,7 @@ namespace Velvetech.Data.Repositories
 			};
 		} 		
 
+		/*
 		void NavigationLoad(IEnumerable<NavigationEntry> navigations)
 		{
 			foreach (var navigation in navigations)
@@ -83,12 +85,12 @@ namespace Velvetech.Data.Repositories
 
 		public IAsyncEnumerable<TEntity> GetAllAsync()
 		{
-			return GetTargetEntity().AsAsyncEnumerable();
+			return GetQueryableEntity().AsAsyncEnumerable();
 		}
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take)
 		{
-			return GetTargetEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
+			return GetQueryableEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
 		}
 
 		public async Task<TEntity> AddAsync(TEntity entity)
