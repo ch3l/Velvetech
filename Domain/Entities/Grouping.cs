@@ -4,11 +4,9 @@ using System.ComponentModel;
 using System.Text;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentAggregate;
-using Velvetech.Domain.Entities.GroupAggregate;
 using System.Data;
 
-namespace Velvetech.Domain.Entities.StudentGroupAggregate
+namespace Velvetech.Domain.Entities
 {
 	public class Grouping : BaseEntity, IAggregateRoot
 	{

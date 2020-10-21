@@ -14,8 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Velvetech.Data;
 using Velvetech.Data.Repositories;
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.GroupAggregate;
-using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Velvetech.Presentation.Server
 {

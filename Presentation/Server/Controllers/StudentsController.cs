@@ -14,7 +14,7 @@ using Presentation.Shared.Dtos;
 using Presentation.Shared.Requests;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities;
 using Domain.Common;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Presentation.Shared;

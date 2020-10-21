@@ -2,8 +2,7 @@
 
 using Presentation.Shared.Dtos;
 
-using Velvetech.Domain.Entities.GroupAggregate;
-using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Velvetech.Presentation.Server
 {

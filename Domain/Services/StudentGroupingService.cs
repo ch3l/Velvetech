@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using Domain.Common;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.GroupAggregate;
-using Velvetech.Domain.Entities.StudentAggregate;
-using Velvetech.Domain.Entities.StudentGroupAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Domain.Services
 {

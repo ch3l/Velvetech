@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentGroupAggregate;
 
-namespace Velvetech.Domain.Entities.StudentAggregate
+namespace Velvetech.Domain.Entities
 {
 	public class Student : Entity<Guid>, IAggregateRoot
 	{

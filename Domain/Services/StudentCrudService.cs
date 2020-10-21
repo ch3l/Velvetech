@@ -5,7 +5,7 @@ using Domain.Common;
 using Domain.Services.Interfaces;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Domain.Services
 {

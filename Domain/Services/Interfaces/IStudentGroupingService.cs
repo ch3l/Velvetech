@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-using Velvetech.Domain.Entities.StudentAggregate;
-using Velvetech.Domain.Entities.GroupAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Domain.Common
 {

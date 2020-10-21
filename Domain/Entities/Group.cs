@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.StudentGroupAggregate;
 
-namespace Velvetech.Domain.Entities.GroupAggregate
+namespace Velvetech.Domain.Entities
 {
 	public class Group : Entity<Guid>, IAggregateRoot
 	{

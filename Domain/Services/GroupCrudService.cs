@@ -7,7 +7,7 @@ using Domain.Common;
 using Domain.Services.Interfaces;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities.GroupAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Domain.Services
 {

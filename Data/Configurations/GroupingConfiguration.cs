@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Velvetech.Domain.Entities.StudentGroupAggregate;
+using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data.Configurations
 {
