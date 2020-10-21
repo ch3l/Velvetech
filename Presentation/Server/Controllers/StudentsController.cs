@@ -18,20 +18,25 @@ using Velvetech.Domain.Entities;
 using Domain.Common;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Presentation.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class StudentsController : ControllerBase
-	{
+	{				
 		ICrudService<Student, Guid> _studentCrudService;
 		IGroupingService _groupingService;
+		IListService<Sex> _sexList;
 
-		public StudentsController(ICrudService<Student, Guid> studentCrudService, IGroupingService groupingService)
+		public StudentsController(ICrudService<Student, Guid> studentCrudService, 
+			IGroupingService groupingService,
+			IListService<Sex> sexList)
 		{
 			_studentCrudService = studentCrudService;
 			_groupingService = groupingService;
+			_sexList = sexList;
 		}
 
 		// GET: api/Test/Students
@@ -60,6 +65,15 @@ namespace Velvetech.Presentation.Server.Controllers
 				PageIndex = pageIndex,
 				Items = items,
 			};
+		}
+
+		// GET: api/Test/Students
+		[HttpGet]
+		public async Task<ActionResult<SexDto[]>> SexListAsync()
+		{
+			return (await _sexList.GetAllAsync())
+				.Select(Extensions.ToDto)
+				.ToArray();
 		}
 
 		// GET: api/Test/Students
@@ -92,6 +106,31 @@ namespace Velvetech.Presentation.Server.Controllers
 		{
 			return await _studentCrudService.CountAsync();
 		}
+
+		
+		// PUT: api/Students/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPut]
+		public async Task<IActionResult> Update(StudentDto dto)
+		{
+			var student = dto.FromDto();			
+
+			try
+			{
+				await _studentCrudService.UpdateAsync(student);
+			}
+			catch (Exception e)
+			{
+				if ((await _studentCrudService.GetByIdAsync(student.Id)) is null)
+					return NotFound();
+				else
+					throw;
+			}	
+
+			return Ok("Updated successfully");
+		}  
+
 
 		/*
 		// GET: api/Test/Strings
@@ -172,39 +211,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			return student;
 		} */
 
-		/*
-		// PUT: api/Students/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutStudent(Guid id, Student student)
-		{
-			if (id != student.Id)
-			{
-				return BadRequest();
-			}
 
-			_context.Entry(student).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!StudentExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return NoContent();
-		}  
-		*/
 
 		// POST: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for

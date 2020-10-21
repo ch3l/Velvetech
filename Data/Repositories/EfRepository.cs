@@ -97,7 +97,8 @@ namespace Velvetech.Data.Repositories
 		public async Task UpdateAsync(TEntity entity)
 		{
 			_dbContext.Entry(entity).State = EntityState.Modified;
-			await _dbContext.SaveChangesAsync();
+
+			await _dbContext.SaveChangesAsync();			
 		}
 
 		public async Task DeleteAsync(TEntity entity)

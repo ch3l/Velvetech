@@ -41,6 +41,7 @@ namespace Velvetech.Presentation.Server
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
+			services.AddScoped(typeof(IListService<>), typeof(ListService<>));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +50,7 @@ namespace Velvetech.Presentation.Server
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseWebAssemblyDebugging();
+				app.UseWebAssemblyDebugging();				
 			}
 			else
 			{

@@ -15,8 +15,8 @@ namespace Velvetech.Domain.Entities
 		public virtual IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public Group(Guid id, string name)
+			: base(id)
 		{
-			Id = id;
 			Name = name;
 		}
 	}

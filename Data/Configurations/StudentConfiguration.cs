@@ -23,15 +23,15 @@ namespace Velvetech.Data.Configurations
 			builder.Property(e => e.Callsign)
 				.HasMaxLength(16);
 
-			builder.Property(e => e.FirstName)
+			builder.Property(e => e.Firstname)
 				.IsRequired()
 				.HasMaxLength(40);
 
-			builder.Property(e => e.LastName)
+			builder.Property(e => e.Lastname)
 				.IsRequired()
 				.HasMaxLength(40);
 
-			builder.Property(e => e.MiddleName)
+			builder.Property(e => e.Middlename)
 				.HasMaxLength(60);
 
 			builder.HasOne(d => d.Sex)

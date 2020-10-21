@@ -8,9 +8,9 @@ namespace Velvetech.Domain.Entities
 {
 	public class Student : Entity<Guid>, IAggregateRoot
 	{
-		public string FirstName { get; private set; }
-		public string MiddleName { get; private set; }
-		public string LastName { get; private set; }
+		public string Firstname { get; private set; }
+		public string Middlename { get; private set; }
+		public string Lastname { get; private set; }
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
@@ -19,12 +19,22 @@ namespace Velvetech.Domain.Entities
 		private List<Grouping> _grouping = new List<Grouping>();
 		public virtual IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
-		public Student(int sexId, string firstName, string middleName, string lastName, string callsign)
+		public Student(Guid id, int sexId, string firstname, string middlename, string lastname, string callsign)
+			: base(id)
 		{
 			SexId = sexId;
-			FirstName = firstName;
-			MiddleName = middleName;
-			LastName = lastName;
+			Firstname = firstname;
+			Middlename = middlename;
+			Lastname = lastname;
+			Callsign = callsign;
+		}
+
+		public Student(int sexId, string firstname, string middlename, string lastname, string callsign)
+		{
+			SexId = sexId;
+			Firstname = firstname;
+			Middlename = middlename;
+			Lastname = lastname;
 			Callsign = callsign;
 		}
 	}

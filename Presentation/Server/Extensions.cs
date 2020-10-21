@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 
+using Castle.DynamicProxy.Generators;
+
 using Presentation.Shared.Dtos;
 
 using Velvetech.Domain.Entities;
@@ -12,11 +14,11 @@ namespace Velvetech.Presentation.Server
 			new StudentDto
 			{
 				Id = source.Id,
-				FirstName = source.FirstName,
-				MiddleName = source.MiddleName,
-				LastName = source.LastName,
+				Firstname = source.Firstname,
+				Middlename = source.Middlename,
+				Lastname = source.Lastname,
 				Callsign = source.Callsign,
-				Sex = source.Sex.ToDto(),
+				SexId = source.SexId,
 				Groups = source.Grouping.Select(grouping => grouping.Group.ToDto())
 			};
 
@@ -33,5 +35,14 @@ namespace Velvetech.Presentation.Server
 				Id = source.Id,
 				Name = source.Name
 			};
+
+		public static Student FromDto(this StudentDto source) =>
+			new Student(
+				source.Id,
+				source.SexId,
+				source.Firstname,
+				source.Middlename,
+				source.Lastname,
+				source.Callsign);
 	}
 }
