@@ -16,6 +16,8 @@ using Presentation.Shared.Requests;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities.StudentAggregate;
 using Domain.Common;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Shared;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
@@ -34,20 +36,41 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<StudentDto[]> StudentsAsync(int skip = 0, int take = int.MaxValue)
+		public async Task<ActionResult<Page<StudentDto>>> StudentsAsync(int pageSize = 10, int pageIndex = 0)
 		{
-			return (await _studentCrudService.GetAllAsync())
+			if (pageSize < 10)
+				pageSize = 10;
+
+			if (pageIndex < 0)
+				pageIndex = 0;
+
+			var totalItems = await _studentCrudService.CountAsync();
+			var lastPageIndex = totalItems / pageSize;
+			
+			if (pageIndex > lastPageIndex)
+				pageIndex = lastPageIndex;
+
+			var items = (await _studentCrudService.GetRangeAsync(pageSize*pageIndex, pageSize))
 				.Select(Extensions.ToDto)
 				.ToArray();
+
+			return new Page<StudentDto>
+			{
+				IsLastPage = pageIndex == lastPageIndex,
+				PageIndex = pageIndex,
+				Items = items,
+			};
 		}
 
 		// GET: api/Test/Students
 		[HttpGet("{id}")]
-		public async Task<StudentDto> StudentAsync(Guid id)
+		public async Task<ActionResult<StudentDto>> StudentAsync(Guid? id)
 		{
-			return (await _studentCrudService.GetByIdAsync(id)).ToDto();
-		}
+			if (id is null)
+				return BadRequest("Corrupted Id");
 
+			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
+		}
 
 		// GET: api/Test/AddStudent
 		[HttpPost]

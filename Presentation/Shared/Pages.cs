@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Presentation.Shared
 {
-	public class Pages
+	public class Page<T>
 	{
-		int _pagesCount;
-		int _itemsInPage;
-						  
-		
+		public bool IsLastPage { get; set; }
+		public int PageIndex { get; set; }
+		public T[] Items { get; set; }
+
 	}
 }

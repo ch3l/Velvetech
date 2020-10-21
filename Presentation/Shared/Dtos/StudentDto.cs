@@ -11,7 +11,10 @@ namespace Presentation.Shared.Dtos
 		public string LastName { get; set; }
 		public string Callsign { get; set; }
 
+		public int SexId { get; set; }
 		public SexDto Sex { get; set; }
 		public IEnumerable<GroupDto> Groups { get; set; }
+
+		public string FullName => FirstName + " " + MiddleName + " " + LastName;
 	}
 }

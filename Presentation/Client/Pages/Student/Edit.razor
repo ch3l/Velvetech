@@ -1,0 +1,133 @@
+﻿@inject HttpClient Http
+
+@using System.Linq
+@using Presentation.Shared.Dtos
+
+@namespace Presentation.Client.Pages.Student
+
+@if (Student != null)
+{
+	<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<EditForm Model="Student" OnValidSubmit="@SaveClick">
+					<DataAnnotationsValidator />
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Edit @Student.FullName</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						@if (Student == null)
+						{
+
+						}
+						else
+						{
+							<div class="container">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Name</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.FirstName" />
+												<ValidationMessage For="(() => Student.FirstName)" />
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Name</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.MiddleName" />
+												<ValidationMessage For="(() => Student.MiddleName)" />
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Name</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.LastName" />
+												<ValidationMessage For="(() => Student.LastName)" />
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+											<div class="form-group">
+												<label class="control-label col-md-6">Brand</label>
+												<div class="col-md-12">
+													<CustomInputSelect @bind-Value="Student.SexId" class="form-control">
+														@foreach (var brand in SexList)
+														{
+															<option value="@brand.Id.ToString()">@brand.Name</option>
+														}
+													</CustomInputSelect>
+													<ValidationMessage For="(() => _item.CatalogBrandId)" />
+												</div>
+											</div>
+										</div>
+								</div>
+							</div>
+						}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+						<button type="submit" class="btn btn-primary">
+							Save
+						</button>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public IEnumerable<SexDto> SexList { get; set; }
+
+
+	public StudentDto Student;
+	string _modalDisplay = "block;";
+	string _modalClass = "Show";
+
+
+	private async Task SaveClick()
+	{
+	}
+
+	public async Task Open()
+	{
+		_modalDisplay = "block;";
+		_modalClass = "Show";
+		/*
+		await new Css(JSRuntime).ShowBodyOverflow();
+
+		_modalDisplay = "none";
+		_modalClass = "";
+		_showEditModal = false;
+		*/
+
+		StateHasChanged();
+	}
+
+	private async Task Close()
+	{
+		_modalDisplay = "none";
+		_modalClass = "";
+		/*
+		await new Css(JSRuntime).ShowBodyOverflow();
+
+		_modalDisplay = "none";
+		_modalClass = "";
+		_showEditModal = false;
+		*/
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+
+	}
+}

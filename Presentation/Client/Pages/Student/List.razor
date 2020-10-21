@@ -1,0 +1,146 @@
+﻿@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@using System.Linq
+@using Presentation.Shared
+@using Presentation.Shared.Dtos
+
+@namespace Presentation.Client.Pages.Student
+
+<h1>Students</h1>
+<h1>@title</h1>
+
+<button class="btn btn-primary" @onclick="GenerateStudentAsync">Generate student</button>
+<br />
+<button class="btn btn-primary" @onclick="AddStudentAsync">Add student</button>
+
+@if (page == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Full name</th>
+				<th>Callsign</th>
+				<th>Groups</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				counter = 0;
+			}
+			@foreach (var student in page.Items)
+			{
+				var i = counter++;
+
+				<tr class="">
+					<td>@student.FirstName</td>
+					<td>@student.Callsign</td>
+					<td>@(string.Join(", ", student.Groups.Select(x => x.Name)))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => EditAsync(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="() => RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<button class="btn btn-primary" disabled="@(page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
+	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
+}
+
+<Presentation.Client.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" />
+
+@code
+{
+	int counter, studentCounter;
+	Page<StudentDto> page;
+	string title = string.Empty;
+
+	IEnumerable<SexDto> SexList;
+
+	private Edit EditComponent { get; set; }
+
+	async Task AddStudentAsync()
+	{
+
+	}
+
+	async Task EditAsync(int index)
+	{
+		if (EditComponent is null)
+			return;
+		EditComponent.Student = page.Items[index];
+		await EditComponent.Open();
+
+		/*
+		var studentId = page.Items[index].Id;
+		var student = await Http.GetFromJsonAsync<StudentDto>($"api/Students/Student/{studentId}");
+		title =
+			student is null
+				? "Student is NULL"
+				: student.Sex is null
+					? "Student.Sex is NULL"
+					: student.Sex.Name is null
+						? "Student.Sex.Name is NULL"
+						: student.Sex.Name;
+						*/
+	}
+
+	async Task RemoveAsync(int index)
+	{
+		title = (page.Items[index].Id).ToString();
+		//await Task.FromResult(title = "Remove: " + index.ToString());
+	}
+
+	async Task GenerateStudentAsync()
+	{
+		studentCounter = await Http.GetFromJsonAsync<int>("api/Students/StudentsCount");
+		studentCounter++;
+
+		await Http.PostAsJsonAsync("api/Students/AddStudent",
+			new Presentation.Shared.Requests.AddStudentRequest(
+				1,
+				"First name " + studentCounter,
+				"Middle name " + studentCounter,
+				"Last name " + studentCounter,
+				"Callsign " + studentCounter));
+
+		await LoadFirstPage();
+	}
+
+	async Task NextPage()
+	{
+		if (page != null &&
+			!page.IsLastPage)
+			await LoadPage(10, page.PageIndex + 1);
+	}
+
+	async Task PreviousPage()
+	{
+		if (page != null &&
+			page.PageIndex > 0)
+			await LoadPage(10, page.PageIndex - 1);
+	}
+
+	async Task LoadFirstPage()
+	{
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/Students");
+	}
+
+	async Task LoadPage(int size, int index)
+	{
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/Students?pagesize={size}&pageindex={index}");
+	}
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadFirstPage();
+	}
+}
