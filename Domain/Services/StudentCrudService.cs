@@ -37,12 +37,12 @@ namespace Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var entity = await _studentRepository.GetByIdAsync(id);
-			if (entity is null)
+			var entry = await _studentRepository.GetByIdAsync(id);
+			if (entry is null)
 				return;
 
-			await _groupingService.OnStudentDelete(entity.Id);
-			await _studentRepository.DeleteAsync(entity);
+			await _groupingService.OnStudentDeleteAsync(entry.Id);
+			await _studentRepository.RemoveAsync(entry);
 		}
 
 		public async Task<int> CountAsync() =>

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace Velvetech.Data.Repositories
 			_dbContext = dbContext;
 		}
 
-		private DbSet<TEntity> GetEntity() =>
+		private DbSet<TEntity> GetTargetEntity() =>
 			_dbContext.Set<TEntity>();
 
 		/*
@@ -60,9 +61,11 @@ namespace Velvetech.Data.Repositories
 		}	  
 		*/
 
+		public IQueryable<TEntity> GetEntity() => GetTargetEntity();
+
 		public async Task<TEntity> GetByIdAsync(params object[] id)
 		{
-			return await GetEntity().FindAsync(id);
+			return await GetTargetEntity().FindAsync(id);
 
 			/*
 			var entity = GetEntity();
@@ -79,12 +82,12 @@ namespace Velvetech.Data.Repositories
 
 		public async Task<TEntity[]> GetAllAsync()
 		{
-			return await GetEntity().ToArrayAsync();
+			return await GetTargetEntity().ToArrayAsync();
 		}
 
 		public async Task<TEntity[]> GetRangeAsync(int skip, int take)
 		{
-			return await GetEntity().Skip(skip).Take(take).ToArrayAsync();
+			return await GetTargetEntity().Skip(skip).Take(take).ToArrayAsync();
 		}
 
 		public async Task<TEntity> AddAsync(TEntity entity)
@@ -102,15 +105,21 @@ namespace Velvetech.Data.Repositories
 			await _dbContext.SaveChangesAsync();			
 		}
 
-		public async Task DeleteAsync(TEntity entity)
+		public async Task RemoveAsync(TEntity entity)
 		{
 			var result = _dbContext.Set<TEntity>().Remove(entity);
 			await _dbContext.SaveChangesAsync();
 		}
 
+		public async Task RemoveRangeAsync(TEntity[] entities)
+		{
+			_dbContext.Set<TEntity>().RemoveRange(entities);
+			await _dbContext.SaveChangesAsync();
+		}
+
 		public async Task<int> CountAsync()
 		{
-			return await GetEntity().CountAsync();
+			return await GetTargetEntity().CountAsync();
 		}
 	}
 }

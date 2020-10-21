@@ -9,10 +9,10 @@ namespace Domain.Common
 {
 	public interface IGroupingService
 	{
-		Task IncludeStudent(Guid groupId, Guid studentId);
-		Task ExcludeStudent(Guid groupId, Guid studentId);
+		Task IncludeStudentAsync(Guid groupId, Guid studentId);
+		Task ExcludeStudentAsync(Guid groupId, Guid studentId);
 
-		Task OnStudentDelete(Guid studentId);
-		Task OnGroupDelete(Guid groupId);
+		Task OnStudentDeleteAsync(Guid studentId);
+		Task OnGroupDeleteAsync(Guid groupId);
 	}
 }

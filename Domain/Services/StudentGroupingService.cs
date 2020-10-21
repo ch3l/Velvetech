@@ -8,6 +8,7 @@ using Domain.Common;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using System.Transactions;
 
 namespace Domain.Services
 {
@@ -21,9 +22,19 @@ namespace Domain.Services
 			_groupingRepository = groupingRepository;
 		}
 
-		public Task IncludeStudent(Guid groupId, Guid studentId) => throw new NotImplementedException();
-		public Task ExcludeStudent(Guid groupId, Guid studentId) => throw new NotImplementedException();
-		public Task OnStudentDelete(Guid studentId) => throw new NotImplementedException();
-		public Task OnGroupDelete(Guid groupId) => throw new NotImplementedException();
+		public async Task IncludeStudentAsync(Guid groupId, Guid studentId) => throw new NotImplementedException();
+		public async Task ExcludeStudentAsync(Guid groupId, Guid studentId) => throw new NotImplementedException();
+
+		public async Task OnStudentDeleteAsync(Guid studentId)
+		{
+			var entriesToDelete = _groupingRepository
+				.GetEntity()
+				.Where(grouping => grouping.StudentId == studentId)
+				.ToArray();
+
+			await _groupingRepository.RemoveRangeAsync(entriesToDelete);
+		}
+
+		public async Task OnGroupDeleteAsync(Guid groupId) => throw new NotImplementedException();
 	}
 }
