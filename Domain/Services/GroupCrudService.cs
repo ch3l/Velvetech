@@ -15,13 +15,13 @@ namespace Domain.Services
 	public class GroupCrudService : ICrudService<Group, Guid>
 	{
 		IAsyncRepository<Group> _groupRepository;
-		IGroupingService _studentGroupingService;
+		IGroupingService _groupingService;
 
 		public GroupCrudService(IAsyncRepository<Group> groupRepository, 
 			IGroupingService studentGroupingService)
 		{
 			_groupRepository = groupRepository;
-			_studentGroupingService = studentGroupingService;
+			_groupingService = studentGroupingService;
 		}
 
 		public IAsyncEnumerable<Group> GetAllAsync() =>
@@ -41,12 +41,12 @@ namespace Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var entity = await _groupRepository.GetByIdAsync(id);
-			if (entity is null)
+			var entry = await _groupRepository.GetByIdAsync(id);
+			if (entry is null)
 				return;
 
-			await _studentGroupingService.OnGroupDeleteAsync(entity.Id);
-			await _groupRepository.RemoveAsync(entity);
+			await _groupingService.OnGroupDeleteAsync(entry.Id);
+			await _groupRepository.RemoveAsync(entry);
 		}
 
 		public async Task<int> CountAsync() =>

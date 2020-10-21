@@ -35,6 +35,14 @@ namespace Domain.Services
 			await _groupingRepository.RemoveRangeAsync(entriesToDelete);
 		}
 
-		public async Task OnGroupDeleteAsync(Guid groupId) => throw new NotImplementedException();
+		public async Task OnGroupDeleteAsync(Guid groupId)
+		{
+			var entriesToDelete = _groupingRepository
+				.GetEntity()
+				.Where(grouping => grouping.GroupId == groupId)
+				.ToArray();
+
+			await _groupingRepository.RemoveRangeAsync(entriesToDelete);
+		}
 	}
 }

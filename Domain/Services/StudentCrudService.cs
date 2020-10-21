@@ -49,6 +49,5 @@ namespace Domain.Services
 
 		public async Task<int> CountAsync() =>
 			await _studentRepository.CountAsync();
-
 	}
 }
