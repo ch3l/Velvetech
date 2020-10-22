@@ -28,5 +28,13 @@ namespace Velvetech.Domain.Entities
 
 		public Student Student { get; private set; }
 		public Group Group { get; private set; }
+
+		public override bool Equals(object obj) =>
+			obj is Grouping grouping 
+			&& StudentId == grouping.StudentId 
+			&& GroupId == grouping.GroupId;
+
+		public override int GetHashCode() => 
+			HashCode.Combine(StudentId, GroupId);
 	}
 }

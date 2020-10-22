@@ -14,7 +14,9 @@
 <h1>@_errorMessage</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add group</button>
-<button class="btn btn-primary" @onclick="AddToFirstGroup">Add student to first group</button>
+<br/>
+<button class="btn btn-primary" @onclick="IncludeStudentAsync">Include student</button>
+<button class="btn btn-primary" @onclick="ExcludeStudentAsync">Exclude student</button>
 @*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
 
 @if (groups == null)
@@ -97,13 +99,29 @@ else
 		await LoadList();
 	}
 
-	async Task AddToFirstGroup()
+	async Task IncludeStudentAsync()
 	{
 		var studentId = (await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List")).Items.First().Id;
 		var groupId = (await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List")).First().Id;
 
 		var result = await Http.PostAsJsonAsync(
-			$"api/Groups/AddStudent", 
+			$"api/Groups/IncludeStudent",
+			new StudentGroupRequest
+			{
+				StudentId = studentId,
+				GroupId = groupId
+			});
+
+		_errorMessage = result.ToString();
+	}
+
+	async Task ExcludeStudentAsync()
+	{
+		var studentId = (await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List")).Items.First().Id;
+		var groupId = (await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List")).First().Id;
+
+		var result = await Http.PostAsJsonAsync(
+			$"api/Groups/ExcludeStudent",
 			new StudentGroupRequest
 			{
 				StudentId = studentId,
