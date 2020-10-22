@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Velvetech.Domain.Common;
 
-namespace Domain.Services.Interfaces
+namespace Velvetech.Domain.Services.Interfaces
 {
 	public interface ICrudService<TEntity, TKey> where	TEntity : Entity<TKey>
 	{

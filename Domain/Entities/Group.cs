@@ -21,22 +21,33 @@ namespace Velvetech.Domain.Entities
 			Name = name;
 		}
 
-		public void IncludeStudent(Student student)
+		public bool IncludeStudent(Guid studentId)
 		{
-			var groupingEntry = new Grouping(student, this);
+			var groupingEntry = new Grouping(studentId, Id);
 			//if (_grouping.Contains(groupingEntry))
 			//	return;
 			
-			_grouping.Add(groupingEntry);
+			return _grouping.Add(groupingEntry);
 		}
 
-		public void ExcludeStudent(Student student)
+		public bool ExcludeStudent(Guid studentId)
 		{
-			var groupingEntry = new Grouping(student, this);
+			var groupingEntry = new Grouping(studentId, Id);
 			//if (_grouping.Contains(groupingEntry))
 			//	return;
 
-			_grouping.Remove(groupingEntry);
+			return _grouping.Remove(groupingEntry);
+		}
+
+		public bool ExcludeAllStudents()
+		{
+			if (_grouping.Count > 0)
+			{
+				_grouping.Clear();
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

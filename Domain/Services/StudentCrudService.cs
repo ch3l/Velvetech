@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Domain.Common;
-using Domain.Services.Interfaces;
-
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services.Interfaces;
 
-namespace Domain.Services
+namespace Velvetech.Domain.Services
 {
 	public class StudentCrudService : ICrudService<Student, Guid>
 	{
 		IAsyncRepository<Student, Guid> _studentRepository;
-		IGroupingService _groupingService;
 
-		public StudentCrudService(IAsyncRepository<Student, Guid> studentRepository, IGroupingService groupingService)
+		public StudentCrudService(IAsyncRepository<Student, Guid> studentRepository)
 		{
 			_studentRepository = studentRepository;
-			_groupingService = groupingService;
 		}
 
 		public IAsyncEnumerable<Student> GetAllAsync() =>
@@ -39,12 +35,14 @@ namespace Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var entry = await _studentRepository.GetByIdAsync(id);
-			if (entry is null)
+			var student= await _studentRepository.GetByIdAsync(id);
+			if (student is null)
 				return;
 
-			await _groupingService.OnStudentDeleteAsync(entry.Id);
-			await _studentRepository.RemoveAsync(entry);
+			student.ExcludeFromAllGroups();
+			await _studentRepository.UpdateAsync(student);
+
+			await _studentRepository.RemoveAsync(student);
 		}
 
 		public async Task<int> CountAsync() =>

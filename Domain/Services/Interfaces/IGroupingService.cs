@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 
 using Velvetech.Domain.Entities;
 
-namespace Domain.Common
+namespace Velvetech.Domain.Common
 {
 	public interface IGroupingService
 	{
-		Task IncludeStudentAsync(Guid studentId, Guid groupId);
-		Task ExcludeStudentAsync(Guid studentId, Guid groupId);
-		
-		Task OnStudentDeleteAsync(Guid studentId);
-		Task OnGroupDeleteAsync(Guid groupId);
+		Task<bool> IncludeStudentAsync(Guid studentId, Guid groupId);
+		Task<bool> ExcludeStudentAsync(Guid studentId, Guid groupId);
 	}
 }

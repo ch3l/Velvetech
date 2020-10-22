@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using Domain.Services.Interfaces;
-
 using Microsoft.AspNetCore.Mvc;
 
 using Presentation.Shared.Dtos;
 using Presentation.Shared.Requests;
+using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services.Interfaces;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
@@ -17,12 +17,12 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class GroupsController : ControllerBase
 	{
 		private readonly ICrudService<Group, Guid> _groupCrudService;
-		private readonly ICrudService<Student, Guid> _studentCrudService;
+		private IGroupingService _groupingService;
 
-		public GroupsController(ICrudService<Group, Guid> groupCrudService, ICrudService<Student, Guid> studentCrudService)
+		public GroupsController(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
 		{
 			_groupCrudService = groupCrudService;
-			_studentCrudService = studentCrudService;
+			_groupingService = groupingService;
 		}
 
 		// GET: api/Groups/List
@@ -84,13 +84,10 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> IncludeStudentAsync(StudentGroupRequest request)
 		{
-			var group = await _groupCrudService.GetByIdAsync(request.GroupId);
-			var student = await _studentCrudService.GetByIdAsync(request.StudentId);
+			if (await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId))
+				return Ok();
 
-			group.IncludeStudent(student);
-			await _groupCrudService.UpdateAsync(group);
-
-			return Ok();
+			return Content("Already included");
 		}
 
 		// PUT: api/Groups/AddStudent
@@ -99,13 +96,10 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ExcludeStudentAsync(StudentGroupRequest request)
 		{
-			var group = await _groupCrudService.GetByIdAsync(request.GroupId);
-			var student = await _studentCrudService.GetByIdAsync(request.StudentId);
-
-			group.ExcludeStudent(student);
-			await _groupCrudService.UpdateAsync(group);
-
-			return Ok();
+			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
+				return Ok();
+			
+			return NotFound();
 		}
 
 		// DELETE: api/Groups/5
@@ -114,19 +108,6 @@ namespace Velvetech.Presentation.Server.Controllers
 		{
 			await _groupCrudService.DeleteAsync(id);
 			return Ok();
-
-			/*
-			var student = await _context.Student.FindAsync(id);
-			if (student == null)
-			{
-				return NotFound();
-			}
-
-			_context.Student.Remove(student);
-			await _context.SaveChangesAsync();
-
-			return student;
-			*/
 		}
 	}
 }

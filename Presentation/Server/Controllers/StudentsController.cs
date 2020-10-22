@@ -1,35 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-using Domain.Services.Interfaces;
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-using Velvetech.Presentation.Server;
+using Presentation.Shared;
 using Presentation.Shared.Dtos;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Domain.Common;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Presentation.Shared;
-using Microsoft.EntityFrameworkCore;
+using Velvetech.Domain.Services.Interfaces;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class StudentsController : ControllerBase
-	{				
+	{
 		ICrudService<Student, Guid> _studentCrudService;
 		IGroupingService _groupingService;
 		IListService<Sex, int> _sexList;
 
-		public StudentsController(ICrudService<Student, Guid> studentCrudService, 
+		public StudentsController(ICrudService<Student, Guid> studentCrudService,
 			IGroupingService groupingService,
 			IListService<Sex, int> sexList)
 		{
@@ -123,7 +116,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateAsync(StudentDto dto)
 		{
-			var item = dto.FromDto();			
+			var item = dto.FromDto();
 
 			try
 			{
@@ -135,13 +128,13 @@ namespace Velvetech.Presentation.Server.Controllers
 					return NotFound();
 				else
 					throw;
-			}	
+			}
 
 			return Ok("Updated successfully");
 		}
 
-		
-		
+
+
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)

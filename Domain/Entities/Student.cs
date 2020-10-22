@@ -37,5 +37,16 @@ namespace Velvetech.Domain.Entities
 			Lastname = lastname;
 			Callsign = callsign;
 		}
+
+		public bool ExcludeFromAllGroups()
+		{
+			if (_grouping.Count > 0)
+			{
+				_grouping.Clear();
+				return true;
+			}
+
+			return false;
+		}
 	}
 }

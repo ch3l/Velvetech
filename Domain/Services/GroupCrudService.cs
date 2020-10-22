@@ -4,24 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Domain.Common;
-using Domain.Services.Interfaces;
-
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services.Interfaces;
 
-namespace Domain.Services
+namespace Velvetech.Domain.Services
 {
 	public class GroupCrudService : ICrudService<Group, Guid>
 	{
 		IAsyncRepository<Group, Guid> _groupRepository;
-		IGroupingService _groupingService;
 
-		public GroupCrudService(IAsyncRepository<Group, Guid> groupRepository, 
-			IGroupingService studentGroupingService)
+		public GroupCrudService(IAsyncRepository<Group, Guid> groupRepository)
 		{
 			_groupRepository = groupRepository;
-			_groupingService = studentGroupingService;
 		}
 
 		public IAsyncEnumerable<Group> GetAllAsync() =>
@@ -41,12 +36,14 @@ namespace Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var entry = await _groupRepository.GetByIdAsync(id);
-			if (entry is null)
+			var group = await _groupRepository.GetByIdAsync(id);
+			if (group is null)
 				return;
 
-			await _groupingService.OnGroupDeleteAsync(entry.Id);
-			await _groupRepository.RemoveAsync(entry);
+			group.ExcludeAllStudents();
+			await _groupRepository.UpdateAsync(group);
+
+			await _groupRepository.RemoveAsync(group);
 		}
 
 		public async Task<int> CountAsync() =>

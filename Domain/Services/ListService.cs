@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Domain.Common;
-using Domain.Services.Interfaces;
+﻿using System.Collections.Generic;
 
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services.Interfaces;
 
-namespace Domain.Services
+namespace Velvetech.Domain.Services
 {
 	public class ListService<TEntity, TKey> : IListService<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot
 	{
-		IAsyncRepository<TEntity, TKey> _repository;
+		readonly IAsyncRepository<TEntity, TKey> _repository;
 
 		public ListService(IAsyncRepository<TEntity, TKey> studentRepository)
 		{

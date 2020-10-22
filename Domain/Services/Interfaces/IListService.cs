@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 using Velvetech.Domain.Common;
 
-namespace Domain.Services.Interfaces
+namespace Velvetech.Domain.Services.Interfaces
 {
 	public interface IListService<TEntity, TKey> where TEntity : Entity<TKey>
 	{

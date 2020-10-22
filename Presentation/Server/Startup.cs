@@ -1,12 +1,7 @@
 using System;
 
-using Domain.Common;
-using Domain.Services;
-using Domain.Services.Interfaces;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +10,8 @@ using Velvetech.Data;
 using Velvetech.Data.Repositories;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services;
+using Velvetech.Domain.Services.Interfaces;
 
 namespace Velvetech.Presentation.Server
 {
@@ -51,7 +48,7 @@ namespace Velvetech.Presentation.Server
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseWebAssemblyDebugging();				
+				app.UseWebAssemblyDebugging();
 			}
 			else
 			{
