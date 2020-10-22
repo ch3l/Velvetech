@@ -12,7 +12,7 @@ namespace Presentation.Shared.Dtos
 		public string Callsign { get; set; }
 
 		public int SexId { get; set; }
-		public IEnumerable<GroupDto> Groups { get; set; }
+		public IEnumerable<string> Groups { get; set; }
 
 		public string FullName => Firstname + " " + Middlename + " " + Lastname;
 	}

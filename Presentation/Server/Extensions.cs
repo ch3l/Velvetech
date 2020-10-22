@@ -19,14 +19,15 @@ namespace Velvetech.Presentation.Server
 				Lastname = source.Lastname,
 				Callsign = source.Callsign,
 				SexId = source.SexId,
-				Groups = source.Grouping.Select(grouping => grouping.Group.ToDto())
+				Groups = source.Grouping.Select(grouping => grouping.Group.Name)
 			};
 
 		public static GroupDto ToDto(this Group source) =>
 			new GroupDto
 			{
 				Id = source.Id,
-				Name = source.Name
+				Name = source.Name,
+				StudentsCount = source.Grouping.Count
 			};
 
 		public static SexDto ToDto(this Sex source) =>

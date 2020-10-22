@@ -49,37 +49,11 @@ namespace Velvetech.Data.Repositories
 			};
 		} 		
 
-		/*
-		void NavigationLoad(IEnumerable<NavigationEntry> navigations)
-		{
-			foreach (var navigation in navigations)
-			{
-				if (navigation.IsLoaded)
-					continue;
-				navigation.Load();
-
-				NavigationLoad(_dbContext.Entry(navigation.EntityEntry).Navigations);
-			}
-		}	  
-		*/
-
 		public IQueryable<TEntity> GetEntity() => GetTargetEntity();
 
 		public async Task<TEntity> GetByIdAsync(TKey id)
 		{
-			return await GetTargetEntity().FindAsync(id);
-
-			/*
-			var entity = GetEntity();
-
-			var entry = await entity.FindAsync(id);
-			if (entry is null)
-				return await Task.FromResult<TEntity>(null);
-
-			NavigationLoad(_dbContext.Entry(entry).Navigations);
-
-			return entry;
-			*/
+			return await GetQueryableEntity().FirstOrDefaultAsync(x => x.Id.Equals(id));
 		}
 
 		public IAsyncEnumerable<TEntity> GetAllAsync()
