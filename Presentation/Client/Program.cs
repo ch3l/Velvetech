@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-using Presentation.Client;
-
 namespace Velvetech.Presentation.Client
 {
 	public class Program

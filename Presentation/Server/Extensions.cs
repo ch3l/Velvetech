@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 
 using Castle.DynamicProxy.Generators;
-
-using Presentation.Shared.Dtos;
-
 using Velvetech.Domain.Entities;
+using Velvetech.Presentation.Shared.Dtos;
 
 namespace Velvetech.Presentation.Server
 {

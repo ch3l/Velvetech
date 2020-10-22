@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-using Velvetech.Domain.Entities;
-
-namespace Velvetech.Domain.Common
+namespace Velvetech.Domain.Services.Interfaces
 {
 	public interface IGroupingService
 	{

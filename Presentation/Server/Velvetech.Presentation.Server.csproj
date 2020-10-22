@@ -30,9 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\Data.csproj" />
-    <ProjectReference Include="..\Client\Presentation.Client.csproj" />
-    <ProjectReference Include="..\Shared\Presentation.Shared.csproj" />
+    <ProjectReference Include="..\..\Data\Velvetech.Data.csproj" />
+    <ProjectReference Include="..\Client\Velvetech.Presentation.Client.csproj" />
+    <ProjectReference Include="..\Shared\Velvetech.Presentation.Shared.csproj" />
   </ItemGroup>
 
 

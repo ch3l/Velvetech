@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Presentation.Shared.Requests
+namespace Velvetech.Presentation.Shared.Requests
 {
 	public class StudentGroupRequest
 	{

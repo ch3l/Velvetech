@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{FE8E0028-C4BD-47A4-B75D-A6DE816E4A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Domain", "Domain\Velvetech.Domain.csproj", "{FE8E0028-C4BD-47A4-B75D-A6DE816E4A8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{EBA2FE71-E93D-4DEC-84B2-A033F4277F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Data", "Data\Velvetech.Data.csproj", "{EBA2FE71-E93D-4DEC-84B2-A033F4277F54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Shared", "Presentation\Shared\Presentation.Shared.csproj", "{63B420A6-B86F-43C1-B6D4-5C494ACB3194}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Presentation.Shared", "Presentation\Shared\Velvetech.Presentation.Shared.csproj", "{63B420A6-B86F-43C1-B6D4-5C494ACB3194}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Server", "Presentation\Server\Presentation.Server.csproj", "{FE289CB8-DF63-4403-8517-5DD2F2D51481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Presentation.Server", "Presentation\Server\Velvetech.Presentation.Server.csproj", "{FE289CB8-DF63-4403-8517-5DD2F2D51481}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Client", "Presentation\Client\Presentation.Client.csproj", "{BFDDA4EE-7CF9-4209-B93E-848D6F75AEED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Presentation.Client", "Presentation\Client\Velvetech.Presentation.Client.csproj", "{BFDDA4EE-7CF9-4209-B93E-848D6F75AEED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

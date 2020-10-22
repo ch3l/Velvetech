@@ -2,12 +2,10 @@
 
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+@using Velvetech.Presentation.Shared
+@using Velvetech.Presentation.Shared.Dtos
 
-@using System.Linq
-@using Presentation.Shared
-@using Presentation.Shared.Dtos
-
-@namespace Presentation.Client.Pages.Student
+@namespace Velvetech.Presentation.Client.Pages.Student
 
 <h1>Students</h1>
 <h1>@title</h1>
@@ -54,8 +52,8 @@ else
 	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
 }
 
-<Presentation.Client.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update"/>
-<Presentation.Client.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update"/>
+<Velvetech.Presentation.Client.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update"/>
+<Velvetech.Presentation.Client.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update"/>
 
 @code
 {

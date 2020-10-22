@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using Presentation.Shared;
-using Presentation.Shared.Dtos;
-
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Presentation.Shared;
+using Velvetech.Presentation.Shared.Dtos;
 
 namespace Velvetech.Presentation.Server.Controllers
 {

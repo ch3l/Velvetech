@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Presentation.Shared.Dtos
+﻿namespace Velvetech.Presentation.Shared.Dtos
 {
 	public class SexDto
 	{

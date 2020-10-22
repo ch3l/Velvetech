@@ -4,11 +4,11 @@
 @inject NavigationManager NavigationManager
 
 @using System.Linq
-@using Presentation.Shared
-@using Presentation.Shared.Dtos
-@using Presentation.Shared.Requests
+@using Velvetech.Presentation.Shared
+@using Velvetech.Presentation.Shared.Dtos
+@using Velvetech.Presentation.Shared.Requests
 
-@namespace Presentation.Client.Pages.Group
+@namespace Velvetech.Presentation.Client.Pages.Group
 
 <h1>Groups</h1>
 <h1>@_errorMessage</h1>
@@ -54,8 +54,8 @@ else
 	</table>
 }
 
-<Presentation.Client.Pages.Group.Add @ref="AddComponent" OnSave="LoadList"/>
-<Presentation.Client.Pages.Group.Edit @ref="EditComponent" OnSave="LoadList" />
+<Velvetech.Presentation.Client.Pages.Group.Add @ref="AddComponent" OnSave="LoadList"/>
+<Velvetech.Presentation.Client.Pages.Group.Edit @ref="EditComponent" OnSave="LoadList" />
 
 @code
 {

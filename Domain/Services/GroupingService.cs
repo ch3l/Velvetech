@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Services.Interfaces;
 
 namespace Velvetech.Domain.Services
 {
