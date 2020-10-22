@@ -14,10 +14,10 @@ namespace Domain.Services
 {
 	public class GroupCrudService : ICrudService<Group, Guid>
 	{
-		IAsyncRepository<Group> _groupRepository;
+		IAsyncRepository<Group, Guid> _groupRepository;
 		IGroupingService _groupingService;
 
-		public GroupCrudService(IAsyncRepository<Group> groupRepository, 
+		public GroupCrudService(IAsyncRepository<Group, Guid> groupRepository, 
 			IGroupingService studentGroupingService)
 		{
 			_groupRepository = groupRepository;

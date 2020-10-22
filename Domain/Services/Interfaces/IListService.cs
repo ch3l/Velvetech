@@ -7,7 +7,7 @@ using Velvetech.Domain.Common;
 
 namespace Domain.Services.Interfaces
 {
-	public interface IListService<TEntity> where TEntity : BaseEntity
+	public interface IListService<TEntity, TKey> where TEntity : Entity<TKey>
 	{
 		public IAsyncEnumerable<TEntity> GetAllAsync();
 	}

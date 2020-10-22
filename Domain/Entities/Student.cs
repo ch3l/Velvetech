@@ -14,10 +14,10 @@ namespace Velvetech.Domain.Entities
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
-		public virtual Sex Sex { get; private set; }
+		public Sex Sex { get; private set; }
 
 		private List<Grouping> _grouping = new List<Grouping>();
-		public virtual IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
+		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public Student(Guid id, int sexId, string firstname, string middlename, string lastname, string callsign)
 			: base(id)

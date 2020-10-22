@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Velvetech.Domain.Common
 {
-    public interface IAsyncRepository<TEntity> where TEntity : BaseEntity, IAggregateRoot
+    public interface IAsyncRepository<TEntity, TKey> where TEntity : Entity<TKey>, IAggregateRoot
     {
 		IQueryable<TEntity> GetEntity();
-		Task<TEntity> GetByIdAsync(params object[] id);
+		Task<TEntity> GetByIdAsync(TKey id);
 		IAsyncEnumerable<TEntity> GetAllAsync();
 		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
 		Task<TEntity> AddAsync(TEntity entity);

@@ -16,7 +16,7 @@ namespace Velvetech.Domain.Entities
 			Name = name;
 		}
 
-		public virtual IReadOnlyList<Student> Student => _student.AsReadOnly();
+		public IReadOnlyList<Student> Student => _student.AsReadOnly();
 
 		public string Name { get; private set; }
 	}

@@ -11,12 +11,12 @@ using Velvetech.Domain.Entities;
 
 namespace Domain.Services
 {
-	public class ListService<TEntity> : IListService<TEntity>
-		where TEntity : BaseEntity, IAggregateRoot
+	public class ListService<TEntity, TKey> : IListService<TEntity, TKey>
+		where TEntity : Entity<TKey>, IAggregateRoot
 	{
-		IAsyncRepository<TEntity> _repository;
+		IAsyncRepository<TEntity, TKey> _repository;
 
-		public ListService(IAsyncRepository<TEntity> studentRepository)
+		public ListService(IAsyncRepository<TEntity, TKey> studentRepository)
 		{
 			_repository = studentRepository;
 		}

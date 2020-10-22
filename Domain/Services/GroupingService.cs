@@ -15,11 +15,13 @@ namespace Domain.Services
 	public class GroupingService : IGroupingService
 	{
 		
-		IAsyncRepository<Grouping> _groupingRepository;
+		//IAsyncRepository<Grouping> _groupingRepository;
 
-		public GroupingService(IAsyncRepository<Grouping> groupingRepository)
+		public GroupingService(
+			//IAsyncRepository<Grouping> groupingRepository
+			)
 		{
-			_groupingRepository = groupingRepository;
+			//_groupingRepository = groupingRepository;
 		}
 
 		public async Task IncludeStudentAsync(Guid groupId, Guid studentId) => throw new NotImplementedException();
@@ -27,22 +29,22 @@ namespace Domain.Services
 
 		public async Task OnStudentDeleteAsync(Guid studentId)
 		{
-			var entriesToDelete = _groupingRepository
-				.GetEntity()
-				.Where(grouping => grouping.StudentId == studentId)
-				.ToArray();
+			//var entriesToDelete = _groupingRepository
+			//	.GetEntity()
+			//	.Where(grouping => grouping.StudentId == studentId)
+			//	.ToArray();
 
-			await _groupingRepository.RemoveRangeAsync(entriesToDelete);
+			//await _groupingRepository.RemoveRangeAsync(entriesToDelete);
 		}
 
 		public async Task OnGroupDeleteAsync(Guid groupId)
 		{
-			var entriesToDelete = _groupingRepository
-				.GetEntity()
-				.Where(grouping => grouping.GroupId == groupId)
-				.ToArray();
+			//var entriesToDelete = _groupingRepository
+			//	.GetEntity()
+			//	.Where(grouping => grouping.GroupId == groupId)
+			//	.ToArray();
 
-			await _groupingRepository.RemoveRangeAsync(entriesToDelete);
+			//await _groupingRepository.RemoveRangeAsync(entriesToDelete);
 		}
 	}
 }

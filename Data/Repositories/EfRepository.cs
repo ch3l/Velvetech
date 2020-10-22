@@ -15,9 +15,8 @@ namespace Velvetech.Data.Repositories
 	/// "There's some repetition here - couldn't we have some the sync methods call the async?"
 	/// https://blogs.msdn.microsoft.com/pfxteam/2012/04/13/should-i-expose-synchronous-wrappers-for-asynchronous-methods/
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public class EfRepository<TEntity> : IAsyncRepository<TEntity>
-		where TEntity : BaseEntity, IAggregateRoot
+	public class EfRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey>
+		where TEntity : Entity<TKey>, IAggregateRoot
 	{
 		protected readonly AppDbContext _dbContext;
 
@@ -66,7 +65,7 @@ namespace Velvetech.Data.Repositories
 
 		public IQueryable<TEntity> GetEntity() => GetTargetEntity();
 
-		public async Task<TEntity> GetByIdAsync(params object[] id)
+		public async Task<TEntity> GetByIdAsync(TKey id)
 		{
 			return await GetTargetEntity().FindAsync(id);
 

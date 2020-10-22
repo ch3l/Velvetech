@@ -27,11 +27,11 @@ namespace Velvetech.Presentation.Server.Controllers
 	{				
 		ICrudService<Student, Guid> _studentCrudService;
 		IGroupingService _groupingService;
-		IListService<Sex> _sexList;
+		IListService<Sex, int> _sexList;
 
 		public StudentsController(ICrudService<Student, Guid> studentCrudService, 
 			IGroupingService groupingService,
-			IListService<Sex> sexList)
+			IListService<Sex, int> sexList)
 		{
 			_studentCrudService = studentCrudService;
 			_groupingService = groupingService;
