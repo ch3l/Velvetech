@@ -36,7 +36,6 @@ namespace Velvetech.Presentation.Server
 
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
-
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));

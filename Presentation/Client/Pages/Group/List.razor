@@ -113,6 +113,7 @@ else
 			});
 
 		_errorMessage = result.ToString();
+		await LoadList();
 	}
 
 	async Task ExcludeStudentAsync()
@@ -129,5 +130,6 @@ else
 			});
 
 		_errorMessage = result.ToString();
+		await LoadList();
 	}
 }

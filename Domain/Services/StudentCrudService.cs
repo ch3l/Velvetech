@@ -39,8 +39,8 @@ namespace Velvetech.Domain.Services
 			if (student is null)
 				return;
 
-			student.ExcludeFromAllGroups();
-			await _studentRepository.UpdateAsync(student);
+			if (student.ExcludeFromAllGroups())
+				await _studentRepository.UpdateAsync(student);
 
 			await _studentRepository.RemoveAsync(student);
 		}

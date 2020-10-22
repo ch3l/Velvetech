@@ -19,15 +19,12 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class StudentsController : ControllerBase
 	{
 		ICrudService<Student, Guid> _studentCrudService;
-		IGroupingService _groupingService;
 		IListService<Sex, int> _sexList;
 
 		public StudentsController(ICrudService<Student, Guid> studentCrudService,
-			IGroupingService groupingService,
 			IListService<Sex, int> sexList)
 		{
 			_studentCrudService = studentCrudService;
-			_groupingService = groupingService;
 			_sexList = sexList;
 		}
 
