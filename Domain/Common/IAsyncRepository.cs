@@ -8,7 +8,6 @@ namespace Velvetech.Domain.Common
 {
     public interface IAsyncRepository<TEntity, TKey> where TEntity : Entity<TKey>, IAggregateRoot
     {
-		IQueryable<TEntity> GetEntity();
 		Task<TEntity> GetByIdAsync(TKey id);
 		IAsyncEnumerable<TEntity> GetAllAsync();
 		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);

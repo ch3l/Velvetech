@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 
-namespace Velvetech.Data.Repositories
+namespace Velvetech.Data
 {
 	/// <summary>
 	/// "There's some repetition here - couldn't we have some the sync methods call the async?"
@@ -18,7 +14,7 @@ namespace Velvetech.Data.Repositories
 	public class EfRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot
 	{
-		protected readonly AppDbContext _dbContext;
+		private readonly AppDbContext _dbContext;
 
 		public EfRepository(AppDbContext dbContext)
 		{

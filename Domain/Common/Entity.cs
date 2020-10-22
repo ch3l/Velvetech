@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Velvetech.Domain.Common
 {
-	public abstract class Entity<TKey> : BaseEntity, IEntity<TKey>
+	public abstract class Entity<TKey> : BaseEntity
 		//where TKey : IEquatable<TKey>
 	{
 		protected Entity()
