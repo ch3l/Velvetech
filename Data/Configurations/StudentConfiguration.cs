@@ -9,9 +9,9 @@ namespace Velvetech.Data.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Student> builder)
 		{
-			builder.Metadata
-				.FindNavigation(nameof(Student.Grouping))
-				.SetPropertyAccessMode(PropertyAccessMode.Field);
+			//builder.Metadata
+			//	.FindNavigation(nameof(Student.Grouping))
+			//	.SetPropertyAccessMode(PropertyAccessMode.Property);
 
 			builder.HasIndex(e => e.Callsign)
 				.HasName("IX_Student_Unique_Callsign")

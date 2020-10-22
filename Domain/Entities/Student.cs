@@ -16,8 +16,7 @@ namespace Velvetech.Domain.Entities
 		public int SexId { get; private set; }
 		public Sex Sex { get; private set; }
 
-		private List<Grouping> _grouping = new List<Grouping>();
-		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
+		public List<Grouping> Grouping { get; set; }= new List<Grouping>();
 
 		public Student(Guid id, int sexId, string firstname, string middlename, string lastname, string callsign)
 			: base(id)

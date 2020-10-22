@@ -9,8 +9,8 @@ namespace Domain.Common
 {
 	public interface IGroupingService
 	{
-		Task IncludeStudentAsync(Guid groupId, Guid studentId);
-		Task ExcludeStudentAsync(Guid groupId, Guid studentId);
+		Task IncludeStudentAsync(Guid studentId, Guid groupId);
+		Task ExcludeStudentAsync(Guid studentId, Guid groupId);
 
 		Task OnStudentDeleteAsync(Guid studentId);
 		Task OnGroupDeleteAsync(Guid groupId);
