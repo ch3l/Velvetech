@@ -18,7 +18,9 @@ namespace Velvetech.Domain.Entities
 
 		public Grouping(Student student, Group group)
 			: this(student.Id, group.Id)
-		{				
+		{
+			Student = student;
+			Group = group;
 		}
 
 		public Guid StudentId { get; private set; }

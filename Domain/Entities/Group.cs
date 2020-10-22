@@ -11,12 +11,18 @@ namespace Velvetech.Domain.Entities
 	{
 		public string Name { get; private set; }
 
-		public List<Grouping> Grouping { get; set; } = new List<Grouping>();
+		private readonly List<Grouping> _grouping = new List<Grouping>();
+		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
 		public Group(Guid id, string name)
 			: base(id)
 		{
 			Name = name;
+		}
+
+		public void AddStudent(Student student)
+		{
+			_grouping.Add(new Grouping(student, this));
 		}
 	}
 }

@@ -6,12 +6,16 @@
 @using System.Linq
 @using Presentation.Shared
 @using Presentation.Shared.Dtos
+@using Presentation.Shared.Requests
 
 @namespace Presentation.Client.Pages.Group
 
 <h1>Groups</h1>
+<h1>@_errorMessage</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add group</button>
+<button class="btn btn-primary" @onclick="AddToFirstGroup">Add student to first group</button>
+@*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
 
 @if (groups == null)
 {
@@ -56,6 +60,7 @@ else
 	int counter;
 	GroupDto[] groups;
 
+	string _errorMessage;
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
@@ -90,5 +95,21 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		await LoadList();
+	}
+
+	async Task AddToFirstGroup()
+	{
+		var studentId = (await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List")).Items.First().Id;
+		var groupId = (await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List")).First().Id;
+
+		var result = await Http.PostAsJsonAsync(
+			$"api/Groups/AddStudent", 
+			new StudentGroupRequest
+			{
+				StudentId = studentId,
+				GroupId = groupId
+			});
+
+		_errorMessage = result.ToString();
 	}
 }

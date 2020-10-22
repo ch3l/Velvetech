@@ -79,7 +79,7 @@ namespace Velvetech.Presentation.Server.Controllers
 				.ToArrayAsync());
 		}
 
-		// GET: api/Test/Students
+		// GET: api/Test/Get
 		[HttpGet("{id}")]
 		public async Task<ActionResult<StudentDto>> GetAsync(Guid? id)
 		{
@@ -89,7 +89,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
 		}
 
-		// GET: api/Test/Strings
+		// GET: api/Test/StudentsCount
 		[HttpGet]
 		public async Task<ActionResult<int>> StudentsCountAsync()
 		{

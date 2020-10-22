@@ -7,7 +7,7 @@ using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using Presentation.Shared.Dtos;
-
+using Presentation.Shared.Requests;
 using Velvetech.Domain.Entities;
 
 namespace Velvetech.Presentation.Server.Controllers
@@ -17,10 +17,12 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class GroupsController : ControllerBase
 	{
 		private readonly ICrudService<Group, Guid> _groupCrudService;
+		private readonly ICrudService<Student, Guid> _studentCrudService;
 
-		public GroupsController(ICrudService<Group, Guid> groupCrudService)
+		public GroupsController(ICrudService<Group, Guid> groupCrudService, ICrudService<Student, Guid> studentCrudService)
 		{
 			_groupCrudService = groupCrudService;
+			_studentCrudService = studentCrudService;
 		}
 
 		// GET: api/Groups/List
@@ -74,6 +76,21 @@ namespace Velvetech.Presentation.Server.Controllers
 			}
 
 			return Ok("Updated successfully");
+		}
+
+		// PUT: api/Groups/AddStudent
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPost]
+		public async Task<IActionResult> AddStudentAsync(StudentGroupRequest request)
+		{
+			var group = await _groupCrudService.GetByIdAsync(request.GroupId);
+			var student = await _studentCrudService.GetByIdAsync(request.StudentId);
+
+			group.AddStudent(student);
+			await _groupCrudService.UpdateAsync(group);
+
+			return Ok();
 		}
 
 		// DELETE: api/Groups/5
