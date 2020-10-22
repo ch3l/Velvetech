@@ -48,8 +48,8 @@ else
 	</table>
 }
 
-<Presentation.Client.Pages.Group.Add @ref="AddComponent" />
-<Presentation.Client.Pages.Group.Edit @ref="EditComponent" />
+<Presentation.Client.Pages.Group.Add @ref="AddComponent" OnSave="LoadList"/>
+<Presentation.Client.Pages.Group.Edit @ref="EditComponent" OnSave="LoadList" />
 
 @code
 {

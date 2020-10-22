@@ -99,6 +99,9 @@
 	[Parameter]
 	public SexDto[] SexList { get; set; }
 
+	[Parameter]
+	public EventCallback OnSave { get; set; }
+
 	string SexId
 	{
 		get => Student.SexId.ToString();
@@ -120,7 +123,10 @@
 
 		var result = await Http.PutAsJsonAsync($"api/Students/Update", Student);
 		if (result.StatusCode == System.Net.HttpStatusCode.OK)
+		{
 			Close();
+			await OnSave.InvokeAsync(null);
+		}
 		else
 			_errorMessage = result.StatusCode.ToString();
 	}

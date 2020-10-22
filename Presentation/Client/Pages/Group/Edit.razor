@@ -73,6 +73,9 @@
 }
 
 @code {
+	[Parameter]
+	public  EventCallback OnSave { get; set; }
+
 	public GroupDto Group { get; set; }
 
 	string _modalDisplay = "block;";
@@ -89,7 +92,10 @@
 
 		var result = await Http.PutAsJsonAsync($"api/Groups/Update", Group);
 		if (result.StatusCode == System.Net.HttpStatusCode.OK)
+		{
 			Close();
+			await OnSave.InvokeAsync(null);
+		}
 		else
 			_errorMessage = result.StatusCode.ToString();
 	}
