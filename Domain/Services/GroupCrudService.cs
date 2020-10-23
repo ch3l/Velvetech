@@ -40,6 +40,13 @@ namespace Velvetech.Domain.Services
 		public async Task<Group> GetByIdAsync(Guid id, Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
 			await _groupRepository.GetByIdAsync(id, filterFunc);
 
+		
+		public async Task<int> CountAsync() =>
+			await _groupRepository.CountAsync();
+
+		public async Task<int> CountAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc) =>
+			await _groupRepository.CountAsync(filterFunc);
+
 
 		public async Task<Group> AddAsync(Group entity) =>
 			await _groupRepository.AddAsync(entity);
@@ -58,8 +65,5 @@ namespace Velvetech.Domain.Services
 
 			await _groupRepository.RemoveAsync(group);
 		}
-
-		public async Task<int> CountAsync() =>
-			await _groupRepository.CountAsync();
 	}
 }

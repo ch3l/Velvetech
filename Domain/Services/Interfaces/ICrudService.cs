@@ -19,9 +19,11 @@ namespace Velvetech.Domain.Services.Interfaces
 		public Task<TEntity> GetByIdAsync(Guid id);
 		public Task<TEntity> GetByIdAsync(Guid id, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
 
+		public Task<int> CountAsync();
+		public Task<int> CountAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+
 		public Task<TEntity> AddAsync(TEntity entity);
 		public Task UpdateAsync(TEntity entity);
 		public Task DeleteAsync(TKey id);
-		public Task<int> CountAsync();
 	}
 }

@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Text;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
@@ -16,14 +21,37 @@ namespace Velvetech.Presentation.Server.Controllers
 	[ApiController]
 	public class StudentsController : ControllerBase
 	{
-		ICrudService<Student, Guid> _studentCrudService;
-		IListService<Sex, int> _sexList;
+		readonly ICrudService<Student, Guid> _studentCrudService;
+		readonly IListService<Sex, int> _sexList;
 
 		public StudentsController(ICrudService<Student, Guid> studentCrudService,
 			IListService<Sex, int> sexList)
 		{
 			_studentCrudService = studentCrudService;
 			_sexList = sexList;
+		}
+
+		IQueryable<Student> FilterFunc(
+			IQueryable<Student> source,
+			string sex,
+			string fullname,
+			string callsign,
+			string group)
+		{
+			if (sex is null &&
+			    fullname is null &&
+			    callsign is null &&
+			    group is null)
+			{
+				return source;
+			}
+
+			return source
+				.Where(student =>
+					(sex == null || student.Sex.Name.Equals(sex)) &&
+					(fullname == null || student.FullName.Contains(fullname)) &&
+					(callsign == null || student.FullName.Contains(callsign)) &&
+					(group == null || student.FullName.Contains(group)));
 		}
 
 		// GET: api/Test/Students
@@ -42,7 +70,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex < 0)
 				pageIndex = 0;
 
-			var totalItems = await _studentCrudService.CountAsync();
+			var totalItems = await _studentCrudService.CountAsync(x => FilterFunc(x, sex, fullname, callsign, group));
 			var lastPageIndex = totalItems / pageSize;
 
 			if (totalItems == pageSize * lastPageIndex)
@@ -51,7 +79,10 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex > lastPageIndex)
 				pageIndex = lastPageIndex;
 
-			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize)
+			var items = await _studentCrudService.GetRangeAsync(
+					pageSize * pageIndex, 
+					pageSize, 
+					x => FilterFunc(x, sex, fullname, callsign, group))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 

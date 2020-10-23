@@ -11,6 +11,8 @@ namespace Velvetech.Domain.Entities
 		public string Firstname { get; private set; }
 		public string Middlename { get; private set; }
 		public string Lastname { get; private set; }
+		public string FullName => Firstname + " " + Middlename + " " + Lastname;
+		
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
