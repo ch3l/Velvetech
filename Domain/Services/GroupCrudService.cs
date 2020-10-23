@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,14 +26,20 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Group> GetAllAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
 			_groupRepository.GetAllAsync(filterFunc);
 
+
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take) =>
 			_groupRepository.GetRangeAsync(skip, take);
 
-		public IAsyncEnumerable<Group> GetRangeAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc, int skip, int take) => 
-			_groupRepository.GetRangeAsync(filterFunc, skip, take);
+		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
+			_groupRepository.GetRangeAsync(skip, take, filterFunc);
+
 
 		public async Task<Group> GetByIdAsync(Guid id) =>
 			await _groupRepository.GetByIdAsync(id);
+
+		public async Task<Group> GetByIdAsync(Guid id, Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
+			await _groupRepository.GetByIdAsync(id, filterFunc);
+
 
 		public async Task<Group> AddAsync(Group entity) =>
 			await _groupRepository.AddAsync(entity);

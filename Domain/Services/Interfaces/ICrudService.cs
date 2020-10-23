@@ -12,9 +12,13 @@ namespace Velvetech.Domain.Services.Interfaces
 	{
 		public IAsyncEnumerable<TEntity> GetAllAsync();
 		public IAsyncEnumerable<TEntity> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
-		public IAsyncEnumerable<TEntity> GetRangeAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc, int skip, int take);
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		
 		public Task<TEntity> GetByIdAsync(Guid id);
+		public Task<TEntity> GetByIdAsync(Guid id, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+
 		public Task<TEntity> AddAsync(TEntity entity);
 		public Task UpdateAsync(TEntity entity);
 		public Task DeleteAsync(TKey id);

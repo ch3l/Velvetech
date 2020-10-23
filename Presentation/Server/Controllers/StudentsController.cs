@@ -28,7 +28,13 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> ListAsync(int pageSize = 10, int pageIndex = 0)
+		public async Task<ActionResult<Page<StudentDto>>> ListAsync(
+			string sex, 
+			string fullname, 
+			string callsign, 
+			string group,  
+			int pageSize = 10, 
+			int pageIndex = 0)
 		{
 			if (pageSize < 10)
 				pageSize = 10;

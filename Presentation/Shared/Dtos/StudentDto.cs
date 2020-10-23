@@ -12,6 +12,7 @@ namespace Velvetech.Presentation.Shared.Dtos
 		public string Callsign { get; set; }
 
 		public int SexId { get; set; }
+		public SexDto Sex { get; set; }
 		public IEnumerable<string> Groups { get; set; }
 
 		public string FullName => Firstname + " " + Middlename + " " + Lastname;

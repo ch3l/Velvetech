@@ -21,21 +21,20 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Student> GetAllAsync() =>
 			_studentRepository.GetAllAsync();
 
-		public IAsyncEnumerable<Student> GetAllAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc)
-		{
-			return _studentRepository.GetAllAsync(filterFunc);
-		}
+		public IAsyncEnumerable<Student> GetAllAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
+			_studentRepository.GetAllAsync(filterFunc);
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
 			_studentRepository.GetRangeAsync( skip, take);
 
-		public IAsyncEnumerable<Student> GetRangeAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc, int skip, int take)
-		{
-			return _studentRepository.GetRangeAsync(filterFunc, skip, take);
-		}
+		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
+			_studentRepository.GetRangeAsync(skip, take, filterFunc);
 
 		public async Task<Student> GetByIdAsync(Guid id) =>
 			await _studentRepository.GetByIdAsync(id);
+
+		public async Task<Student> GetByIdAsync(Guid id, Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
+			await _studentRepository.GetByIdAsync(id, filterFunc);
 
 		public async Task<Student> AddAsync(Student entity) =>
 			await _studentRepository.AddAsync(entity);

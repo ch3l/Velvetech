@@ -52,18 +52,23 @@ namespace Velvetech.Data
 		public async Task<TEntity> GetByIdAsync(TKey id) => 
 			await GetQueryableEntity().FirstOrDefaultAsync(x => x.Id.Equals(id));
 
+		public async Task<TEntity> GetByIdAsync(TKey id, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) =>
+			await filterFunc(GetQueryableEntity()).FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+
 		public IAsyncEnumerable<TEntity> GetAllAsync() => 
 			GetQueryableEntity().AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) =>
+			filterFunc(GetQueryableEntity()).AsAsyncEnumerable();
+
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
 			GetQueryableEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
 
-		public IAsyncEnumerable<TEntity> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) => 
-			filterFunc(GetQueryableEntity()).AsAsyncEnumerable();
-
-		public IAsyncEnumerable<TEntity> GetRangeAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc, int skip, int take) => 
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) => 
 			filterFunc(GetQueryableEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
 
+		
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
 			await _dbContext.Set<TEntity>().AddAsync(entity);
@@ -92,6 +97,9 @@ namespace Velvetech.Data
 		}
 
 		public async Task<int> CountAsync() => 
-				await GetTargetEntity().AsAsyncEnumerable().CountAsync();
+			await GetTargetEntity().AsAsyncEnumerable().CountAsync();
+
+		public async Task<int> CountAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) =>
+			await filterFunc(GetTargetEntity()).AsAsyncEnumerable().CountAsync();
 	}
 }
