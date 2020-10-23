@@ -11,7 +11,7 @@ namespace Velvetech.Domain.Services
 {
 	public class StudentCrudService : ICrudService<Student, Guid>
 	{
-		IAsyncRepository<Student, Guid> _studentRepository;
+		readonly IAsyncRepository<Student, Guid> _studentRepository;
 
 		public StudentCrudService(IAsyncRepository<Student, Guid> studentRepository)
 		{
@@ -21,8 +21,18 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Student> GetAllAsync() =>
 			_studentRepository.GetAllAsync();
 
+		public IAsyncEnumerable<Student> GetAllAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc)
+		{
+			return _studentRepository.GetAllAsync(filterFunc);
+		}
+
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
-			_studentRepository.GetRangeAsync(skip, take);
+			_studentRepository.GetRangeAsync( skip, take);
+
+		public IAsyncEnumerable<Student> GetRangeAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc, int skip, int take)
+		{
+			return _studentRepository.GetRangeAsync(filterFunc, skip, take);
+		}
 
 		public async Task<Student> GetByIdAsync(Guid id) =>
 			await _studentRepository.GetByIdAsync(id);

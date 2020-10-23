@@ -26,9 +26,17 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Groups/List
 		[HttpGet]
-		public async Task<GroupDto[]> ListAsync()
+		public async Task<GroupDto[]> ListAsync(string group)
 		{
-			return await _groupCrudService.GetAllAsync()
+			if (group is null)
+			{
+				return await _groupCrudService.GetAllAsync()
+					.Select(Extensions.ToDto)
+					.ToArrayAsync();
+			}
+
+			return await _groupCrudService.GetAllAsync(groups=> groups
+					.Where(g=> g.Name.Contains(group)))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 		}

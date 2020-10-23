@@ -9,8 +9,7 @@ namespace Velvetech.Domain.Services
 {
 	public class GroupingService : IGroupingService
 	{
-
-		IAsyncRepository<Group, Guid> _groupRepository;
+		readonly IAsyncRepository<Group, Guid> _groupRepository;
 
 		public GroupingService(IAsyncRepository<Group, Guid> groupRepository)
 		{

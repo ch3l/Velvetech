@@ -12,7 +12,7 @@ namespace Velvetech.Domain.Services
 {
 	public class GroupCrudService : ICrudService<Group, Guid>
 	{
-		IAsyncRepository<Group, Guid> _groupRepository;
+		readonly IAsyncRepository<Group, Guid> _groupRepository;
 
 		public GroupCrudService(IAsyncRepository<Group, Guid> groupRepository)
 		{
@@ -22,8 +22,14 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Group> GetAllAsync() =>
 			_groupRepository.GetAllAsync();
 
+		public IAsyncEnumerable<Group> GetAllAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
+			_groupRepository.GetAllAsync(filterFunc);
+
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take) =>
 			_groupRepository.GetRangeAsync(skip, take);
+
+		public IAsyncEnumerable<Group> GetRangeAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc, int skip, int take) => 
+			_groupRepository.GetRangeAsync(filterFunc, skip, take);
 
 		public async Task<Group> GetByIdAsync(Guid id) =>
 			await _groupRepository.GetByIdAsync(id);

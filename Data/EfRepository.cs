@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +26,6 @@ namespace Velvetech.Data
 		private DbSet<TEntity> GetTargetEntity() =>
 			_dbContext.Set<TEntity>();
 
-		
 		private IQueryable<TEntity> GetQueryableEntity()
 		{
 			var entity = GetEntity();
@@ -45,22 +46,23 @@ namespace Velvetech.Data
 			};
 		} 		
 
-		public IQueryable<TEntity> GetEntity() => GetTargetEntity();
+		public IQueryable<TEntity> GetEntity() => 
+			GetTargetEntity();
 
-		public async Task<TEntity> GetByIdAsync(TKey id)
-		{
-			return await GetQueryableEntity().FirstOrDefaultAsync(x => x.Id.Equals(id));
-		}
+		public async Task<TEntity> GetByIdAsync(TKey id) => 
+			await GetQueryableEntity().FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-		public IAsyncEnumerable<TEntity> GetAllAsync()
-		{
-			return GetQueryableEntity().AsAsyncEnumerable();
-		}
+		public IAsyncEnumerable<TEntity> GetAllAsync() => 
+			GetQueryableEntity().AsAsyncEnumerable();
 
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take)
-		{
-			return GetQueryableEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
-		}
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
+			GetQueryableEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
+
+		public IAsyncEnumerable<TEntity> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc) => 
+			filterFunc(GetQueryableEntity()).AsAsyncEnumerable();
+
+		public IAsyncEnumerable<TEntity> GetRangeAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc, int skip, int take) => 
+			filterFunc(GetQueryableEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
 
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
@@ -89,9 +91,7 @@ namespace Velvetech.Data
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public async Task<int> CountAsync()
-		{
-			return await GetTargetEntity().AsAsyncEnumerable().CountAsync();
-		}
+		public async Task<int> CountAsync() => 
+				await GetTargetEntity().AsAsyncEnumerable().CountAsync();
 	}
 }

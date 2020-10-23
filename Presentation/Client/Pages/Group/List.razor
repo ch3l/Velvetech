@@ -1,4 +1,4 @@
-﻿@page "/gr"
+﻿@page "/pages/groups"
 
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
@@ -14,7 +14,7 @@
 <h1>@_errorMessage</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add group</button>
-<br/>
+<br />
 <button class="btn btn-primary" @onclick="IncludeStudentAsync">Include student</button>
 <button class="btn btn-primary" @onclick="ExcludeStudentAsync">Exclude student</button>
 @*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
@@ -54,7 +54,7 @@ else
 	</table>
 }
 
-<Velvetech.Presentation.Client.Pages.Group.Add @ref="AddComponent" OnSave="LoadList"/>
+<Velvetech.Presentation.Client.Pages.Group.Add @ref="AddComponent" OnSave="LoadList" />
 <Velvetech.Presentation.Client.Pages.Group.Edit @ref="EditComponent" OnSave="LoadList" />
 
 @code
@@ -91,7 +91,7 @@ else
 
 	async Task LoadList()
 	{
-		groups = await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List");
+		groups = await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List?group=thir");
 	}
 
 	protected override async Task OnInitializedAsync()
