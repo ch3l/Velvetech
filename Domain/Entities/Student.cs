@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Linq.Expressions;
 using Velvetech.Domain.Common;
 
 namespace Velvetech.Domain.Entities
@@ -11,7 +11,6 @@ namespace Velvetech.Domain.Entities
 		public string Firstname { get; private set; }
 		public string Middlename { get; private set; }
 		public string Lastname { get; private set; }
-		public string FullName => Firstname + " " + Middlename + " " + Lastname;
 		
 		public string Callsign { get; private set; }
 

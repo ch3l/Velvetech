@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Velvetech.Domain.Common;
+
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Presentation.Shared;
@@ -38,37 +34,47 @@ namespace Velvetech.Presentation.Server.Controllers
 			string callsign,
 			string group)
 		{
-			if (sex is null &&
-			    fullname is null &&
-			    callsign is null &&
-			    group is null)
-			{
-				return source;
-			}
+			Expression<Func<Student, bool>> ignoreExpression = (student) => true;
+			
+			Expression<Func<Student, bool>> sexFilter = 
+				sex is null 
+					? ignoreExpression
+					:(student) => student.Sex.Name.Equals(sex);
+
+			Expression<Func<Student, bool>> fullNameFilter = 
+				fullname is null
+					? ignoreExpression
+					: (student) => (student.Firstname + " " + student.Middlename + " " + student.Lastname).Contains(fullname);
+
+			Expression<Func<Student, bool>> callsignFilter =
+				callsign is null
+					? ignoreExpression
+					: (student) => student.Callsign.Contains(callsign);
+
+			Expression<Func<Student, bool>> groupFilter =
+				group is null
+					? ignoreExpression
+					: (student) => student.Grouping.Any(grouping => grouping.Group.Name.Contains(group));
 
 			return source
-				.Where(student =>
-					(sex == null || student.Sex.Name.Equals(sex)) &&
-					(fullname == null || student.FullName.Contains(fullname)) &&
-					(callsign == null || student.FullName.Contains(callsign)) &&
-					(group == null || student.FullName.Contains(group)));
+				.Where(sexFilter)
+				.Where(fullNameFilter)
+				.Where(callsignFilter)
+				.Where(groupFilter);
 		}
 
 		// GET: api/Test/Students
 		[HttpGet]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync(
-			string sex, 
-			string fullname, 
-			string callsign, 
-			string group,  
-			int pageSize = 10, 
+			string sex,
+			string fullname,
+			string callsign,
+			string group,
+			int pageSize = 10,
 			int pageIndex = 0)
 		{
 			if (pageSize < 10)
 				pageSize = 10;
-
-			if (pageIndex < 0)
-				pageIndex = 0;
 
 			var totalItems = await _studentCrudService.CountAsync(x => FilterFunc(x, sex, fullname, callsign, group));
 			var lastPageIndex = totalItems / pageSize;
@@ -79,9 +85,12 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex > lastPageIndex)
 				pageIndex = lastPageIndex;
 
+			if (pageIndex < 0)
+				pageIndex = 0;
+
 			var items = await _studentCrudService.GetRangeAsync(
-					pageSize * pageIndex, 
-					pageSize, 
+					pageSize * pageIndex,
+					pageSize,
 					x => FilterFunc(x, sex, fullname, callsign, group))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();

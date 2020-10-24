@@ -117,12 +117,12 @@ else
 
 	async Task LoadPage(int size, int index)
 	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List?pagesize={size}&pageindex={index}");
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List?pageSize={size}&pageindex={index}");
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexlist");
+		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
 		await LoadFirstPage();
 	}
 }
