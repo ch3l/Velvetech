@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
+using LinqKit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Presentation.Shared;
@@ -57,10 +57,10 @@ namespace Velvetech.Presentation.Server.Controllers
 					: (student) => student.Grouping.Any(grouping => grouping.Group.Name.Contains(group));
 
 			return source
-				.Where(sexFilter)
-				.Where(fullNameFilter)
-				.Where(callsignFilter)
-				.Where(groupFilter);
+				.Where(sexFilter
+					.And(fullNameFilter)
+					.And(callsignFilter)
+					.And(groupFilter));
 		}
 
 		// GET: api/Test/Students
@@ -76,7 +76,8 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageSize < 10)
 				pageSize = 10;
 
-			var totalItems = await _studentCrudService.CountAsync(x => FilterFunc(x, sex, fullname, callsign, group));
+			var filter = new FilterBase<Student>(x => FilterFunc(x, sex, fullname, callsign, group));
+			var totalItems = await _studentCrudService.CountAsync(filter);
 			var lastPageIndex = totalItems / pageSize;
 
 			if (totalItems == pageSize * lastPageIndex)
@@ -88,10 +89,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex < 0)
 				pageIndex = 0;
 
-			var items = await _studentCrudService.GetRangeAsync(
-					pageSize * pageIndex,
-					pageSize,
-					x => FilterFunc(x, sex, fullname, callsign, group))
+			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize, filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 

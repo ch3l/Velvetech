@@ -11,16 +11,16 @@ namespace Velvetech.Domain.Services.Interfaces
 	public interface ICrudService<TEntity, in TKey> where	TEntity : Entity<TKey>
 	{
 		public IAsyncEnumerable<TEntity> GetAllAsync();
-		public IAsyncEnumerable<TEntity> GetAllAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter);
 		
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter);
 		
 		public Task<TEntity> GetByIdAsync(Guid id);
-		public Task<TEntity> GetByIdAsync(Guid id, Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		public Task<TEntity> GetByIdAsync(Guid id, IFilter<TEntity> filter);
 
 		public Task<int> CountAsync();
-		public Task<int> CountAsync(Func<IQueryable<TEntity>, IQueryable<TEntity>> filterFunc);
+		public Task<int> CountAsync(IFilter<TEntity> filter);
 
 		public Task<TEntity> AddAsync(TEntity entity);
 		public Task UpdateAsync(TEntity entity);

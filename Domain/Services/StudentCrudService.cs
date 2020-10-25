@@ -21,29 +21,29 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Student> GetAllAsync() =>
 			_studentRepository.GetAllAsync();
 
-		public IAsyncEnumerable<Student> GetAllAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
-			_studentRepository.GetAllAsync(filterFunc);
+		public IAsyncEnumerable<Student> GetAllAsync(IFilter<Student> filter) => 
+			_studentRepository.GetAllAsync(filter);
 
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
 			_studentRepository.GetRangeAsync( skip, take);
 
-		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
-			_studentRepository.GetRangeAsync(skip, take, filterFunc);
+		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter) => 
+			_studentRepository.GetRangeAsync(skip, take, filter);
 
 
 		public async Task<Student> GetByIdAsync(Guid id) =>
 			await _studentRepository.GetByIdAsync(id);
 
-		public async Task<Student> GetByIdAsync(Guid id, Func<IQueryable<Student>, IQueryable<Student>> filterFunc) => 
-			await _studentRepository.GetByIdAsync(id, filterFunc);
+		public async Task<Student> GetByIdAsync(Guid id, IFilter<Student> filter) => 
+			await _studentRepository.GetByIdAsync(id, filter);
 
 
 		public async Task<int> CountAsync() =>
 			await _studentRepository.CountAsync();
 
-		public async Task<int> CountAsync(Func<IQueryable<Student>, IQueryable<Student>> filterFunc) =>
-			await _studentRepository.CountAsync(filterFunc);
+		public async Task<int> CountAsync(IFilter<Student> filter) =>
+			await _studentRepository.CountAsync(filter);
 
 
 		public async Task<Student> AddAsync(Student entity) =>

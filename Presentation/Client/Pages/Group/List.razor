@@ -66,6 +66,8 @@ else
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
+	string group="";
+
 	void Add()
 	{
 		if (AddComponent is null)
@@ -91,8 +93,9 @@ else
 
 	async Task LoadList()
 	{
-		groups = await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List");
-		//groups = await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List?group=thir");
+		groups = await Http.GetFromJsonAsync<GroupDto[]>(
+			$"api/Groups/List" +
+		    (string.IsNullOrEmpty(group) ? string.Empty : $"?group={group}"));
 	}
 
 	protected override async Task OnInitializedAsync()

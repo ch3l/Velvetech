@@ -35,8 +35,8 @@ namespace Velvetech.Presentation.Server.Controllers
 					.ToArrayAsync();
 			}
 
-			return await _groupCrudService.GetAllAsync(groups=> groups
-					.Where(g=> g.Name.Contains(group)))
+			var filter = new FilterBase<Group>(groups => groups.Where(g => g.Name.Contains(group)));
+			return await _groupCrudService.GetAllAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 		}

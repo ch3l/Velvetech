@@ -23,29 +23,29 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Group> GetAllAsync() =>
 			_groupRepository.GetAllAsync();
 
-		public IAsyncEnumerable<Group> GetAllAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
-			_groupRepository.GetAllAsync(filterFunc);
+		public IAsyncEnumerable<Group> GetAllAsync(IFilter<Group> filter) => 
+			_groupRepository.GetAllAsync(filter);
 
 
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take) =>
 			_groupRepository.GetRangeAsync(skip, take);
 
-		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
-			_groupRepository.GetRangeAsync(skip, take, filterFunc);
+		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, IFilter<Group> filter) => 
+			_groupRepository.GetRangeAsync(skip, take, filter);
 
 
 		public async Task<Group> GetByIdAsync(Guid id) =>
 			await _groupRepository.GetByIdAsync(id);
 
-		public async Task<Group> GetByIdAsync(Guid id, Func<IQueryable<Group>, IQueryable<Group>> filterFunc) => 
-			await _groupRepository.GetByIdAsync(id, filterFunc);
+		public async Task<Group> GetByIdAsync(Guid id, IFilter<Group> filter) => 
+			await _groupRepository.GetByIdAsync(id, filter);
 
 		
 		public async Task<int> CountAsync() =>
 			await _groupRepository.CountAsync();
 
-		public async Task<int> CountAsync(Func<IQueryable<Group>, IQueryable<Group>> filterFunc) =>
-			await _groupRepository.CountAsync(filterFunc);
+		public async Task<int> CountAsync(IFilter<Group> filter) =>
+			await _groupRepository.CountAsync(filter);
 
 
 		public async Task<Group> AddAsync(Group entity) =>

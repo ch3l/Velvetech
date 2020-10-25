@@ -36,16 +36,16 @@ else
 			{
 				var i = counter++;
 
-			<tr class="">
-				<td>@student.Firstname</td>
-				<td>@student.Callsign</td>
-				<td>@student.Sex.Name</td>
-				<td>@(string.Join(", ", student.Groups))</td>
-				<td>
-					<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-					<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
-				</td>
-			</tr>
+				<tr class="">
+					<td>@student.Firstname</td>
+					<td>@student.Callsign</td>
+					<td>@student.Sex.Name</td>
+					<td>@(string.Join(", ", student.Groups))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
 			}
 		</tbody>
 	</table>
@@ -54,8 +54,8 @@ else
 	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
 }
 
-<Velvetech.Presentation.Client.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update"/>
-<Velvetech.Presentation.Client.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update"/>
+<Velvetech.Presentation.Client.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update" />
+<Velvetech.Presentation.Client.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update" />
 
 @code
 {
@@ -67,6 +67,8 @@ else
 
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
+
+	string sex="", fullname="", callsign="", group="";
 
 	void Add()
 	{
@@ -93,7 +95,7 @@ else
 
 	async Task Update()
 	{
-		await LoadPage(page.PageSize, page.PageIndex);;
+		await LoadPage(page.PageSize, page.PageIndex); ;
 	}
 
 	async Task NextPage()
@@ -110,19 +112,21 @@ else
 			await LoadPage(10, page.PageIndex - 1);
 	}
 
-	async Task LoadFirstPage()
+	async Task LoadPage(int size = 0, int index = 0)
 	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List");
-	}
-
-	async Task LoadPage(int size, int index)
-	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List?pageSize={size}&pageindex={index}");
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>(
+			$"api/Students/List" +
+			$"?pageSize={size}" +
+			(index == 0 ? string.Empty : $"&pageindex={index}") +
+			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
+			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
+			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
+			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}" ));
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
-		await LoadFirstPage();
+		await LoadPage();
 	}
 }
