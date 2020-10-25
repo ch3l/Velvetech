@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared.Dtos;
 using Velvetech.Presentation.Shared.Requests;
 
@@ -16,7 +17,7 @@ namespace Velvetech.Presentation.Server.Controllers
 	public class GroupsController : ControllerBase
 	{
 		private readonly ICrudService<Group, Guid> _groupCrudService;
-		private IGroupingService _groupingService;
+		private readonly IGroupingService _groupingService;
 
 		public GroupsController(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
 		{
@@ -35,7 +36,7 @@ namespace Velvetech.Presentation.Server.Controllers
 					.ToArrayAsync();
 			}
 
-			var filter = new FilterBase<Group>(groups => groups.Where(g => g.Name.Contains(group)));
+			var filter = new FilterBase<Group, string>(new GroupFilter(group));
 			return await _groupCrudService.GetAllAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();

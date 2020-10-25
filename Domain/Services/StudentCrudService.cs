@@ -26,7 +26,7 @@ namespace Velvetech.Domain.Services
 
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
-			_studentRepository.GetRangeAsync( skip, take);
+			_studentRepository.GetRangeAsync(skip, take);
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter) => 
 			_studentRepository.GetRangeAsync(skip, take, filter);

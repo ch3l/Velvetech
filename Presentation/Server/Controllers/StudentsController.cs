@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using LinqKit;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared;
 using Velvetech.Presentation.Shared.Dtos;
+using Velvetech.Presentation.Shared.Requests;
 
 namespace Velvetech.Presentation.Server.Controllers
 {
@@ -27,56 +29,17 @@ namespace Velvetech.Presentation.Server.Controllers
 			_sexList = sexList;
 		}
 
-		IQueryable<Student> FilterFunc(
-			IQueryable<Student> source,
-			string sex,
-			string fullname,
-			string callsign,
-			string group)
-		{
-			Expression<Func<Student, bool>> ignoreExpression = (student) => true;
-			
-			Expression<Func<Student, bool>> sexFilter = 
-				sex is null 
-					? ignoreExpression
-					:(student) => student.Sex.Name.Equals(sex);
-
-			Expression<Func<Student, bool>> fullNameFilter = 
-				fullname is null
-					? ignoreExpression
-					: (student) => (student.Firstname + " " + student.Middlename + " " + student.Lastname).Contains(fullname);
-
-			Expression<Func<Student, bool>> callsignFilter =
-				callsign is null
-					? ignoreExpression
-					: (student) => student.Callsign.Contains(callsign);
-
-			Expression<Func<Student, bool>> groupFilter =
-				group is null
-					? ignoreExpression
-					: (student) => student.Grouping.Any(grouping => grouping.Group.Name.Contains(group));
-
-			return source
-				.Where(sexFilter
-					.And(fullNameFilter)
-					.And(callsignFilter)
-					.And(groupFilter));
-		}
-
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> ListAsync(
-			string sex,
-			string fullname,
-			string callsign,
-			string group,
-			int pageSize = 10,
-			int pageIndex = 0)
+		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilteredPageRequest request)
 		{
+			var pageSize = request.PageSize;
+			var pageIndex = request.PageIndex;
+
 			if (pageSize < 10)
 				pageSize = 10;
 
-			var filter = new FilterBase<Student>(x => FilterFunc(x, sex, fullname, callsign, group));
+			var filter = new FilterBase<Student, StudentFilteredPageRequest>(new StudentFilter(request));
 			var totalItems = await _studentCrudService.CountAsync(filter);
 			var lastPageIndex = totalItems / pageSize;
 
