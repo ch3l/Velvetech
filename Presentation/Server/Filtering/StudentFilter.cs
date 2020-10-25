@@ -9,9 +9,10 @@ using Velvetech.Presentation.Shared.Requests;
 
 namespace Velvetech.Presentation.Server.Filtering
 {
-	public class StudentFilter : FilterExpressions<Student, StudentFilteredPageRequest>
+	public class StudentFilter : FilterBase<Student, StudentFilteredPageRequest>
 	{
-		public StudentFilter(StudentFilteredPageRequest request) : base(request)
+		public StudentFilter(StudentFilteredPageRequest request) 
+			: base(request)
 		{
 		}
 

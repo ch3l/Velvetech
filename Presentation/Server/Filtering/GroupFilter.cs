@@ -9,7 +9,7 @@ using Velvetech.Presentation.Shared.Requests;
 
 namespace Velvetech.Presentation.Server.Filtering
 {
-	public class GroupFilter : FilterExpressions<Group, string>
+	public class GroupFilter : FilterBase<Group, string>
 	{
 		public GroupFilter(string groupName) : base(groupName)
 		{

@@ -63,7 +63,7 @@ namespace Velvetech.Data
 
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
-			GetQueryableEntity().AsAsyncEnumerable().Skip(skip).Take(take).AsAsyncEnumerable();
+			GetQueryableEntity().Skip(skip).Take(take).AsAsyncEnumerable();
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filterFunc) => 
 			filterFunc.Filter(GetQueryableEntity()).Skip(skip).Take(take).AsAsyncEnumerable();

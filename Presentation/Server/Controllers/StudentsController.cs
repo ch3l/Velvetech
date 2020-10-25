@@ -39,7 +39,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageSize < 10)
 				pageSize = 10;
 
-			var filter = new FilterBase<Student, StudentFilteredPageRequest>(new StudentFilter(request));
+			var filter = new StudentFilter(request);
 			var totalItems = await _studentCrudService.CountAsync(filter);
 			var lastPageIndex = totalItems / pageSize;
 

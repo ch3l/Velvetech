@@ -29,14 +29,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<GroupDto[]> ListAsync(string group)
 		{
-			if (group is null)
-			{
-				return await _groupCrudService.GetAllAsync()
-					.Select(Extensions.ToDto)
-					.ToArrayAsync();
-			}
-
-			var filter = new FilterBase<Group, string>(new GroupFilter(group));
+			var filter = new GroupFilter(group);
 			return await _groupCrudService.GetAllAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
