@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Velvetech.Presentation.Shared.Requests
+﻿namespace Velvetech.Presentation.Shared.Requests
 {
 	public class StudentFilteredPageRequest
 	{	   
