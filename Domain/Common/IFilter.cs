@@ -13,22 +13,27 @@ namespace Velvetech.Domain.Common
 		Func<IQueryable<T>, IQueryable<T>> Filter { get; }
 	}
 
+	public abstract class Specification<T> : IFilter<T>
+	{
+		public Func<IQueryable<T>, IQueryable<T>> Filter { get; }
+	}
+
 	public abstract class FilterBase<TEntity, TRequest> : IFilter<TEntity>, IEnumerable<Expression<Func<TEntity, bool>>>
 	{
+		public abstract IEnumerator<Expression<Func<TEntity, bool>>> GetEnumerator();
+
+		protected readonly TRequest Request;
+		
 		public Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter =>
 			(source) => source.Where(StackExpressions());
 
-		protected readonly TRequest Request;
+		IEnumerator IEnumerable.GetEnumerator() =>
+			GetEnumerator();
 
 		protected FilterBase(TRequest request)
 		{
 			Request = request;
 		}
-
-		public abstract IEnumerator<Expression<Func<TEntity, bool>>> GetEnumerator();
-
-		IEnumerator IEnumerable.GetEnumerator() =>
-			GetEnumerator();
 
 		public Expression<Func<TEntity, bool>> StackExpressions()
 		{
@@ -38,4 +43,27 @@ namespace Velvetech.Domain.Common
 			return (source) => true;
 		}
 	}
+
+	public abstract class Expressions<TEntity, TRequest> : IEnumerable<Expression<Func<TEntity, bool>>>
+	{
+		public abstract IEnumerator<Expression<Func<TEntity, bool>>> GetEnumerator();
+
+		protected readonly TRequest Request;
+
+		IEnumerator IEnumerable.GetEnumerator() =>
+			GetEnumerator();
+
+		protected Expressions(TRequest request)
+		{
+			Request = request;
+		}
+
+		public Expression<Func<TEntity, bool>> StackExpressions()
+		{
+			if (this.Any())
+				return this.Aggregate((current, next) => current.And(next));
+
+			return (source) => true;
+		}  
+	}	   
 }

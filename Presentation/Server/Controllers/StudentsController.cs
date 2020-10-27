@@ -33,8 +33,8 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilteredPageRequest request)
 		{
-			var pageSize = request.PageSize;
-			var pageIndex = request.PageIndex;
+			var pageSize = request.PageSize ?? 10;
+			var pageIndex = request.PageIndex ?? 0;
 
 			if (pageSize < 10)
 				pageSize = 10;

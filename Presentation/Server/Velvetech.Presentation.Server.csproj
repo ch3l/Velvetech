@@ -35,5 +35,9 @@
     <ProjectReference Include="..\Shared\Velvetech.Presentation.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Specification\" />
+  </ItemGroup>
+
 
 </Project>

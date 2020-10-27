@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 
@@ -23,13 +24,12 @@ namespace Velvetech.Data
 			_dbContext = dbContext;
 		}
 
-		private DbSet<TEntity> GetTargetEntity() =>
+		private IQueryable<TEntity> GetEntity() =>
 			_dbContext.Set<TEntity>();
 
-		private IQueryable<TEntity> GetQueryableEntity()
+		private IQueryable<TEntity> GetQueryableEntity(IQueryable<TEntity> source)
 		{
-			var entity = GetEntity();
-			return entity switch
+			return source switch
 			{
 				IQueryable<Student> student => student
 					.Include(s => s.Sex) 
@@ -42,31 +42,28 @@ namespace Velvetech.Data
 						.ThenInclude(g => g.Student)
 					.Cast<TEntity>(),
 
-				_ => entity
+				_ => source 
 			};
 		} 		
-
-		public IQueryable<TEntity> GetEntity() => 
-			GetTargetEntity();
-
+	
 		public async Task<TEntity> GetByIdAsync(TKey id) => 
-			await GetQueryableEntity().FirstOrDefaultAsync(x => x.Id.Equals(id));
+			await GetQueryableEntity(GetEntity()).FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-		public async Task<TEntity> GetByIdAsync(TKey id, IFilter<TEntity> filterFunc) =>
-			await filterFunc.Filter(GetQueryableEntity()).FirstOrDefaultAsync(x => x.Id.Equals(id));
+		public async Task<TEntity> GetByIdAsync(TKey id, IFilter<TEntity> filter) =>
+			await filter.Filter(GetQueryableEntity(GetEntity())).FirstOrDefaultAsync(x => x.Id.Equals(id));
 
 
 		public IAsyncEnumerable<TEntity> GetAllAsync() => 
-			GetQueryableEntity().AsAsyncEnumerable();
-		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filterFunc) =>
-			filterFunc.Filter(GetQueryableEntity()).AsAsyncEnumerable();
+			GetQueryableEntity(GetEntity()).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter) =>
+			filter.Filter(GetQueryableEntity(GetEntity())).AsAsyncEnumerable();
 
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
-			GetQueryableEntity().Skip(skip).Take(take).AsAsyncEnumerable();
+			GetQueryableEntity(GetEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
 
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filterFunc) => 
-			filterFunc.Filter(GetQueryableEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter) => 
+			filter.Filter(GetQueryableEntity(GetEntity())).Skip(skip).Take(take).AsAsyncEnumerable();
 
 		
 		public async Task<TEntity> AddAsync(TEntity entity)
@@ -80,13 +77,12 @@ namespace Velvetech.Data
 		public async Task UpdateAsync(TEntity entity)
 		{
 			_dbContext.Entry(entity).State = EntityState.Modified;
-
 			await _dbContext.SaveChangesAsync();			
 		}
 
 		public async Task RemoveAsync(TEntity entity)
 		{
-			var result = _dbContext.Set<TEntity>().Remove(entity);
+			_dbContext.Set<TEntity>().Remove(entity);
 			await _dbContext.SaveChangesAsync();
 		}
 
@@ -97,9 +93,9 @@ namespace Velvetech.Data
 		}
 
 		public async Task<int> CountAsync() => 
-			await GetTargetEntity().AsAsyncEnumerable().CountAsync();
+			await GetEntity().CountAsync();
 
-		public async Task<int> CountAsync(IFilter<TEntity> filterFunc) =>
-			await filterFunc.Filter(GetTargetEntity()).AsAsyncEnumerable().CountAsync();
+		public async Task<int> CountAsync(IFilter<TEntity> filter) =>
+			await filter.Filter(GetEntity()).CountAsync();
 	}
 }

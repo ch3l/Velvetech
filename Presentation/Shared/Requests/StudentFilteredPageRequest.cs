@@ -2,16 +2,16 @@
 {
 	public class StudentFilteredPageRequest
 	{
-		private int _pageSize;
-		private int _pageIndex;
+		private int? _pageSize;
+		private int? _pageIndex;
 
-		public int PageSize
+		public int? PageSize
 		{
 			get => _pageSize;
 			set => _pageSize = value < 10 ? 10 : value;
 		}
 
-		public int PageIndex
+		public int? PageIndex
 		{
 			get => _pageIndex;
 			set => _pageIndex = value < 0 ? 0 : value;
