@@ -12,12 +12,7 @@ namespace Velvetech.Domain.Common
 	{
 		Func<IQueryable<T>, IQueryable<T>> Filter { get; }
 	}
-
-	public abstract class Specification<T> : IFilter<T>
-	{
-		public Func<IQueryable<T>, IQueryable<T>> Filter { get; }
-	}
-
+			  
 	public abstract class FilterBase<TEntity, TRequest> : IFilter<TEntity>, IEnumerable<Expression<Func<TEntity, bool>>>
 	{
 		public abstract IEnumerator<Expression<Func<TEntity, bool>>> GetEnumerator();
