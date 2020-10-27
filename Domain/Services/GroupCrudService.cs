@@ -8,6 +8,7 @@ using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Specifications;
 
 namespace Velvetech.Domain.Services
 {
@@ -21,24 +22,24 @@ namespace Velvetech.Domain.Services
 		}
 
 		public IAsyncEnumerable<Group> GetAllAsync() =>
-			_groupRepository.GetAllAsync();
+			_groupRepository.GetAllAsync(new GroupSpecification());
 
 		public IAsyncEnumerable<Group> GetAllAsync(IFilter<Group> filter, ISpecification<Group> specification) => 
 			_groupRepository.GetAllAsync(filter, specification);
 
 
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take) =>
-			_groupRepository.GetRangeAsync(skip, take);
+			_groupRepository.GetRangeAsync(skip, take, new GroupSpecification());
 
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, IFilter<Group> filter,
 			ISpecification<Group> specification) => 
 			_groupRepository.GetRangeAsync(skip, take, filter, specification);
 
 		public async Task<Group> GetByIdAsync(Guid id) =>
-			await _groupRepository.GetByIdAsync(id);
+			await _groupRepository.FirstOrDefault(id, new GroupSpecification());
 
 		public async Task<Group> GetByIdAsync(Guid id, IFilter<Group> filter) => 
-			await _groupRepository.GetByIdAsync(id, filter);
+			await _groupRepository.FirstOrDefault(id, filter, new GroupSpecification());
 
 		
 		public async Task<int> CountAsync() =>
@@ -56,7 +57,7 @@ namespace Velvetech.Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var group = await _groupRepository.GetByIdAsync(id);
+			var group = await _groupRepository.FirstOrDefault(id, new GroupSpecification());
 			if (group is null)
 				return;
 

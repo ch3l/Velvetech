@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Specifications;
 
 namespace Velvetech.Domain.Services
 {
@@ -18,7 +19,7 @@ namespace Velvetech.Domain.Services
 
 		public async Task<bool> IncludeStudentAsync(Guid studentId, Guid groupId)
 		{
-			var group = await _groupRepository.GetByIdAsync(groupId);
+			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
 
 			var included = group.IncludeStudent(studentId);
 			await _groupRepository.UpdateAsync(group);
@@ -28,7 +29,7 @@ namespace Velvetech.Domain.Services
 
 		public async Task<bool> ExcludeStudentAsync(Guid studentId, Guid groupId)
 		{
-			var group = await _groupRepository.GetByIdAsync(groupId);
+			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
 
 			var included = group.ExcludeStudent(studentId);
 			await _groupRepository.UpdateAsync(group);

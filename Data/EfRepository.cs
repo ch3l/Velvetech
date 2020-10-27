@@ -26,49 +26,30 @@ namespace Velvetech.Data
 			_dbContext = dbContext;
 		}
 
-		private IQueryable<TEntity> GetEntity() =>
-			_dbContext.Set<TEntity>();
+		public async Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification) => 
+			await FromSpecification(specification).FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-		private IQueryable<TEntity> GetQueryableEntity(IQueryable<TEntity> source)
-		{
-			return source switch
-			{
-				IQueryable<Student> student => student
-					.Include(s => s.Sex) 
-					.Include(s => s.Grouping)
-						.ThenInclude(g => g.Group)
-					.Cast<TEntity>(),
-
-				IQueryable<Group> group => group
-					.Include(s => s.Grouping)
-						.ThenInclude(g => g.Student)
-					.Cast<TEntity>(),
-
-				_ => source 
-			};
-		} 		
-	
-		public async Task<TEntity> GetByIdAsync(TKey id) => 
-			await GetQueryableEntity(GetEntity()).FirstOrDefaultAsync(x => x.Id.Equals(id));
-
-		public async Task<TEntity> GetByIdAsync(TKey id, IFilter<TEntity> filter) =>
-			await filter.Filter(GetQueryableEntity(GetEntity())).FirstOrDefaultAsync(x => x.Id.Equals(id));
+		public async Task<TEntity> FirstOrDefault(TKey id, IFilter<TEntity> filter, ISpecification<TEntity> specification) =>
+			await filter.Filter(FromSpecification(specification)).FirstOrDefaultAsync(x => x.Id.Equals(id));
 
 
-		public IAsyncEnumerable<TEntity> GetAllAsync() => 
-			GetQueryableEntity(GetEntity()).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetAllAsync() =>
+			GetEntity().AsAsyncEnumerable();
+
+		public IAsyncEnumerable<TEntity> GetAllAsync(ISpecification<TEntity> specification) => 
+			FromSpecification(specification).AsAsyncEnumerable();
+
 		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter, ISpecification<TEntity> specification) =>
-			filter.Filter(ApplySpecification(specification)).AsAsyncEnumerable();
+			filter.Filter(FromSpecification(specification)).AsAsyncEnumerable();
 
 
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
-			GetQueryableEntity(GetEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, ISpecification<TEntity> specification) => 
+			FromSpecification(specification).Skip(skip).Take(take).AsAsyncEnumerable();
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter, 
 			ISpecification<TEntity> specification) => 
-			filter.Filter(ApplySpecification(specification)).Skip(skip).Take(take).AsAsyncEnumerable();
+			filter.Filter(FromSpecification(specification)).Skip(skip).Take(take).AsAsyncEnumerable();
 
-		
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
 			await _dbContext.Set<TEntity>().AddAsync(entity);
@@ -96,15 +77,15 @@ namespace Velvetech.Data
 		}
 
 		public async Task<int> CountAsync() => 
-			await GetEntity().CountAsync();
+			await GetEntity().AsQueryable().CountAsync();
 
 		public async Task<int> CountAsync(IFilter<TEntity> filter) =>
 			await filter.Filter(GetEntity()).CountAsync();
 
-		private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
-		{
-			var evaluator = new SpecificationEvaluator<TEntity>();
-			return evaluator.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), specification);
-		}
+		private DbSet<TEntity> GetEntity() =>
+			_dbContext.Set<TEntity>();
+
+		private IQueryable<TEntity> FromSpecification(ISpecification<TEntity> specification) =>
+			new SpecificationEvaluator<TEntity>().GetQuery(GetEntity().AsQueryable(), specification);
 	}
 }

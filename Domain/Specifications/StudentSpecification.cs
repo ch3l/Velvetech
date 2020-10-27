@@ -13,7 +13,7 @@ namespace Velvetech.Domain.Specifications
 			Query.Include(s => s.Sex);
 			Query.Include(s => s.Grouping)
 				.ThenInclude(g => g.Group);
-			Query.Where(s => s.Grouping.Count > 0);
+			//Query.Where(s => s.Grouping.Count > 0);
 		}
 	}
 	

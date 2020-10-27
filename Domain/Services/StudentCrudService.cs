@@ -6,6 +6,7 @@ using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Specifications;
 
 namespace Velvetech.Domain.Services
 {
@@ -19,14 +20,14 @@ namespace Velvetech.Domain.Services
 		}
 
 		public IAsyncEnumerable<Student> GetAllAsync() =>
-			_studentRepository.GetAllAsync();
+			_studentRepository.GetAllAsync(new StudentSpecification());
 
 		public IAsyncEnumerable<Student> GetAllAsync(IFilter<Student> filter, ISpecification<Student> specification) => 
 			_studentRepository.GetAllAsync(filter, specification);
 
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
-			_studentRepository.GetRangeAsync(skip, take);
+			_studentRepository.GetRangeAsync(skip, take, new StudentSpecification());
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter,
 			ISpecification<Student> specification) => 
@@ -34,10 +35,10 @@ namespace Velvetech.Domain.Services
 
 
 		public async Task<Student> GetByIdAsync(Guid id) =>
-			await _studentRepository.GetByIdAsync(id);
+			await _studentRepository.FirstOrDefault(id, new StudentSpecification());
 
 		public async Task<Student> GetByIdAsync(Guid id, IFilter<Student> filter) => 
-			await _studentRepository.GetByIdAsync(id, filter);
+			await _studentRepository.FirstOrDefault(id, new StudentSpecification());
 
 
 		public async Task<int> CountAsync() =>
@@ -55,7 +56,7 @@ namespace Velvetech.Domain.Services
 
 		public async Task DeleteAsync(Guid id)
 		{
-			var student= await _studentRepository.GetByIdAsync(id);
+			var student= await _studentRepository.FirstOrDefault(id, new StudentSpecification());
 			if (student is null)
 				return;
 
