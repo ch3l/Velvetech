@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Ardalis.Specification;
 
 namespace Velvetech.Domain.Common
 {
@@ -12,10 +13,10 @@ namespace Velvetech.Domain.Common
 		Task<TEntity> GetByIdAsync(TKey id, IFilter<TEntity> filterFunc);
 
 		IAsyncEnumerable<TEntity> GetAllAsync();
-		IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filterFunc);
+		IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filterFunc, ISpecification<TEntity> specification);
 
 		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take);
-		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filterFunc);
+		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filterFunc, ISpecification<TEntity> specification);
 
 		Task<int> CountAsync();
 		Task<int> CountAsync(IFilter<TEntity> filterFunc);

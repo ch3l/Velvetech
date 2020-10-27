@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-
+using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
@@ -23,16 +23,16 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Group> GetAllAsync() =>
 			_groupRepository.GetAllAsync();
 
-		public IAsyncEnumerable<Group> GetAllAsync(IFilter<Group> filter) => 
-			_groupRepository.GetAllAsync(filter);
+		public IAsyncEnumerable<Group> GetAllAsync(IFilter<Group> filter, ISpecification<Group> specification) => 
+			_groupRepository.GetAllAsync(filter, specification);
 
 
 		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take) =>
 			_groupRepository.GetRangeAsync(skip, take);
 
-		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, IFilter<Group> filter) => 
-			_groupRepository.GetRangeAsync(skip, take, filter);
-
+		public IAsyncEnumerable<Group> GetRangeAsync(int skip, int take, IFilter<Group> filter,
+			ISpecification<Group> specification) => 
+			_groupRepository.GetRangeAsync(skip, take, filter, specification);
 
 		public async Task<Group> GetByIdAsync(Guid id) =>
 			await _groupRepository.GetByIdAsync(id);

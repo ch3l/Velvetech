@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared.Dtos;
 using Velvetech.Presentation.Shared.Requests;
@@ -30,7 +31,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		public async Task<GroupDto[]> ListAsync(string group)
 		{
 			var filter = new GroupFilter(group);
-			return await _groupCrudService.GetAllAsync(filter)
+			return await _groupCrudService.GetAllAsync(filter, new GroupSpecification())
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 		}

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared;
 using Velvetech.Presentation.Shared.Dtos;
@@ -52,7 +53,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex < 0)
 				pageIndex = 0;
 
-			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize, filter)
+			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize, filter, new StudentSpecification())
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 

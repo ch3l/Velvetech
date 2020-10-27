@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
@@ -21,15 +21,16 @@ namespace Velvetech.Domain.Services
 		public IAsyncEnumerable<Student> GetAllAsync() =>
 			_studentRepository.GetAllAsync();
 
-		public IAsyncEnumerable<Student> GetAllAsync(IFilter<Student> filter) => 
-			_studentRepository.GetAllAsync(filter);
+		public IAsyncEnumerable<Student> GetAllAsync(IFilter<Student> filter, ISpecification<Student> specification) => 
+			_studentRepository.GetAllAsync(filter, specification);
 
 
 		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
 			_studentRepository.GetRangeAsync(skip, take);
 
-		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter) => 
-			_studentRepository.GetRangeAsync(skip, take, filter);
+		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter,
+			ISpecification<Student> specification) => 
+			_studentRepository.GetRangeAsync(skip, take, filter, specification);
 
 
 		public async Task<Student> GetByIdAsync(Guid id) =>

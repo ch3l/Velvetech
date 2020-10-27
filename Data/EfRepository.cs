@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Velvetech.Domain.Common;
@@ -55,15 +57,16 @@ namespace Velvetech.Data
 
 		public IAsyncEnumerable<TEntity> GetAllAsync() => 
 			GetQueryableEntity(GetEntity()).AsAsyncEnumerable();
-		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter) =>
-			filter.Filter(GetQueryableEntity(GetEntity())).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter, ISpecification<TEntity> specification) =>
+			filter.Filter(ApplySpecification(specification)).AsAsyncEnumerable();
 
 
 		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take) => 
 			GetQueryableEntity(GetEntity()).Skip(skip).Take(take).AsAsyncEnumerable();
 
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter) => 
-			filter.Filter(GetQueryableEntity(GetEntity())).Skip(skip).Take(take).AsAsyncEnumerable();
+		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter, 
+			ISpecification<TEntity> specification) => 
+			filter.Filter(ApplySpecification(specification)).Skip(skip).Take(take).AsAsyncEnumerable();
 
 		
 		public async Task<TEntity> AddAsync(TEntity entity)
@@ -97,5 +100,11 @@ namespace Velvetech.Data
 
 		public async Task<int> CountAsync(IFilter<TEntity> filter) =>
 			await filter.Filter(GetEntity()).CountAsync();
+
+		private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+		{
+			var evaluator = new SpecificationEvaluator<TEntity>();
+			return evaluator.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), specification);
+		}
 	}
 }
