@@ -5,12 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LinqKit" Version="1.1.19" />
-    <PackageReference Include="System.Linq.Async" Version="4.1.1" />
+    <Compile Remove="Filtering\**" />
+    <EmbeddedResource Remove="Filtering\**" />
+    <EntityDeploy Remove="Filtering\**" />
+    <None Remove="Filtering\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Filtering\" />
+    <PackageReference Include="LinqKit" Version="1.1.19" />
+    <PackageReference Include="System.Linq.Async" Version="4.1.1" />
   </ItemGroup>
 
 </Project>

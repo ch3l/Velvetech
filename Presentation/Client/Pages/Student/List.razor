@@ -115,9 +115,9 @@ else
 	async Task LoadPage(int size = 0, int index = 0)
 	{
 		page = await Http.GetFromJsonAsync<Page<StudentDto>>(
-			$"api/Students/List" +
-			//$"?pageSize={size}" +
-			($"?pageindex={index}") +
+			"api/Students/List" +
+			$"?pageSize={size}" +
+			(index == 0 ? string.Empty : $"&pageindex={index}") +
 			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
 			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
 			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
