@@ -11,11 +11,9 @@
 <h1>Students</h1>
 <h1>@title</h1>
 
-<div class="container">
-	<button class="btn btn-primary" @onclick="Add">Add student</button>
-	<br />
-	<br />
-</div>
+<button class="btn btn-primary" @onclick="Add">Add student</button>
+<br />
+<br />
 
 @if (page == null)
 {
@@ -23,79 +21,78 @@
 }
 else
 {
-	<div class="container">
-		@*<label class="control-label">Student search:</label>
-			<input type="text"
-				   class="form-control"
-				   @bind-value="SearchString"
-				   @bind-value:event="oninput"
-				   @onkeyup="@StartSearchTimer" />
-			<br />*@
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Full name</th>
-					<th>Sex</th>
-					<th>Callsign</th>
-					<th>Groups</th>
-					<th></th>
+	@*<label class="control-label">Student search:</label>
+		<input type="text"
+			   class="form-control"
+			   @bind-value="SearchString"
+			   @bind-value:event="oninput"
+			   @onkeyup="@StartSearchTimer" />
+		<br />*@
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Full name</th>
+				<th>Sex</th>
+				<th>Callsign</th>
+				<th>Groups</th>
+				<th></th>
+			</tr>
+			<tr>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="fullname"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="sex"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="callsign"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+
+					<input type="text"
+						   class="form-control"
+						   @bind-value="group"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				counter = 0;
+			}
+			@foreach (var student in page.Items)
+			{
+				var i = counter++;
+
+				<tr class="">
+					<td>@student.FullName</td>
+					<td>@student.Sex.Name</td>
+
+					<td>@student.Callsign</td>
+					<td>@(string.Join(", ", student.Groups))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
+					</td>
 				</tr>
-				<tr>
-					<th>
-						<input type="text"
-							   class="form-control"
-							   @bind-value="fullname"
-							   @bind-value:event="oninput"
-							   @onkeyup="@StartSearchTimer" />
-					</th>
-					<th>
-						<input type="text"
-							   class="form-control"
-							   @bind-value="sex"
-							   @bind-value:event="oninput"
-							   @onkeyup="@StartSearchTimer" />
-					</th>
-					<th>
-						<input type="text"
-							   class="form-control"
-							   @bind-value="callsign"
-							   @bind-value:event="oninput"
-							   @onkeyup="@StartSearchTimer" />
-					</th>
-					<th>
+			}
+		</tbody>
+	</table>
 
-						<input type="text"
-							   class="form-control"
-							   @bind-value="group"
-							   @bind-value:event="oninput"
-							   @onkeyup="@StartSearchTimer" />
-					</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@{
-					counter = 0;
-				}
-				@foreach (var student in page.Items)
-				{
-					var i = counter++;
-
-					<tr class="">
-						<td>@student.FullName</td>
-						<td>@student.Sex.Name</td>
-						<td>@student.Callsign</td>
-						<td>@(string.Join(", ", student.Groups))</td>
-						<td>
-							<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-							<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-
-	</div>
 
 	<button class="btn btn-primary" disabled="@(page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
 	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
@@ -115,7 +112,7 @@ else
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
-	Timer _searchDelayTimer = new Timer(500) { Enabled = false, AutoReset = false };
+	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
 
 	@*string _previousSearchString;
 		 string _searchString = "";
