@@ -4,9 +4,11 @@
 @inject NavigationManager NavigationManager
 
 @using System.Linq
+@using System.Net
 @using Velvetech.Presentation.Shared
 @using Velvetech.Presentation.Shared.Dtos
 @using Velvetech.Presentation.Shared.Requests
+@using System.ComponentModel
 
 @namespace Velvetech.Presentation.Client.Pages.Group
 
@@ -116,7 +118,9 @@ else
 				GroupId = groupId
 			});
 
-		_errorMessage = result.ToString();
+		if (result.Content.Headers.Any())
+			_errorMessage = await result.Content.ReadAsStringAsync();
+		;
 		await LoadList();
 	}
 

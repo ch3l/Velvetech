@@ -1,6 +1,6 @@
 ﻿namespace Velvetech.Presentation.Shared.Requests
 {
-	public class StudentFilteredPageRequest
+	public class FilteredStudentPagedRequest
 	{
 		private int? _pageSize;
 		private int? _pageIndex;

@@ -87,7 +87,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId))
 				return Ok();
 
-			return Content("Already included");
+			return Ok("Already included");
 		}
 
 		// PUT: api/Groups/AddStudent

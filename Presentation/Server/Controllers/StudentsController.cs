@@ -30,7 +30,55 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilteredPageRequest request)
+		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] FilteredStudentPagedRequest request)
+		{
+			var pageSize = request.PageSize ?? 10;
+			var pageIndex = request.PageIndex ?? 0;
+
+			if (pageSize < 10)
+				pageSize = 10;
+
+			var totalItems = await _studentCrudService.CountAsync(
+				new StudentSpecification(
+					request.Sex,
+					request.Fullname,
+					request.Callsign,
+					request.Group));
+
+			var lastPageIndex = totalItems / pageSize;
+
+			if (totalItems == pageSize * lastPageIndex)
+				lastPageIndex--;
+
+			if (pageIndex > lastPageIndex)
+				pageIndex = lastPageIndex;
+
+			if (pageIndex < 0)
+				pageIndex = 0;
+
+			var items = await _studentCrudService.ListAsync(
+					new StudentSpecification(
+						skip: pageSize * pageIndex,
+						take: pageSize,
+						sex: request.Sex,
+						fullname: request.Fullname,
+						callsign: request.Callsign,
+						group: request.Group))
+				.Select(Extensions.ToDto)
+				.ToArrayAsync();
+
+			return new Page<StudentDto>
+			{
+				IsLastPage = pageIndex == lastPageIndex,
+				PageIndex = pageIndex,
+				PageSize = pageSize,
+				Items = items,
+			};
+		}
+
+		// GET: api/Test/ListIncluded
+		[HttpGet]
+		public async Task<ActionResult<Page<StudentDto>>> ListIncludedAsync([FromQuery] FilteredStudentPagedRequest request)
 		{
 			var pageSize = request.PageSize ?? 10;
 			var pageIndex = request.PageIndex ?? 0;
@@ -147,26 +195,12 @@ namespace Velvetech.Presentation.Server.Controllers
 		}
 
 
-
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{
 			await _studentCrudService.DeleteAsync(id);
 			return Ok();
-
-			/*
-			var student = await _context.Student.FindAsync(id);
-			if (student == null)
-			{
-				return NotFound();
-			}
-
-			_context.Student.Remove(student);
-			await _context.SaveChangesAsync();
-
-			return student;
-			*/
 		}
 	}
 }

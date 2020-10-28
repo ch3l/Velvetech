@@ -7,28 +7,28 @@ using Velvetech.Domain.Entities;
 
 namespace Velvetech.Domain.Specifications
 {
-	public class StudentSpecification : Specification<Student>
+	public class IncludedStudentsSpecification : StudentSpecification
 	{
-		public StudentSpecification()
+		public IncludedStudentsSpecification()
 		{
 			Query.Include(s => s.Sex);
 			Query.Include(s => s.Grouping)
 				.ThenInclude(g => g.Group);
 		}
 
-		public StudentSpecification(int skip, int take)
+		public IncludedStudentsSpecification(int skip, int take)
 			:this()
 		{
 			Query.Skip(skip).Take(take);
 		}
 
-		public StudentSpecification(string sex, string fullname, string callsign, string group)
+		public IncludedStudentsSpecification(string sex, string fullname, string callsign, string group)
 			: this()
 		{
 			FilterStudents(sex, fullname, callsign, group);
 		}
 
-		public StudentSpecification(int skip, int take, string sex, string fullname, string callsign, string group)
+		public IncludedStudentsSpecification(int skip, int take, string sex, string fullname, string callsign, string group)
 			: this(skip, take)
 		{
 			FilterStudents(sex, fullname, callsign, group);

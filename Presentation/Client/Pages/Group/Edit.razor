@@ -37,8 +37,108 @@
 												<ValidationMessage For="(() => Group.Name)" />
 											</div>
 										</div>
-
 									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Search student</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Group.Name" />
+												<ValidationMessage For="(() => Group.Name)" />
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Find student</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Group.Name" />
+												<ValidationMessage For="(() => Group.Name)" />
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Included students</label>
+											<div class="col-md-12">
+												<table class="table-hover">
+													<thead>
+														<tr>
+															<th>Full name</th>
+															<th>Callsign</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr class="">
+															<td>R1C1</td>
+															<td>R1C2</td>
+															<td>
+																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+
+																<button class="btn btn-primary">Exclude</button>
+															</td>
+														</tr>
+
+														<tr class="">
+															<td>R2C1</td>
+															<td>R2C2</td>
+															<td>
+																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+
+																<button class="btn btn-primary">Exclude</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Other students</label>
+											<div class="col-md-12">
+												<table class="table-hover">
+													<thead>
+														<tr>
+															<th>Full name</th>
+															<th>Callsign</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr class="">
+															<td>R1C1</td>
+															<td>R1C2</td>
+															<td>
+																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+
+																<button class="btn btn-primary">Include</button>
+															</td>
+														</tr>
+
+														<tr class="">
+															<td>R2C1</td>
+															<td>R2C2</td>
+															<td>
+																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+
+																<button class="btn btn-primary">Include</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+
+
 
 									@*<div class="col-md-12">
 											<div class="form-group">
@@ -72,7 +172,7 @@
 
 @code {
 	[Parameter]
-	public  EventCallback OnSave { get; set; }
+	public EventCallback OnSave { get; set; }
 
 	public GroupDto Group { get; set; }
 

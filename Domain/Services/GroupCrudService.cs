@@ -29,7 +29,7 @@ namespace Velvetech.Domain.Services
 
 
 		public IAsyncEnumerable<Group> ListAsync() =>
-			_groupRepository.ListAsync(new GroupSpecification());
+			_groupRepository.ListAsync();
 
 		public IAsyncEnumerable<Group> ListAsync(ISpecification<Group> specification) => 
 			_groupRepository.ListAsync(specification);
