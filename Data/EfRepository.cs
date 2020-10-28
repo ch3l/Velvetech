@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data
 {
@@ -26,29 +25,17 @@ namespace Velvetech.Data
 			_dbContext = dbContext;
 		}
 
-		public async Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification) => 
+		public async Task<TEntity> GetById(TKey id) =>
+			await GetEntity().FindAsync(id);
+
+		public async Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification) =>
 			await FromSpecification(specification).FirstOrDefaultAsync(x => x.Id.Equals(id));
 
-		public async Task<TEntity> FirstOrDefault(TKey id, IFilter<TEntity> filter, ISpecification<TEntity> specification) =>
-			await filter.Filter(FromSpecification(specification)).FirstOrDefaultAsync(x => x.Id.Equals(id));
-
-
-		public IAsyncEnumerable<TEntity> GetAllAsync() =>
+		public IAsyncEnumerable<TEntity> ListAsync() =>
 			GetEntity().AsAsyncEnumerable();
 
-		public IAsyncEnumerable<TEntity> GetAllAsync(ISpecification<TEntity> specification) => 
+		public IAsyncEnumerable<TEntity> ListAsync(ISpecification<TEntity> specification) =>
 			FromSpecification(specification).AsAsyncEnumerable();
-
-		public IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filter, ISpecification<TEntity> specification) =>
-			filter.Filter(FromSpecification(specification)).AsAsyncEnumerable();
-
-
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, ISpecification<TEntity> specification) => 
-			FromSpecification(specification).Skip(skip).Take(take).AsAsyncEnumerable();
-
-		public IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filter, 
-			ISpecification<TEntity> specification) => 
-			filter.Filter(FromSpecification(specification)).Skip(skip).Take(take).AsAsyncEnumerable();
 
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
@@ -61,7 +48,7 @@ namespace Velvetech.Data
 		public async Task UpdateAsync(TEntity entity)
 		{
 			_dbContext.Entry(entity).State = EntityState.Modified;
-			await _dbContext.SaveChangesAsync();			
+			await _dbContext.SaveChangesAsync();
 		}
 
 		public async Task RemoveAsync(TEntity entity)
@@ -76,11 +63,11 @@ namespace Velvetech.Data
 			await _dbContext.SaveChangesAsync();
 		}
 
-		public async Task<int> CountAsync() => 
+		public async Task<int> CountAsync() =>
 			await GetEntity().AsQueryable().CountAsync();
 
-		public async Task<int> CountAsync(IFilter<TEntity> filter) =>
-			await filter.Filter(GetEntity()).CountAsync();
+		public async Task<int> CountAsync(ISpecification<TEntity> specification) =>
+			await FromSpecification(specification).CountAsync();
 
 		private DbSet<TEntity> GetEntity() =>
 			_dbContext.Set<TEntity>();

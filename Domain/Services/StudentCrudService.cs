@@ -19,33 +19,25 @@ namespace Velvetech.Domain.Services
 			_studentRepository = studentRepository;
 		}
 
-		public IAsyncEnumerable<Student> GetAllAsync() =>
-			_studentRepository.GetAllAsync(new StudentSpecification());
-
-		public IAsyncEnumerable<Student> GetAllAsync(IFilter<Student> filter, ISpecification<Student> specification) => 
-			_studentRepository.GetAllAsync(filter, specification);
-
-
-		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take) =>
-			_studentRepository.GetRangeAsync(skip, take, new StudentSpecification());
-
-		public IAsyncEnumerable<Student> GetRangeAsync(int skip, int take, IFilter<Student> filter,
-			ISpecification<Student> specification) => 
-			_studentRepository.GetRangeAsync(skip, take, filter, specification);
-
-
 		public async Task<Student> GetByIdAsync(Guid id) =>
-			await _studentRepository.FirstOrDefault(id, new StudentSpecification());
+			await _studentRepository.GetById(id);
 
-		public async Task<Student> GetByIdAsync(Guid id, IFilter<Student> filter) => 
-			await _studentRepository.FirstOrDefault(id, new StudentSpecification());
+		public async Task<Student> GetByIdAsync(Guid id, ISpecification<Student> specification) =>
+			await _studentRepository.FirstOrDefault(id, specification);
+
+
+		public IAsyncEnumerable<Student> ListAsync() =>
+			_studentRepository.ListAsync();
+
+		public IAsyncEnumerable<Student> ListAsync(ISpecification<Student> specification) => 
+			_studentRepository.ListAsync(specification);
 
 
 		public async Task<int> CountAsync() =>
 			await _studentRepository.CountAsync();
 
-		public async Task<int> CountAsync(IFilter<Student> filter) =>
-			await _studentRepository.CountAsync(filter);
+		public async Task<int> CountAsync(ISpecification<Student> specification) =>
+			await _studentRepository.CountAsync(specification);
 
 
 		public async Task<Student> AddAsync(Student entity) =>

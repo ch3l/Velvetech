@@ -9,18 +9,14 @@ namespace Velvetech.Domain.Common
 {
     public interface IAsyncRepository<TEntity, in TKey> where TEntity : Entity<TKey>, IAggregateRoot
     {
+	    Task<TEntity> GetById(TKey id);
 		Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification);
-		Task<TEntity> FirstOrDefault(TKey id, IFilter<TEntity> filterFunc, ISpecification<TEntity> specification);
 
-		IAsyncEnumerable<TEntity> GetAllAsync();
-		IAsyncEnumerable<TEntity> GetAllAsync(ISpecification<TEntity> specification);
-		IAsyncEnumerable<TEntity> GetAllAsync(IFilter<TEntity> filterFunc, ISpecification<TEntity> specification);
-
-		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, ISpecification<TEntity> specification);
-		IAsyncEnumerable<TEntity> GetRangeAsync(int skip, int take, IFilter<TEntity> filterFunc, ISpecification<TEntity> specification);
+		IAsyncEnumerable<TEntity> ListAsync();
+		IAsyncEnumerable<TEntity> ListAsync(ISpecification<TEntity> specification);
 
 		Task<int> CountAsync();
-		Task<int> CountAsync(IFilter<TEntity> filterFunc);
+		Task<int> CountAsync(ISpecification<TEntity> filterFunc);
 
 		Task<TEntity> AddAsync(TEntity entity);
 		Task UpdateAsync(TEntity entity);

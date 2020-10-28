@@ -3,11 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-using Velvetech.Domain.Common;
+
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared.Dtos;
 using Velvetech.Presentation.Shared.Requests;
 
@@ -30,8 +29,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<GroupDto[]> ListAsync(string group)
 		{
-			var filter = new GroupFilter(group);
-			return await _groupCrudService.GetAllAsync(filter, new GroupSpecification())
+			return await _groupCrudService.ListAsync(new GroupSpecification(group))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 		}
@@ -100,7 +98,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		{
 			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
 				return Ok();
-			
+
 			return NotFound();
 		}
 

@@ -15,7 +15,7 @@ namespace Velvetech.Domain.Services
 			_repository = studentRepository;
 		}
 
-		public IAsyncEnumerable<TEntity> GetAllAsync() =>
-			_repository.GetAllAsync();
+		public IAsyncEnumerable<TEntity> ListAsync() =>
+			_repository.ListAsync();
 	}
 }

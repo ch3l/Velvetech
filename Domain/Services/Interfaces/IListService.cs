@@ -4,8 +4,8 @@ using Velvetech.Domain.Common;
 
 namespace Velvetech.Domain.Services.Interfaces
 {
-	public interface IListService<TEntity, TKey> where TEntity : Entity<TKey>
+	public interface IListService<out TEntity, TKey> where TEntity : Entity<TKey>
 	{
-		public IAsyncEnumerable<TEntity> GetAllAsync();
+		public IAsyncEnumerable<TEntity> ListAsync();
 	}
 }

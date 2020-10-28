@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Presentation.Server.Filtering;
 using Velvetech.Presentation.Shared;
 using Velvetech.Presentation.Shared.Dtos;
 using Velvetech.Presentation.Shared.Requests;
@@ -40,8 +38,13 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageSize < 10)
 				pageSize = 10;
 
-			var filter = new StudentFilter(request);
-			var totalItems = await _studentCrudService.CountAsync(filter);
+			var totalItems = await _studentCrudService.CountAsync(
+				new StudentSpecification(
+					request.Sex,
+					request.Fullname,
+					request.Callsign,
+					request.Group));
+
 			var lastPageIndex = totalItems / pageSize;
 
 			if (totalItems == pageSize * lastPageIndex)
@@ -53,7 +56,14 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex < 0)
 				pageIndex = 0;
 
-			var items = await _studentCrudService.GetRangeAsync(pageSize * pageIndex, pageSize, filter, new StudentSpecification())
+			var items = await _studentCrudService.ListAsync(
+					new StudentSpecification(
+						skip: pageSize * pageIndex,
+						take: pageSize,
+						sex: request.Sex,
+						fullname: request.Fullname,
+						callsign: request.Callsign,
+						group: request.Group))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 
@@ -70,7 +80,7 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpGet]
 		public async Task<ActionResult<SexDto[]>> SexListAsync()
 		{
-			return await (_sexList.GetAllAsync()
+			return await (_sexList.ListAsync()
 				.Select(Extensions.ToDto)
 				.ToArrayAsync());
 		}
