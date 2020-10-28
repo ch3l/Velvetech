@@ -47,7 +47,7 @@ else
 					<td>@group.Name</td>
 					<td>@group.StudentsCount</td>
 					<td>
-						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await EditAsync(i)">Edit</button>
 						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
 					</td>
 				</tr>
@@ -78,12 +78,12 @@ else
 		AddComponent.Open();
 	}
 
-	void Edit(int index)
+	async Task EditAsync(int index)
 	{
 		if (EditComponent is null)
 			return;
 		EditComponent.Group = groups[index];
-		EditComponent.Open();
+		await EditComponent.OpenAsync();
 	}
 
 	async Task RemoveAsync(int index)

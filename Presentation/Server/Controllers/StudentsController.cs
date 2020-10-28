@@ -30,7 +30,7 @@ namespace Velvetech.Presentation.Server.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] FilteredStudentPagedRequest request)
+		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
 			var pageSize = request.PageSize ?? 10;
 			var pageIndex = request.PageIndex ?? 0;
@@ -56,14 +56,15 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (pageIndex < 0)
 				pageIndex = 0;
 
-			var items = await _studentCrudService.ListAsync(
-					new StudentSpecification(
-						skip: pageSize * pageIndex,
-						take: pageSize,
-						sex: request.Sex,
-						fullname: request.Fullname,
-						callsign: request.Callsign,
-						group: request.Group))
+			var filter = new StudentSpecification(
+				skip: pageSize * pageIndex,
+				take: pageSize,
+				sex: request.Sex,
+				fullname: request.Fullname,
+				callsign: request.Callsign,
+				group: request.Group);
+
+			var students = await _studentCrudService.ListAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 
@@ -72,65 +73,47 @@ namespace Velvetech.Presentation.Server.Controllers
 				IsLastPage = pageIndex == lastPageIndex,
 				PageIndex = pageIndex,
 				PageSize = pageSize,
-				Items = items,
+				Items = students,
 			};
 		}
 
 		// GET: api/Test/ListIncluded
 		[HttpGet]
-		public async Task<ActionResult<Page<StudentDto>>> ListIncludedAsync([FromQuery] FilteredStudentPagedRequest request)
+		public async Task<ActionResult<StudentDto[]>> ListIncludedAsync([FromQuery] IncludedStudentsRequest request)
 		{
-			var pageSize = request.PageSize ?? 10;
-			var pageIndex = request.PageIndex ?? 0;
+			if (!request.GroupId.HasValue)
+				return BadRequest($"Corrupted or missing {nameof(request.GroupId)}");
 
-			if (pageSize < 10)
-				pageSize = 10;
-
-			var totalItems = await _studentCrudService.CountAsync(
-				new StudentSpecification(
-					request.Sex,
-					request.Fullname,
-					request.Callsign,
-					request.Group));
-
-			var lastPageIndex = totalItems / pageSize;
-
-			if (totalItems == pageSize * lastPageIndex)
-				lastPageIndex--;
-
-			if (pageIndex > lastPageIndex)
-				pageIndex = lastPageIndex;
-
-			if (pageIndex < 0)
-				pageIndex = 0;
-
-			var items = await _studentCrudService.ListAsync(
-					new StudentSpecification(
-						skip: pageSize * pageIndex,
-						take: pageSize,
-						sex: request.Sex,
-						fullname: request.Fullname,
-						callsign: request.Callsign,
-						group: request.Group))
+			var filter = new IncludedStudentsSpecification(request.GroupId.Value);
+			var students = await _studentCrudService.ListAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
 
-			return new Page<StudentDto>
-			{
-				IsLastPage = pageIndex == lastPageIndex,
-				PageIndex = pageIndex,
-				PageSize = pageSize,
-				Items = items,
-			};
+			return students;
+		}
+
+		// GET: api/Test/ListIncluded
+		[HttpGet]
+		public async Task<ActionResult<StudentDto[]>> ListNotIncludedAsync([FromQuery] IncludedStudentsRequest request)
+		{
+			if (!request.GroupId.HasValue)
+				return BadRequest($"Corrupted or missing {nameof(request.GroupId)}");
+
+			var filter = new NotIncludedStudentsSpecification(request.GroupId.Value);
+			var students = await _studentCrudService.ListAsync(filter)
+				.Select(Extensions.ToDto)
+				.ToArrayAsync();
+
+			return students;
 		}
 
 		// GET: api/Test/Students
 		[HttpGet]
 		public async Task<ActionResult<SexDto[]>> SexListAsync()
 		{
-			return await (_sexList.ListAsync()
+			return await _sexList.ListAsync()
 				.Select(Extensions.ToDto)
-				.ToArrayAsync());
+				.ToArrayAsync();
 		}
 
 		// GET: api/Test/Get

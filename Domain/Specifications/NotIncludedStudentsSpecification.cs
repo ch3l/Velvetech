@@ -7,11 +7,11 @@ using Velvetech.Domain.Entities;
 
 namespace Velvetech.Domain.Specifications
 {
-	public class IncludedStudentsSpecification : Specification<Student>
+	public class NotIncludedStudentsSpecification : Specification<Student>
 	{
-		public IncludedStudentsSpecification(Guid groupId)
+		public NotIncludedStudentsSpecification(Guid groupId)
 		{
-			Query.Where(s => s.Grouping.Any(g => g.Group.Id == groupId));
+			Query.Where(s => s.Grouping.All(g => g.GroupId != groupId));
 		}
 	}
 }

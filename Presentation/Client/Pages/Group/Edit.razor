@@ -1,5 +1,7 @@
 ﻿@inject HttpClient Http
 @using Velvetech.Presentation.Shared.Dtos
+@using System.Threading
+@using Velvetech.Presentation.Shared.Requests
 
 @namespace Velvetech.Presentation.Client.Pages.Group
 
@@ -11,7 +13,7 @@
 				<h1>@_errorMessage</h1>
 				<br />
 
-				<EditForm Model="Group" OnValidSubmit="@SaveClick">
+				<EditForm Model="Group">
 					<DataAnnotationsValidator />
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">Edit @Group.Name</h5>
@@ -41,104 +43,85 @@
 
 									<div class="col-md-12">
 										<div class="form-group">
-											<label class="control-label col-md-6">Search student</label>
-											<div class="col-md-12">
-												<InputText class="form-control" @bind-Value="Group.Name" />
-												<ValidationMessage For="(() => Group.Name)" />
-											</div>
-										</div>
-									</div>
-
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="control-label col-md-6">Find student</label>
-											<div class="col-md-12">
-												<InputText class="form-control" @bind-Value="Group.Name" />
-												<ValidationMessage For="(() => Group.Name)" />
-											</div>
-										</div>
-									</div>
-
-									<div class="col-md-12">
-										<div class="form-group">
 											<label class="control-label col-md-6">Included students</label>
 											<div class="col-md-12">
 												<table class="table-hover">
 													<thead>
-														<tr>
-															<th>Full name</th>
-															<th>Callsign</th>
-															<th>Action</th>
-														</tr>
+													<tr>
+														<th>Full name</th>
+														<th>Callsign</th>
+														<th></th>
+													</tr>
 													</thead>
 													<tbody>
-														<tr class="">
-															<td>R1C1</td>
-															<td>R1C2</td>
-															<td>
-																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+													@if (includedStudents != null)
+													{
+														counter = 0;
+															
+														foreach (var student in includedStudents)
+														{
+															var i = counter++;
+															<tr class="">
+																<td>@student.FullName</td>
+																<td>@student.Callsign</td>
+																<td>
+																	@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
-																<button class="btn btn-primary">Exclude</button>
-															</td>
-														</tr>
+																	<button class="btn btn-primary" @onclick="async () => await ExcludeAsync(i)">
+																		Exclude
+																	</button>
+																</td>
+															</tr>
+														}
+													}
 
-														<tr class="">
-															<td>R2C1</td>
-															<td>R2C2</td>
-															<td>
-																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
-
-																<button class="btn btn-primary">Exclude</button>
-															</td>
-														</tr>
 													</tbody>
 												</table>
 											</div>
 										</div>
-
+									</div>
+									
+									<div class="col-md-12">
 										<div class="form-group">
 											<label class="control-label col-md-6">Other students</label>
 											<div class="col-md-12">
 												<table class="table-hover">
 													<thead>
-														<tr>
-															<th>Full name</th>
-															<th>Callsign</th>
-															<th>Action</th>
-														</tr>
+													<tr>
+														<th>Full name</th>
+														<th>Callsign</th>
+														<th></th>
+													</tr>
 													</thead>
 													<tbody>
-														<tr class="">
-															<td>R1C1</td>
-															<td>R1C2</td>
-															<td>
-																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+													@if (notIncludedStudents != null)
+													{
+														counter = 0;
+															
+														foreach (var student in notIncludedStudents)
+														{
+															var i = counter++;
+															<tr class="">
+																<td>@student.FullName</td>
+																<td>@student.Callsign</td>
+																<td>
+																	@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
-																<button class="btn btn-primary">Include</button>
-															</td>
-														</tr>
+																	<button class="btn btn-primary" @onclick="async () => await IncludeAsync(i)">
+																		Include
+																	</button>
+																</td>
+															</tr>
+														}
+													}
 
-														<tr class="">
-															<td>R2C1</td>
-															<td>R2C2</td>
-															<td>
-																@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																	<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
-
-																<button class="btn btn-primary">Include</button>
-															</td>
-														</tr>
 													</tbody>
 												</table>
 											</div>
 										</div>
 									</div>
-
-
-
 
 									@*<div class="col-md-12">
 											<div class="form-group">
@@ -159,8 +142,10 @@
 						}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
-						<button type="submit" class="btn btn-primary">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">
+							Cancel
+						</button>
+						<button type="submit" class="btn btn-primary" @onclick="SaveClickAsync">
 							Save
 						</button>
 					</div>
@@ -180,7 +165,11 @@
 	string _modalClass = "Show";
 	string _errorMessage;
 
-	private async Task SaveClick()
+	int counter;
+	StudentDto[] includedStudents;
+	StudentDto[] notIncludedStudents;
+
+	private async Task SaveClickAsync()
 	{
 		if (Group is null)
 		{
@@ -198,10 +187,12 @@
 			_errorMessage = result.StatusCode.ToString();
 	}
 
-	public void Open()
+	public async Task OpenAsync()
 	{
 		_modalDisplay = "block;";
 		_modalClass = "Show";
+		await LoadIncludedStudents();
+		await LoadNotIncludedStudents();
 		StateHasChanged();
 	}
 
@@ -209,6 +200,52 @@
 	{
 		_modalDisplay = "none";
 		_modalClass = "";
+		includedStudents = null;
+		Group = null;
 		StateHasChanged();
+	}
+
+	async Task LoadIncludedStudents()
+	{
+		if (Group != null)
+			includedStudents = await Http.GetFromJsonAsync<StudentDto[]>($"api/Students/ListIncluded?GroupId={Group.Id}");
+	}
+
+	async Task LoadNotIncludedStudents()
+	{
+		if (Group != null)
+			notIncludedStudents = await Http.GetFromJsonAsync<StudentDto[]>($"api/Students/ListNotIncluded?GroupId={Group.Id}");
+	}
+
+	async Task ExcludeAsync(int i)
+	{
+		var studentId = includedStudents[i].Id;
+		var groupId = Group.Id;
+
+		await Http.PostAsJsonAsync($"api/Groups/ExcludeStudent",
+			new StudentGroupRequest
+			{
+				StudentId = studentId,
+				GroupId = groupId
+			});
+
+		await LoadIncludedStudents();
+		await LoadNotIncludedStudents();
+	}
+
+	async Task IncludeAsync(int i)
+	{
+		var studentId = notIncludedStudents[i].Id;
+		var groupId = Group.Id;
+
+		await Http.PostAsJsonAsync($"api/Groups/IncludeStudent",
+			new StudentGroupRequest
+			{
+				StudentId = studentId,
+				GroupId = groupId
+			});
+
+		await LoadIncludedStudents();
+		await LoadNotIncludedStudents();
 	}
 }
