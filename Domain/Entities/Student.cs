@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using LinqKit;
 using Velvetech.Domain.Common;
 
 namespace Velvetech.Domain.Entities
@@ -49,5 +50,8 @@ namespace Velvetech.Domain.Entities
 
 			return false;
 		}
+
+		public string Fullname() =>
+			Firstname + " " + Middlename + " " + Lastname;
 	}
 }

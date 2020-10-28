@@ -11,10 +11,10 @@ namespace Velvetech.Domain.Specifications
 				.ThenInclude(g => g.Student);
 		}
 
-		public GroupSpecification(string groupName)
+		public GroupSpecification(string group)
 			:this()
 		{
-			Query.Where(group => groupName == null || group.Name.Contains(groupName));
+			Query.Where(g => group == null || g.Name.Contains(group));
 		}
 	}
 }
