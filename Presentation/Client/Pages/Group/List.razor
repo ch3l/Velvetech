@@ -17,8 +17,6 @@
 
 <button class="btn btn-primary" @onclick="Add">Add group</button>
 <br />
-<button class="btn btn-primary" @onclick="IncludeStudentAsync">Include student</button>
-<button class="btn btn-primary" @onclick="ExcludeStudentAsync">Exclude student</button>
 @*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
 
 @if (groups == null)
@@ -68,7 +66,7 @@ else
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
-	string group="";
+	string group = "";
 
 	void Add()
 	{
@@ -97,47 +95,11 @@ else
 	{
 		groups = await Http.GetFromJsonAsync<GroupDto[]>(
 			$"api/Groups/List" +
-		    (string.IsNullOrEmpty(group) ? string.Empty : $"?group={group}"));
+			(string.IsNullOrEmpty(group) ? string.Empty : $"?group={group}"));
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
-		await LoadList();
-	}
-
-	async Task IncludeStudentAsync()
-	{
-		var studentId = (await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List")).Items.First().Id;
-		var groupId = (await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List")).First().Id;
-
-		var result = await Http.PostAsJsonAsync(
-			$"api/Groups/IncludeStudent",
-			new StudentGroupRequest
-			{
-				StudentId = studentId,
-				GroupId = groupId
-			});
-
-		if (result.Content.Headers.Any())
-			_errorMessage = await result.Content.ReadAsStringAsync();
-		;
-		await LoadList();
-	}
-
-	async Task ExcludeStudentAsync()
-	{
-		var studentId = (await Http.GetFromJsonAsync<Page<StudentDto>>($"api/Students/List")).Items.First().Id;
-		var groupId = (await Http.GetFromJsonAsync<GroupDto[]>($"api/Groups/List")).First().Id;
-
-		var result = await Http.PostAsJsonAsync(
-			$"api/Groups/ExcludeStudent",
-			new StudentGroupRequest
-			{
-				StudentId = studentId,
-				GroupId = groupId
-			});
-
-		_errorMessage = result.ToString();
 		await LoadList();
 	}
 }

@@ -47,96 +47,81 @@
 											<div class="col-md-12">
 												<table class="table-hover">
 													<thead>
-													<tr>
-														<th>Full name</th>
-														<th>Callsign</th>
-														<th></th>
-													</tr>
+														<tr>
+															<th>Full name</th>
+															<th>Callsign</th>
+															<th></th>
+														</tr>
 													</thead>
 													<tbody>
-													@if (includedStudents != null)
-													{
-														counter = 0;
-															
-														foreach (var student in includedStudents)
+														@if (includedStudents != null)
 														{
-															var i = counter++;
-															<tr class="">
-																<td>@student.FullName</td>
-																<td>@student.Callsign</td>
-																<td>
-																	@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+															counter = 0;
+
+															foreach (var student in includedStudents)
+															{
+																var i = counter++;
+																<tr class="">
+																	<td>@student.FullName</td>
+																	<td>@student.Callsign</td>
+																	<td>
+																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
 																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
-																	<button class="btn btn-primary" @onclick="async () => await ExcludeAsync(i)">
-																		Exclude
-																	</button>
-																</td>
-															</tr>
+																		<button class="btn btn-primary" @onclick="async () => await ExcludeAsync(i)">
+																			Exclude
+																		</button>
+																	</td>
+																</tr>
+															}
 														}
-													}
 
 													</tbody>
 												</table>
 											</div>
 										</div>
 									</div>
-									
+
 									<div class="col-md-12">
 										<div class="form-group">
 											<label class="control-label col-md-6">Other students</label>
 											<div class="col-md-12">
 												<table class="table-hover">
 													<thead>
-													<tr>
-														<th>Full name</th>
-														<th>Callsign</th>
-														<th></th>
-													</tr>
+														<tr>
+															<th>Full name</th>
+															<th>Callsign</th>
+															<th></th>
+														</tr>
 													</thead>
 													<tbody>
-													@if (notIncludedStudents != null)
-													{
-														counter = 0;
-															
-														foreach (var student in notIncludedStudents)
+														@if (notIncludedStudents != null)
 														{
-															var i = counter++;
-															<tr class="">
-																<td>@student.FullName</td>
-																<td>@student.Callsign</td>
-																<td>
-																	@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+															counter = 0;
+
+															foreach (var student in notIncludedStudents)
+															{
+																var i = counter++;
+																<tr class="">
+																	<td>@student.FullName</td>
+																	<td>@student.Callsign</td>
+																	<td>
+																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
 																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
-																	<button class="btn btn-primary" @onclick="async () => await IncludeAsync(i)">
-																		Include
-																	</button>
-																</td>
-															</tr>
+																		<button class="btn btn-primary" @onclick="async () => await IncludeAsync(i)">
+																			Include
+																		</button>
+																	</td>
+																</tr>
+															}
 														}
-													}
 
 													</tbody>
 												</table>
 											</div>
 										</div>
 									</div>
-
-									@*<div class="col-md-12">
-											<div class="form-group">
-												<label class="control-label col-md-6">Sex</label>
-												<div class="col-md-12">
-													<InputSelect @bind-Value="SexId" class="form-control">
-														@foreach (var sex in SexList)
-																{
-															<option value="@sex.Id.ToString()">@sex.Name</option>
-																}
-													</InputSelect>
-													<ValidationMessage For="(() => SexId)" />
-												</div>
-											</div>
-										</div>*@
 								</div>
 							</div>
 						}

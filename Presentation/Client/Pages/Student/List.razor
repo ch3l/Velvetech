@@ -4,13 +4,18 @@
 @inject NavigationManager NavigationManager
 @using Velvetech.Presentation.Shared
 @using Velvetech.Presentation.Shared.Dtos
+@using System.Timers
 
 @namespace Velvetech.Presentation.Client.Pages.Student
 
 <h1>Students</h1>
 <h1>@title</h1>
 
-<button class="btn btn-primary" @onclick="Add">Add student</button>
+<div class="container">
+	<button class="btn btn-primary" @onclick="Add">Add student</button>
+	<br />
+	<br />
+</div>
 
 @if (page == null)
 {
@@ -18,6 +23,15 @@
 }
 else
 {
+<div class="container">
+	<label class="control-label">Student search:</label>
+	<input type="text" 
+	       class="form-control" 
+	       @bind-value="SearchString" 
+	       @bind-value:event="oninput"
+	       @onkeyup="@StartSearchTimer" />
+	<br />
+	<br />
 	<table class="table">
 		<thead>
 			<tr>
@@ -36,19 +50,21 @@ else
 			{
 				var i = counter++;
 
-			<tr class="">
-				<td>@student.FullName</td>
-				<td>@student.Callsign</td>
-				@*<td>@student.Sex.Name</td>*@
-				<td>@(string.Join(", ", student.Groups))</td>
-				<td>
-					<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-					<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
-				</td>
-			</tr>
+				<tr class="">
+					<td>@student.FullName</td>
+					<td>@student.Callsign</td>
+					@*<td>@student.Sex.Name</td>*@
+					<td>@(string.Join(", ", student.Groups))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
 			}
 		</tbody>
 	</table>
+
+</div>
 
 	<button class="btn btn-primary" disabled="@(page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
 	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
@@ -68,7 +84,23 @@ else
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
-	string sex="", fullname="", callsign="", group="";
+	Timer _searchDelayTimer = new Timer(500) { Enabled = false, AutoReset = false };
+
+	string _previousSearchString;
+	string _searchString = "";
+	string SearchString
+	{
+		get => _searchString;
+		set => _searchString = value;
+	}
+
+	string sex = "", fullname = "", callsign = "", group = "";
+
+	void StartSearchTimer()
+	{
+		_searchDelayTimer.Enabled = false;
+		_searchDelayTimer.Enabled = true;
+	}
 
 	void Add()
 	{
@@ -121,12 +153,25 @@ else
 			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
 			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
 			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
-			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}" ));
+			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}"));
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
 		await LoadPage();
+
+		_searchDelayTimer.Elapsed += async (sender, args) =>
+		{
+			if (_searchString == _previousSearchString)
+				return;
+
+			fullname = _searchString;
+
+			await LoadPage();
+			StateHasChanged();
+
+			_previousSearchString = _searchString;
+		};
 	}
 }
