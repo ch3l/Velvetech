@@ -11,11 +11,6 @@ namespace Velvetech.Domain.Common
 		{
 		}
 
-		protected Entity(TKey id)
-		{
-			Id = id;
-		}		
-
 		public TKey Id { get; set; }
 		 
 		public override int GetHashCode()

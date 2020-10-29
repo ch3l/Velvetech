@@ -24,7 +24,7 @@ namespace Velvetech.Domain.Services
 		public async Task<Group> GetByIdAsync(Guid id) =>
 			await _groupRepository.GetById(id);
 
-		public async Task<Group> GetByIdAsync(Guid id, ISpecification<Group> specification) =>
+		public async Task<Group> FirstOrDefault(Guid id, ISpecification<Group> specification) =>
 			await _groupRepository.FirstOrDefault(id, specification);
 
 

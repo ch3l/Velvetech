@@ -15,8 +15,12 @@ namespace Velvetech.Domain.Entities
 		private readonly HashSet<Grouping> _grouping = new HashSet<Grouping>();
 		public IReadOnlyCollection<Grouping> Grouping => _grouping;
 
-		public Group(Guid id, string name)
-			: base(id)
+		public Group(string name)
+		{
+			SetName(name);
+		}
+
+		public void SetName(string name)
 		{
 			Name = name;
 		}

@@ -35,17 +35,5 @@ namespace Velvetech.Presentation.Server
 				Id = source.Id,
 				Name = source.Name
 			};
-
-		public static Student FromDto(this StudentDto source) =>
-			new Student(
-				source.Id,
-				source.SexId,
-				source.Firstname,
-				source.Middlename,
-				source.Lastname,
-				source.Callsign);
-
-		public static Group FromDto(this GroupDto source) =>
-			new Group(source.Id, source.Name);
 	}
 }

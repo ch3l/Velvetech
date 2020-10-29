@@ -20,24 +20,15 @@ namespace Velvetech.Domain.Entities
 
 		private readonly List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
-
-		public Student(Guid id, int sexId, string firstname, string middlename, string lastname, string callsign)
-			: base(id)
-		{
-			SexId = sexId;
-			Firstname = firstname;
-			Middlename = middlename;
-			Lastname = lastname;
-			Callsign = callsign;
-		}
+			  		  
 
 		public Student(int sexId, string firstname, string middlename, string lastname, string callsign)
 		{
-			SexId = sexId;
-			Firstname = firstname;
-			Middlename = middlename;
-			Lastname = lastname;
-			Callsign = callsign;
+			SetSexId(sexId);
+			SetFirstname(firstname);
+			SetMiddlename(middlename);
+			SetLastname(lastname);
+			SetCallsign(callsign);
 		}
 
 		public bool ExcludeFromAllGroups()
@@ -51,7 +42,29 @@ namespace Velvetech.Domain.Entities
 			return false;
 		}
 
-		public string Fullname() =>
-			Firstname + " " + Middlename + " " + Lastname;
+		public void SetFirstname(string firstName)
+		{
+			Firstname = firstName;
+		}
+
+		public void SetMiddlename(string middlename)
+		{
+			Middlename = middlename;
+		}
+
+		public void SetLastname(string lastname)
+		{
+			Lastname = lastname;
+		}
+
+		public void SetCallsign(string callsign)
+		{
+			Callsign = callsign;
+		}
+
+		public void SetSexId(int sexId)
+		{
+			SexId = sexId;
+		}
 	}
 }

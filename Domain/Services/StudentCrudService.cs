@@ -22,7 +22,7 @@ namespace Velvetech.Domain.Services
 		public async Task<Student> GetByIdAsync(Guid id) =>
 			await _studentRepository.GetById(id);
 
-		public async Task<Student> GetByIdAsync(Guid id, ISpecification<Student> specification) =>
+		public async Task<Student> FirstOrDefault(Guid id, ISpecification<Student> specification) =>
 			await _studentRepository.FirstOrDefault(id, specification);
 
 

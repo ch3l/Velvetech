@@ -10,8 +10,7 @@ namespace Velvetech.Domain.Entities
 	{
 		private List<Student> _student = new List<Student>();
 
-		public Sex(int id, string name)
-			: base(id)
+		public Sex(string name)
 		{
 			Name = name;
 		}

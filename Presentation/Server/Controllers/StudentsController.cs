@@ -139,16 +139,8 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync(StudentDto dto)
 		{
-			var item = dto.FromDto();
-
-			try
-			{
-				await _studentCrudService.AddAsync(item);
-			}
-			catch (Exception)
-			{
-				return BadRequest();
-			}
+			var student = new Student(dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
+			await _studentCrudService.AddAsync(student);
 
 			return Ok("Updated successfully");
 		}
@@ -159,19 +151,17 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateAsync(StudentDto dto)
 		{
-			var item = dto.FromDto();
+			var item = await _studentCrudService.GetByIdAsync(dto.Id);
+			if (item is null)
+				return NotFound();
 
-			try
-			{
-				await _studentCrudService.UpdateAsync(item);
-			}
-			catch (Exception)
-			{
-				if (await _studentCrudService.GetByIdAsync(item.Id) is null)
-					return NotFound();
-				
-				throw;
-			}
+			item.SetFirstname(dto.Firstname);
+			item.SetMiddlename(dto.Middlename);
+			item.SetLastname(dto.Lastname);
+			item.SetCallsign(dto.Callsign);
+			item.SetSexId(dto.SexId);
+
+			await _studentCrudService.UpdateAsync(item);
 
 			return Ok("Updated successfully");
 		}

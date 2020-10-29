@@ -40,16 +40,8 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAsync(GroupDto dto)
 		{
-			var group = dto.FromDto();
-
-			try
-			{
-				await _groupCrudService.AddAsync(group);
-			}
-			catch (Exception)
-			{
-				return BadRequest();
-			}
+			var item = new Group(dto.Name);
+			await _groupCrudService.AddAsync(item);
 
 			return Ok("Updated successfully");
 		}
@@ -61,19 +53,12 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateAsync(GroupDto dto)
 		{
-			var item = dto.FromDto();
+			var item = await _groupCrudService.GetByIdAsync(dto.Id);
+			if (item is null)
+				return NotFound();
 
-			try
-			{
-				await _groupCrudService.UpdateAsync(item);
-			}
-			catch (Exception)
-			{
-				if ((await _groupCrudService.GetByIdAsync(item.Id)) is null)
-					return NotFound();
-				else
-					throw;
-			}
+			item.SetName(dto.Name);
+			await _groupCrudService.UpdateAsync(item);
 
 			return Ok("Updated successfully");
 		}

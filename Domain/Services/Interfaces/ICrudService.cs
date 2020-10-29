@@ -11,7 +11,7 @@ namespace Velvetech.Domain.Services.Interfaces
 	public interface ICrudService<TEntity, in TKey>  where TEntity : Entity<TKey>
 	{
 		public Task<TEntity> GetByIdAsync(Guid id);
-		public Task<TEntity> GetByIdAsync(Guid id, ISpecification<TEntity> specification);
+		public Task<TEntity> FirstOrDefault(Guid id, ISpecification<TEntity> specification);
 
 		public IAsyncEnumerable<TEntity> ListAsync();
 		public IAsyncEnumerable<TEntity> ListAsync(ISpecification<TEntity> specification);
