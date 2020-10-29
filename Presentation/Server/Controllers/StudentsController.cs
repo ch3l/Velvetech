@@ -153,7 +153,6 @@ namespace Velvetech.Presentation.Server.Controllers
 			return Ok("Updated successfully");
 		}
 
-
 		// PUT: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -168,15 +167,14 @@ namespace Velvetech.Presentation.Server.Controllers
 			}
 			catch (Exception)
 			{
-				if ((await _studentCrudService.GetByIdAsync(item.Id)) is null)
+				if (await _studentCrudService.GetByIdAsync(item.Id) is null)
 					return NotFound();
-				else
-					throw;
+				
+				throw;
 			}
 
 			return Ok("Updated successfully");
 		}
-
 
 		// DELETE: api/Students/5
 		[HttpDelete("{id}")]
