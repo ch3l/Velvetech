@@ -38,12 +38,12 @@ namespace Velvetech.Presentation.Server.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<IActionResult> AddAsync(GroupDto dto)
+		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
 		{
-			var item = new Group(dto.Name);
-			await _groupCrudService.AddAsync(item);
+			var group = new Group(dto.Name);
+			group = await _groupCrudService.AddAsync(group);
 
-			return Ok("Updated successfully");
+			return Ok(group);
 		}
 
 
@@ -51,16 +51,17 @@ namespace Velvetech.Presentation.Server.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut]
-		public async Task<IActionResult> UpdateAsync(GroupDto dto)
+		public async Task<ActionResult<Group>> UpdateAsync(GroupDto dto)
 		{
-			var item = await _groupCrudService.GetByIdAsync(dto.Id);
-			if (item is null)
+			var group = await _groupCrudService.GetByIdAsync(dto.Id);
+			if (group is null)
 				return NotFound();
 
-			item.SetName(dto.Name);
-			await _groupCrudService.UpdateAsync(item);
+			group.SetName(dto.Name);
 
-			return Ok("Updated successfully");
+			await _groupCrudService.UpdateAsync(group);
+
+			return Ok(group);
 		}
 
 		// PUT: api/Groups/AddStudent

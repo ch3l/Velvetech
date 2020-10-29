@@ -86,7 +86,7 @@ else
 					<td>@(string.Join(", ", student.Groups))</td>
 					<td>
 						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
+						<button class="btn btn-primary" @onclick="async () => await DeleteAsync(i)">Remove</button>
 					</td>
 				</tr>
 			}
@@ -147,7 +147,7 @@ else
 		EditComponent.Open();
 	}
 
-	async Task RemoveAsync(int index)
+	async Task DeleteAsync(int index)
 	{
 		var guid = page.Items[index].Id;
 		await Http.DeleteAsync($"api/Students/Delete/{guid}");

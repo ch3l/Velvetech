@@ -133,40 +133,41 @@ namespace Velvetech.Presentation.Server.Controllers
 			return await _studentCrudService.CountAsync();
 		}
 
-		// PUT: api/Students
+		// PUT: api/Students/Add
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<IActionResult> AddAsync(StudentDto dto)
+		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
 			var student = new Student(dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
-			await _studentCrudService.AddAsync(student);
+			student = await _studentCrudService.AddAsync(student);
 
-			return Ok("Updated successfully");
+			var response = student.ToDto();
+			return Ok(response);
 		}
 
 		// PUT: api/Students
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut]
-		public async Task<IActionResult> UpdateAsync(StudentDto dto)
+		public async Task<ActionResult<Student>> UpdateAsync(StudentDto dto)
 		{
-			var item = await _studentCrudService.GetByIdAsync(dto.Id);
-			if (item is null)
+			var student = await _studentCrudService.GetByIdAsync(dto.Id);
+			if (student is null)
 				return NotFound();
 
-			item.SetFirstname(dto.Firstname);
-			item.SetMiddlename(dto.Middlename);
-			item.SetLastname(dto.Lastname);
-			item.SetCallsign(dto.Callsign);
-			item.SetSexId(dto.SexId);
+			student.SetFirstname(dto.Firstname);
+			student.SetMiddlename(dto.Middlename);
+			student.SetLastname(dto.Lastname);
+			student.SetCallsign(dto.Callsign);
+			student.SetSexId(dto.SexId);
 
-			await _studentCrudService.UpdateAsync(item);
+			await _studentCrudService.UpdateAsync(student);
 
-			return Ok("Updated successfully");
+			return Ok(student);
 		}
 
-		// DELETE: api/Students/5
+		// DELETE: api/Students/Delete/{GUID}
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{
