@@ -91,58 +91,14 @@ namespace Velvetech.Domain.Entities
 				ValidationFail(nameof(SexId), $"{sexId} is incorrect SexId value");
 		}
 
-		private void ValidateCallsign(string callsign)
-		{
-			if (callsign is null)
-				return;
-
-			if (callsign == string.Empty)
-				ValidationFail(nameof(Callsign), $"{nameof(Callsign)} is empty");
-
-			if (callsign.Trim() == string.Empty)
-				ValidationFail(nameof(Callsign), $"Value \"{callsign}\" of property {nameof(Callsign)} consists of whitespaces only");
-
-			if (callsign.Length < 6)
-				ValidationFail(nameof(Callsign), $"Length of {nameof(Callsign)}'s value\"{callsign}\" is less than 6");
-
-			if (callsign.Length > 16)
-				ValidationFail(nameof(Callsign), $"Length of {nameof(Callsign)}'s value\"{callsign}\" is over 16");
-		}
-
 		private void ValidateFirstname(string firstname)
 		{
-			if (firstname is null)
-			{
-				ValidationFail(nameof(Firstname), $"{nameof(Firstname)} is null");
+			if (Validation.IsNull(firstname, nameof(Firstname)))
 				return;
-			}
-
-			if (firstname == string.Empty)
-				ValidationFail(nameof(Firstname), $"{nameof(Firstname)} is empty");
-
-			if (firstname.Trim() == string.Empty)
-				ValidationFail(nameof(Firstname), $"Value \"{firstname}\" of property {nameof(Firstname)} consists of whitespaces only");
-
-			if (firstname.Length > 40)
-				ValidationFail(nameof(Firstname), $"Length of {nameof(Firstname)}'s value\"{firstname}\" is over 40");
-		}
-
-		private void ValidateLastname(string lastname)
-		{
-			if (lastname is null)
-			{
-				ValidationFail(nameof(Lastname), $"{nameof(Lastname)} is null");
-				return;
-			}
-
-			if (lastname == string.Empty)
-				ValidationFail(nameof(Lastname), $"{nameof(Lastname)} is empty");
-
-			if (lastname.Trim() == string.Empty)
-				ValidationFail(nameof(Lastname), $"Value \"{lastname}\" of property {nameof(Lastname)} consists of whitespaces only");
-
-			if (lastname.Length > 40)
-				ValidationFail(nameof(Lastname), $"Length of {nameof(Lastname)}'s value\"{lastname}\" is over 40");
+				
+			Validation.IsEmpty(firstname, nameof(Firstname));
+			Validation.IsWhiteSpaces(firstname, nameof(Firstname));
+			Validation.IsLengthOver(firstname, 40, nameof(Firstname));
 		}
 
 		private void ValidateMiddlename(string middlename)
@@ -150,14 +106,29 @@ namespace Velvetech.Domain.Entities
 			if (middlename is null)
 				return;
 
-			if (middlename == string.Empty)
-				ValidationFail(nameof(Middlename), $"{nameof(Middlename)} is empty");
+			Validation.IsEmpty(middlename, nameof(Middlename));
+			Validation.IsWhiteSpaces(middlename, nameof(Middlename));
+			Validation.IsLengthOver(middlename, 60, nameof(Middlename));
+		}
 
-			if (middlename.Trim() == string.Empty)
-				ValidationFail(nameof(Middlename), $"Value \"{middlename}\" of property {nameof(Middlename)} consists of whitespaces only");
+		private void ValidateLastname(string lastname)
+		{
+			if (Validation.IsNull(lastname, nameof(Lastname)))
+				return;
+				
+			Validation.IsEmpty(lastname, nameof(Lastname));
+			Validation.IsWhiteSpaces(lastname, nameof(Lastname));
+			Validation.IsLengthOver(lastname, 40, nameof(Lastname));
+		}
+		private void ValidateCallsign(string callsign)
+		{
+			if (callsign is null)
+				return;
 
-			if (middlename.Length > 60)
-				ValidationFail(nameof(Middlename), $"Length of {nameof(Middlename)}'s value\"{middlename}\" is over 60");
+			Validation.IsEmpty(callsign, nameof(Callsign));
+			Validation.IsWhiteSpaces(callsign, nameof(Callsign));
+			Validation.IsLengthLess(callsign, 6, nameof(Callsign));
+			Validation.IsLengthOver(callsign, 16, nameof(Callsign));
 		}
 	}
 }
