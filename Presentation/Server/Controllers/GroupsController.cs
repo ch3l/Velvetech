@@ -40,10 +40,19 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
 		{
-			var group = new Group(dto.Name);
-			group = await _groupCrudService.AddAsync(group);
+			var entry = new Group();
 
-			return Ok(group);
+			entry.SetName(dto.Name);
+
+			if (entry.HasValidationErrors)
+			{
+				var errors = entry.Errors;
+				var validationProblemDetails = new ValidationProblemDetails(errors);
+				return BadRequest(validationProblemDetails);
+			}
+
+			entry = await _groupCrudService.AddAsync(entry);
+			return Ok(entry);
 		}
 
 
@@ -53,15 +62,21 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPut]
 		public async Task<ActionResult<Group>> UpdateAsync(GroupDto dto)
 		{
-			var group = await _groupCrudService.GetByIdAsync(dto.Id);
-			if (group is null)
+			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
+			if (entry is null)
 				return NotFound();
 
-			group.SetName(dto.Name);
+			entry.SetName(dto.Name);
 
-			await _groupCrudService.UpdateAsync(group);
+			if (entry.HasValidationErrors)
+			{
+				var errors = entry.Errors;
+				var validationProblemDetails = new ValidationProblemDetails(errors);
+				return BadRequest(validationProblemDetails);
+			}
 
-			return Ok(group);
+			await _groupCrudService.UpdateAsync(entry);
+			return Ok(entry);
 		}
 
 		// PUT: api/Groups/AddStudent

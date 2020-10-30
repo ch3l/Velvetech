@@ -139,23 +139,23 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
-			var student = new Student();
+			var entry = new Student();
 
-			student.SetFirstname(dto.Firstname);
-			student.SetMiddlename(dto.Middlename);
-			student.SetLastname(dto.Lastname);
-			student.SetCallsign(dto.Callsign);
-			student.SetSexId(dto.SexId);
+			entry.SetFirstname(dto.Firstname);
+			entry.SetMiddlename(dto.Middlename);
+			entry.SetLastname(dto.Lastname);
+			entry.SetCallsign(dto.Callsign);
+			entry.SetSexId(dto.SexId);
 
-			if (student.HasValidationErrors)
+			if (entry.HasValidationErrors)
 			{
-				var errors = student.Errors;
+				var errors = entry.Errors;
 				var validationProblemDetails = new ValidationProblemDetails(errors);
 				return BadRequest(validationProblemDetails);
 			}
 
-			student = await _studentCrudService.AddAsync(student);
-			return Ok(student);
+			entry = await _studentCrudService.AddAsync(entry);
+			return Ok(entry);
 		}
 
 		// PUT: api/Students
@@ -164,25 +164,25 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPut]
 		public async Task<ActionResult<Student>> UpdateAsync(StudentDto dto)
 		{
-			var student = await _studentCrudService.GetByIdAsync(dto.Id);
-			if (student is null)
+			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
+			if (entry is null)
 				return NotFound();
 
-			student.SetFirstname(dto.Firstname);
-			student.SetMiddlename(dto.Middlename);
-			student.SetLastname(dto.Lastname);
-			student.SetCallsign(dto.Callsign);
-			student.SetSexId(dto.SexId);
+			entry.SetFirstname(dto.Firstname);
+			entry.SetMiddlename(dto.Middlename);
+			entry.SetLastname(dto.Lastname);
+			entry.SetCallsign(dto.Callsign);
+			entry.SetSexId(dto.SexId);
 
-			if (student.HasValidationErrors)
+			if (entry.HasValidationErrors)
 			{
-				var errors = student.Errors;
+				var errors = entry.Errors;
 				var validationProblemDetails = new ValidationProblemDetails(errors);
 				return BadRequest(validationProblemDetails);
 			}
 
-			await _studentCrudService.UpdateAsync(student);
-			return Ok(student);
+			await _studentCrudService.UpdateAsync(entry);
+			return Ok(entry);
 		}
 
 		// DELETE: api/Students/Delete/{GUID}
