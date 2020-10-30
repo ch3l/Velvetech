@@ -8,6 +8,7 @@ using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Common.Validation;
 
 namespace Velvetech.Data
 {
@@ -25,6 +26,15 @@ namespace Velvetech.Data
 			_dbContext = dbContext;
 		}
 
+		void CheckIfValidatable(TEntity entity)
+		{
+			if (entity is IValidatableEntity validatableEntity &&
+			    validatableEntity.HasValidationErrors)
+			{
+				throw new ValidationException(validatableEntity);
+			}
+		}
+
 		public async Task<TEntity> GetById(TKey id) =>
 			await GetEntity().FindAsync(id);
 
@@ -39,6 +49,8 @@ namespace Velvetech.Data
 
 		public async Task<TEntity> AddAsync(TEntity entity)
 		{
+			CheckIfValidatable(entity);
+
 			await _dbContext.Set<TEntity>().AddAsync(entity);
 			await _dbContext.SaveChangesAsync();
 
@@ -47,6 +59,8 @@ namespace Velvetech.Data
 
 		public async Task UpdateAsync(TEntity entity)
 		{
+			CheckIfValidatable(entity);
+
 			_dbContext.Entry(entity).State = EntityState.Modified;
 			await _dbContext.SaveChangesAsync();
 		}

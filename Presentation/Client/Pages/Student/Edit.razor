@@ -142,4 +142,9 @@
 		_modalClass = "";
 		StateHasChanged();
 	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.FromResult(_errorMessage = "");
+	}
 }

@@ -11,7 +11,7 @@ namespace Velvetech.Domain.Common
 		{
 		}
 
-		public TKey Id { get; set; }
+		public TKey Id { get; private set; }
 		 
 		public override int GetHashCode()
 		{

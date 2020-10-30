@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 using LinqKit;
+
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Common.Validation;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Student : Entity<Guid>, IAggregateRoot
+	public class Student : ValidatableEntity<Guid>, IAggregateRoot
 	{
 		public string Firstname { get; private set; }
 		public string Middlename { get; private set; }
 		public string Lastname { get; private set; }
-		
+
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
@@ -20,17 +25,8 @@ namespace Velvetech.Domain.Entities
 
 		private readonly List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
-			  		  
 
-		public Student(int sexId, string firstname, string middlename, string lastname, string callsign)
-		{
-			SetSexId(sexId);
-			SetFirstname(firstname);
-			SetMiddlename(middlename);
-			SetLastname(lastname);
-			SetCallsign(callsign);
-		}
-
+		
 		public bool ExcludeFromAllGroups()
 		{
 			if (_grouping.Count > 0)
@@ -59,12 +55,38 @@ namespace Velvetech.Domain.Entities
 
 		public void SetCallsign(string callsign)
 		{
+			ValidateCallsign(callsign);
+			if (HasValidationErrors)
+				return;
+
 			Callsign = callsign;
 		}
 
 		public void SetSexId(int sexId)
 		{
+			ValidateSexId(sexId);
+			if (HasValidationErrors)
+				return;
+
 			SexId = sexId;
+		}
+
+		private void ValidateSexId(int sexId)
+		{
+			if (sexId < 1 || sexId > 2)
+				ValidationFail(nameof(SexId), $"{sexId} is incorrect SexId value");
+		}
+
+		private void ValidateCallsign(string callsign)
+		{
+			if (callsign is null)
+				return;
+
+			if (callsign.Length < 6)
+				ValidationFail(nameof(Callsign), $"Length of Callsign \"{callsign}\" is less than 6");
+
+			if (callsign.Length > 16)
+				ValidationFail(nameof(Callsign), $"Length of Callsign \"{callsign}\" is over 16");
 		}
 	}
 }

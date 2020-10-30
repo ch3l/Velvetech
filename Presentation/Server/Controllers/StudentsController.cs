@@ -139,11 +139,23 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
-			var student = new Student(dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
-			student = await _studentCrudService.AddAsync(student);
+			var student = new Student();
 
-			var response = student.ToDto();
-			return Ok(response);
+			student.SetFirstname(dto.Firstname);
+			student.SetMiddlename(dto.Middlename);
+			student.SetLastname(dto.Lastname);
+			student.SetCallsign(dto.Callsign);
+			student.SetSexId(dto.SexId);
+
+			if (student.HasValidationErrors)
+			{
+				var errors = student.Errors;
+				var validationProblemDetails = new ValidationProblemDetails(errors);
+				return BadRequest(validationProblemDetails);
+			}
+
+			student = await _studentCrudService.AddAsync(student);
+			return Ok(student);
 		}
 
 		// PUT: api/Students
@@ -162,8 +174,14 @@ namespace Velvetech.Presentation.Server.Controllers
 			student.SetCallsign(dto.Callsign);
 			student.SetSexId(dto.SexId);
 
-			await _studentCrudService.UpdateAsync(student);
+			if (student.HasValidationErrors)
+			{
+				var errors = student.Errors;
+				var validationProblemDetails = new ValidationProblemDetails(errors);
+				return BadRequest(validationProblemDetails);
+			}
 
+			await _studentCrudService.UpdateAsync(student);
 			return Ok(student);
 		}
 
