@@ -131,6 +131,7 @@
 
 	public void Open()
 	{
+		_errorMessage = "";
 		_modalDisplay = "block;";
 		_modalClass = "Show";
 		StateHasChanged();
@@ -141,10 +142,5 @@
 		_modalDisplay = "none";
 		_modalClass = "";
 		StateHasChanged();
-	}
-
-	protected override async Task OnInitializedAsync()
-	{
-		await Task.FromResult(_errorMessage = "");
 	}
 }

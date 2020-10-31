@@ -10,15 +10,15 @@ using LinqKit;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Student : ValidatableEntity<Guid>, IAggregateRoot
+	public class Student : ValidatableEntity<Student, Guid>, IAggregateRoot
 	{
 		public string Firstname { get; private set; }
 		public string Middlename { get; private set; }
 		public string Lastname { get; private set; }
-
 		public string Callsign { get; private set; }
 
 		public int SexId { get; private set; }
@@ -26,8 +26,7 @@ namespace Velvetech.Domain.Entities
 
 		private readonly List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
-
-		
+	
 		public bool ExcludeFromAllGroups()
 		{
 			if (_grouping.Count > 0)
@@ -41,7 +40,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetFirstname(string firstName)
 		{
-			ValidateFirstname(firstName);
+			Validation.Firstname(firstName, nameof(Firstname));
 			if (HasValidationErrors)
 				return;
 			
@@ -50,17 +49,16 @@ namespace Velvetech.Domain.Entities
 
 		public void SetMiddlename(string middlename)
 		{
-			ValidateMiddlename(middlename);
+			Validation.Middlename(middlename, nameof(Middlename));
 			if (HasValidationErrors)
 				return;
-			
 
 			Middlename = middlename;
 		}
 
 		public void SetLastname(string lastname)
 		{
-			ValidateLastname(lastname);
+			Validation.Lastname(lastname, nameof(Lastname));
 			if (HasValidationErrors)
 				return;
 
@@ -69,7 +67,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetCallsign(string callsign)
 		{
-			ValidateCallsign(callsign);
+			Validation.Callsign(callsign, nameof(Callsign));
 			if (HasValidationErrors)
 				return;
 
@@ -78,57 +76,11 @@ namespace Velvetech.Domain.Entities
 
 		public void SetSexId(int sexId)
 		{
-			ValidateSexId(sexId);
+			Validation.SexId(sexId, nameof(SexId));
 			if (HasValidationErrors)
 				return;
 
 			SexId = sexId;
-		}
-
-		private void ValidateSexId(int sexId)
-		{
-			if (sexId < 1 || sexId > 2)
-				ValidationFail(nameof(SexId), $"{sexId} is incorrect SexId value");
-		}
-
-		private void ValidateFirstname(string firstname)
-		{
-			if (Validation.IsNull(firstname, nameof(Firstname)))
-				return;
-				
-			Validation.IsEmpty(firstname, nameof(Firstname));
-			Validation.IsWhiteSpaces(firstname, nameof(Firstname));
-			Validation.IsLengthOver(firstname, 40, nameof(Firstname));
-		}
-
-		private void ValidateMiddlename(string middlename)
-		{
-			if (middlename is null)
-				return;
-
-			Validation.IsEmpty(middlename, nameof(Middlename));
-			Validation.IsWhiteSpaces(middlename, nameof(Middlename));
-			Validation.IsLengthOver(middlename, 60, nameof(Middlename));
-		}
-
-		private void ValidateLastname(string lastname)
-		{
-			if (Validation.IsNull(lastname, nameof(Lastname)))
-				return;
-				
-			Validation.IsEmpty(lastname, nameof(Lastname));
-			Validation.IsWhiteSpaces(lastname, nameof(Lastname));
-			Validation.IsLengthOver(lastname, 40, nameof(Lastname));
-		}
-		private void ValidateCallsign(string callsign)
-		{
-			if (callsign is null)
-				return;
-
-			Validation.IsEmpty(callsign, nameof(Callsign));
-			Validation.IsWhiteSpaces(callsign, nameof(Callsign));
-			Validation.IsLengthLess(callsign, 6, nameof(Callsign));
-			Validation.IsLengthOver(callsign, 16, nameof(Callsign));
 		}
 	}
 }

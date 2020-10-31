@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+
 using JetBrains.Annotations;
 
 namespace Velvetech.Domain.Common.Validation
@@ -12,20 +12,22 @@ namespace Velvetech.Domain.Common.Validation
 		public IDictionary<string, string[]> Errors { get; }
 	}
 
-	public class ValidationEntryPoint<TKey>
+	public class ValidationEntryPoint<TEntity, TKey>
+		where TEntity : Entity<TKey>
 	{
-		internal ValidatableEntity<TKey> Entity { get; private set; }
+		internal ValidatableEntity<TEntity, TKey> Entity { get; private set; }
 
-		public ValidationEntryPoint([NotNull] ValidatableEntity<TKey> entity)
+		public ValidationEntryPoint([NotNull] ValidatableEntity<TEntity, TKey> entity)
 		{
 			Entity = entity ?? throw new ArgumentNullException(nameof(entity));
 		}
 	}
 
-	public abstract class ValidatableEntity<TKey> : Entity<TKey>, IValidatableEntity
+	public abstract class ValidatableEntity<TEntity, TKey> : Entity<TKey>, IValidatableEntity
+		where TEntity : Entity<TKey>
 	{
 		private Dictionary<string, List<string>> _errors;
-		private ValidationEntryPoint<TKey> _validation;
+		private ValidationEntryPoint<TEntity, TKey> _validation;
 
 		public bool HasValidationErrors => _errors != null && _errors.Count > 0;
 
@@ -44,14 +46,14 @@ namespace Velvetech.Domain.Common.Validation
 
 		public IDictionary<string, string[]> Errors =>
 			_errors is null
-				? new Dictionary<string, string[]>() 
+				? new Dictionary<string, string[]>()
 				: _errors.ToDictionary(
 					pair => pair.Key,
 					pair => pair.Value.ToArray());
 
-		protected ValidationEntryPoint<TKey> Validation
+		protected ValidationEntryPoint<TEntity, TKey> Validation
 		{
-			get => _validation ??= new ValidationEntryPoint<TKey>(this);
+			get => _validation ??= new ValidationEntryPoint<TEntity, TKey>(this);
 			set => _validation = value;
 		}
 	}

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Group : ValidatableEntity<Guid>, IAggregateRoot
+	public class Group : ValidatableEntity<Group, Guid>, IAggregateRoot
 	{
 		public string Name { get; private set; }
 
@@ -18,7 +16,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetName(string name)
 		{
-			ValidateName(name);
+			Validation.Name(name, nameof(Name));
 			if (HasValidationErrors)
 				return;
 
@@ -46,24 +44,6 @@ namespace Velvetech.Domain.Entities
 			}
 
 			return false;
-		}
-
-		private void ValidateName(string name)
-		{
-			if (name is null)
-			{
-				ValidationFail(nameof(Name), $"{nameof(Name)} is null");
-				return;
-			}
-
-			if (name == string.Empty)
-				ValidationFail(nameof(Name), $"{nameof(Name)} is empty");
-
-			if (name.Trim() == string.Empty)
-				ValidationFail(nameof(Name), $"Value \"{name}\" of property {nameof(Name)} consists of whitespaces only");
-
-			if (name.Length > 25)
-				ValidationFail(nameof(Name), $"Length {nameof(Name)} value \"{name}\" is over 25");
 		}
 	}
 }
