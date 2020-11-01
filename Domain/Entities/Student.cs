@@ -40,7 +40,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetFirstname(string firstName)
 		{
-			Validator.Firstname(firstName, nameof(Firstname));
+			Validate.Firstname(firstName);
 			if (HasValidationErrors)
 				return;
 			
@@ -49,7 +49,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetMiddlename(string middlename)
 		{
-			Validator.Middlename(ref middlename, nameof(Middlename));
+			Validate.Middlename(ref middlename);
 			if (HasValidationErrors)
 				return;
 
@@ -58,7 +58,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetLastname(string lastname)
 		{
-			Validator.Lastname(lastname, nameof(Lastname));
+			Validate.Lastname(lastname);
 			if (HasValidationErrors)
 				return;
 
@@ -67,7 +67,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetCallsign(string callsign)
 		{
-			Validator.Callsign(ref callsign, nameof(Callsign));
+			Validate.Callsign(ref callsign);
 			if (HasValidationErrors)
 				return;
 
@@ -76,7 +76,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetSexId(int sexId)
 		{
-			Validator.SexId(sexId, nameof(SexId));
+			Validate.SexId(sexId);
 			if (HasValidationErrors)
 				return;
 

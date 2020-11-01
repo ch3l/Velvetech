@@ -6,8 +6,10 @@ namespace Velvetech.Domain.Entities.Validations
 {
 	public class StudentValidator : Validator
 	{
-		public void Firstname(string value, string propertyName)
+		public void Firstname(string value)
 		{
+			var propertyName = nameof(Firstname);
+
 			if (IsNull(value, propertyName))
 				return;
 
@@ -18,8 +20,10 @@ namespace Velvetech.Domain.Entities.Validations
 			IsExceedSize(value, 40, propertyName);
 		}
 
-		public void Middlename(ref string value, string propertyName)
+		public void Middlename(ref string value)
 		{
+			var propertyName = nameof(Middlename);
+
 			if (value is null)
 				return;
 
@@ -30,8 +34,10 @@ namespace Velvetech.Domain.Entities.Validations
 			IsExceedSize(value, 60, propertyName);
 		}
 
-		public void Lastname(string value, string propertyName)
+		public void Lastname(string value)
 		{
+			var propertyName = nameof(Lastname);
+
 			if (IsNull(value, propertyName))
 				return;
 
@@ -42,8 +48,10 @@ namespace Velvetech.Domain.Entities.Validations
 			IsExceedSize(value, 40, propertyName);
 		}
 
-		public void Callsign(ref string value, string propertyName)
+		public void Callsign(ref string value)
 		{
+			var propertyName = nameof(Callsign);
+
 			if (value is null)
 				return;
 
@@ -54,9 +62,9 @@ namespace Velvetech.Domain.Entities.Validations
 			IsCountOutOfRange(value, 6, 16, propertyName);
 		}
 
-		public void SexId(int sexId, string propertyName)
+		public void SexId(int sexId)
 		{
-			IsOutOfRange(sexId, 1, 2, propertyName);
+			IsOutOfRange(sexId, 1, 2, nameof(sexId));
 		}
 	}
 }

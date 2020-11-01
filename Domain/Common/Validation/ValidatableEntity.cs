@@ -9,13 +9,13 @@ namespace Velvetech.Domain.Common.Validation
 	{
 		private TValidator _validation;
 
-		protected TValidator Validator
+		protected TValidator Validate
 		{
 			get => _validation ??= new TValidator();
 			set => _validation = value;
 		}
 
-		public bool HasValidationErrors => Validator?.HasValidationErrors ?? false;
-		public IDictionary<string, string[]> Errors => Validator?.Errors ?? new Dictionary<string, string[]>();
+		public bool HasValidationErrors => Validate?.HasValidationErrors ?? false;
+		public IDictionary<string, string[]> Errors => Validate?.Errors ?? new Dictionary<string, string[]>();
 	}
 }
