@@ -126,7 +126,10 @@
 			await OnSave.InvokeAsync(null);
 		}
 		else
-			_errorMessage = result.StatusCode.ToString();
+		{
+			var errors = await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>();
+			_errorMessage = string.Join(", ", errors.First().Value); // result.StatusCode.ToString();
+		}
 	}
 
 	public void Open()

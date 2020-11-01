@@ -177,8 +177,8 @@ namespace Velvetech.Presentation.Server.Controllers
 			if (entry.HasValidationErrors)
 			{
 				var errors = entry.Errors;
-				var validationProblemDetails = new ValidationProblemDetails(errors);
-				return BadRequest(validationProblemDetails);
+				//var validationProblemDetails = new ValidationProblemDetails(errors);
+				return BadRequest(errors);
 			}
 
 			await _studentCrudService.UpdateAsync(entry);

@@ -50,21 +50,21 @@ namespace Velvetech.Domain.Common.Validation
 		public void IsWhitespaces(string value, string propertyName)
 		{
 			if (value.Trim() == string.Empty)
-				ValidationFail(propertyName, $"{propertyName}'s value \"{value}\" consists of whitespaces only");
+				ValidationFail(propertyName, $"{propertyName} consists of whitespaces only");
 		}
 
 		public void IsLess<TValue>(TValue value, TValue compareTo, string propertyName)
 			where TValue : IComparable<TValue>
 		{
 			if (value.CompareTo(compareTo) < 0)
-				ValidationFail(propertyName, $"{propertyName}'s value\"{value}\" is less than {compareTo}");
+				ValidationFail(propertyName, $"{propertyName} is less than {compareTo}");
 		}
 
 		public void IsExceed<TValue>(TValue value, TValue compareTo, string propertyName)
 			where TValue : IComparable<TValue>
 		{
 			if (value.CompareTo(compareTo) > 0)
-				ValidationFail(propertyName, $"{propertyName}'s value\"{value}\" exceeds {compareTo}");
+				ValidationFail(propertyName, $"{propertyName} exceeds {compareTo}");
 		}
 
 		public void IsOutOfRange<TValue>(TValue value, TValue min, TValue max, string propertyName)
@@ -77,25 +77,25 @@ namespace Velvetech.Domain.Common.Validation
 		public void IsExceedSize<T>(ICollection<T> value, int compareTo, string propertyName)
 		{
 			if (value.Count > compareTo)
-				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" exceeds {compareTo}");
+				ValidationFail(propertyName, $"Length of {propertyName} exceeds {compareTo}");
 		}
 
 		public void IsExceedSize(string value, int compareTo, string propertyName)
 		{
 			if (value.Length> compareTo)
-				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" exceeds {compareTo}");
+				ValidationFail(propertyName, $"Length of {propertyName} exceeds {compareTo}");
 		}
 
 		public void IsLessThanSize<T>(ICollection<T> value, int compareTo, string propertyName)
 		{
 			if (value.Count < compareTo)
-				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" is less than {compareTo}");
+				ValidationFail(propertyName, $"Length of {propertyName} is less than {compareTo}");
 		}
 
 		public void IsLessThanSize(string value, int compareTo, string propertyName)
 		{
 			if (value.Length < compareTo)
-				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" is less than {compareTo}");
+				ValidationFail(propertyName, $"Length of {propertyName} is less than {compareTo}");
 		}
 
 		public void IsCountOutOfRange<TValue> (ICollection<TValue> value, int minLength, int maxLength, string propertyName)
