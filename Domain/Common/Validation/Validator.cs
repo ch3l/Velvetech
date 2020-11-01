@@ -80,13 +80,31 @@ namespace Velvetech.Domain.Common.Validation
 				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" exceeds {compareTo}");
 		}
 
+		public void IsExceedSize(string value, int compareTo, string propertyName)
+		{
+			if (value.Length> compareTo)
+				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" exceeds {compareTo}");
+		}
+
 		public void IsLessThanSize<T>(ICollection<T> value, int compareTo, string propertyName)
 		{
 			if (value.Count < compareTo)
 				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" is less than {compareTo}");
 		}
 
+		public void IsLessThanSize(string value, int compareTo, string propertyName)
+		{
+			if (value.Length < compareTo)
+				ValidationFail(propertyName, $"Length of {propertyName}'s value\"{value}\" is less than {compareTo}");
+		}
+
 		public void IsCountOutOfRange<TValue> (ICollection<TValue> value, int minLength, int maxLength, string propertyName)
+		{
+			IsLessThanSize(value, minLength, propertyName);
+			IsExceedSize(value, maxLength, propertyName);
+		}
+
+		public void IsCountOutOfRange(string value, int minLength, int maxLength, string propertyName)
 		{
 			IsLessThanSize(value, minLength, propertyName);
 			IsExceedSize(value, maxLength, propertyName);
