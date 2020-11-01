@@ -11,7 +11,7 @@ namespace Velvetech.Domain.Entities.Validations
 
 			IsEmpty(value, propertyName);
 			IsWhitespaces(value, propertyName);
-			IsLengthOver(value, 25, propertyName);
+			IsExceedSize(value, 25, propertyName);
 		}
 	}
 }
