@@ -7,7 +7,7 @@ using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Group : ValidatableEntity<Group, Guid>, IAggregateRoot
+	public class Group : ValidatableEntity<Guid, GroupValidator>, IAggregateRoot
 	{
 		public string Name { get; private set; }
 
@@ -16,7 +16,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetName(string name)
 		{
-			Validation.Name(name, nameof(Name));
+			Validator.Name(name, nameof(Name));
 			if (HasValidationErrors)
 				return;
 

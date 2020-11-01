@@ -38,6 +38,8 @@ namespace Velvetech.Presentation.Server
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
+
+			
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

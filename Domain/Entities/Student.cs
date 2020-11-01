@@ -14,7 +14,7 @@ using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Student : ValidatableEntity<Student, Guid>, IAggregateRoot
+	public class Student : ValidatableEntity<Guid, StudentValidator>, IAggregateRoot
 	{
 		public string Firstname { get; private set; }
 		public string Middlename { get; private set; }
@@ -40,7 +40,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetFirstname(string firstName)
 		{
-			Validation.Firstname(firstName, nameof(Firstname));
+			Validator.Firstname(firstName, nameof(Firstname));
 			if (HasValidationErrors)
 				return;
 			
@@ -49,7 +49,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetMiddlename(string middlename)
 		{
-			Validation.Middlename(middlename, nameof(Middlename));
+			Validator.Middlename(middlename, nameof(Middlename));
 			if (HasValidationErrors)
 				return;
 
@@ -58,7 +58,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetLastname(string lastname)
 		{
-			Validation.Lastname(lastname, nameof(Lastname));
+			Validator.Lastname(lastname, nameof(Lastname));
 			if (HasValidationErrors)
 				return;
 
@@ -67,7 +67,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetCallsign(string callsign)
 		{
-			Validation.Callsign(callsign, nameof(Callsign));
+			Validator.Callsign(callsign, nameof(Callsign));
 			if (HasValidationErrors)
 				return;
 
@@ -76,7 +76,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetSexId(int sexId)
 		{
-			Validation.SexId(sexId, nameof(SexId));
+			Validator.SexId(sexId, nameof(SexId));
 			if (HasValidationErrors)
 				return;
 
