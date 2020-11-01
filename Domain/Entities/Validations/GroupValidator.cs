@@ -9,7 +9,9 @@ namespace Velvetech.Domain.Entities.Validations
 			if (IsNull(value, propertyName))
 				return;
 
-			IsEmpty(value, propertyName);
+			if (IsEmpty(value, propertyName))
+				return;
+
 			IsWhitespaces(value, propertyName);
 			IsExceedSize(value, 25, propertyName);
 		}

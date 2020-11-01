@@ -148,11 +148,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
-			{
-				var errors = entry.Errors;
-				var validationProblemDetails = new ValidationProblemDetails(errors);
-				return BadRequest(validationProblemDetails);
-			}
+				return BadRequest(entry.Errors);
 
 			entry = await _studentCrudService.AddAsync(entry);
 			return Ok(entry);
@@ -175,11 +171,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
-			{
-				var errors = entry.Errors;
-				//var validationProblemDetails = new ValidationProblemDetails(errors);
-				return BadRequest(errors);
-			}
+				return BadRequest(entry.Errors);
 
 			await _studentCrudService.UpdateAsync(entry);
 			return Ok(entry);

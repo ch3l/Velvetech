@@ -49,7 +49,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetMiddlename(string middlename)
 		{
-			Validator.Middlename(middlename, nameof(Middlename));
+			Validator.Middlename(ref middlename, nameof(Middlename));
 			if (HasValidationErrors)
 				return;
 
@@ -67,7 +67,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetCallsign(string callsign)
 		{
-			Validator.Callsign(callsign, nameof(Callsign));
+			Validator.Callsign(ref callsign, nameof(Callsign));
 			if (HasValidationErrors)
 				return;
 

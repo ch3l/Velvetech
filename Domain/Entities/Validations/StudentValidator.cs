@@ -11,17 +11,21 @@ namespace Velvetech.Domain.Entities.Validations
 			if (IsNull(value, propertyName))
 				return;
 
-			IsEmpty(value, propertyName);
+			if (IsEmpty(value, propertyName))
+				return;
+			
 			IsWhitespaces(value, propertyName);
 			IsExceedSize(value, 40, propertyName);
 		}
 
-		public void Middlename(string value, string propertyName)
+		public void Middlename(ref string value, string propertyName)
 		{
 			if (value is null)
 				return;
 
-			IsEmpty(value, propertyName);
+			if (EmptyAsNull(ref value, propertyName))
+				return;
+
 			IsWhitespaces(value, propertyName);
 			IsExceedSize(value, 60, propertyName);
 		}
@@ -31,17 +35,21 @@ namespace Velvetech.Domain.Entities.Validations
 			if (IsNull(value, propertyName))
 				return;
 
-			IsEmpty(value, propertyName);
+			if (IsEmpty(value, propertyName))
+				return;
+			
 			IsWhitespaces(value, propertyName);
 			IsExceedSize(value, 40, propertyName);
 		}
 
-		public void Callsign(string value, string propertyName)
+		public void Callsign(ref string value, string propertyName)
 		{
 			if (value is null)
 				return;
 
-			IsEmpty(value, propertyName);
+			if (EmptyAsNull(ref value, propertyName))
+				return;
+			
 			IsWhitespaces(value, propertyName);
 			IsCountOutOfRange(value, 6, 16, propertyName);
 		}

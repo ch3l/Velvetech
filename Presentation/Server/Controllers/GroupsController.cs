@@ -45,11 +45,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)
-			{
-				var errors = entry.Errors;
-				var validationProblemDetails = new ValidationProblemDetails(errors);
-				return BadRequest(validationProblemDetails);
-			}
+				return BadRequest(entry.Errors);
 
 			entry = await _groupCrudService.AddAsync(entry);
 			return Ok(entry);
@@ -69,11 +65,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)
-			{
-				var errors = entry.Errors;
-				var validationProblemDetails = new ValidationProblemDetails(errors);
-				return BadRequest(validationProblemDetails);
-			}
+				return BadRequest(entry.Errors);
 
 			await _groupCrudService.UpdateAsync(entry);
 			return Ok(entry);
