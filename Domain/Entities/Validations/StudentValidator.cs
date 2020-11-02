@@ -8,7 +8,7 @@ namespace Velvetech.Domain.Entities.Validations
 	{
 		public void Firstname(string value)
 		{
-			var propertyName = nameof(Firstname);
+			const string propertyName = nameof(Firstname);
 
 			if (IsNull(value, propertyName))
 				return;
@@ -22,7 +22,7 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void Middlename(ref string value)
 		{
-			var propertyName = nameof(Middlename);
+			const string propertyName = nameof(Middlename);
 
 			if (value is null)
 				return;
@@ -36,7 +36,7 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void Lastname(string value)
 		{
-			var propertyName = nameof(Lastname);
+			const string propertyName = nameof(Lastname);
 
 			if (IsNull(value, propertyName))
 				return;
@@ -50,7 +50,7 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void Callsign(ref string value)
 		{
-			var propertyName = nameof(Callsign);
+			const string propertyName = nameof(Callsign);
 
 			if (value is null)
 				return;

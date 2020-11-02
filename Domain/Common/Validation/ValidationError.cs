@@ -31,8 +31,6 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			Value = value;
 		}
-
-		public abstract string ToDetailedString();
 	}
 
 	public class NullValidationError: ValidationError
@@ -59,11 +57,6 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			return "Is empty";
 		}
-
-		public override string ToDetailedString()
-		{
-			return $"{PropertyName} value is empty";
-		}
 	}
 
 	public class WhitespacesValidationError : DetailedValidationError<string>
@@ -76,11 +69,6 @@ namespace Velvetech.Domain.Common.Validation
 		public override string ToString()
 		{
 			return "Consists of whitespaces only";
-		}
-
-		public override string ToDetailedString()
-		{
-			return $"{PropertyName} value \"{Value}\" consists of whitespaces only";
 		}
 	}
 
@@ -105,16 +93,10 @@ namespace Velvetech.Domain.Common.Validation
 
 		public override string ToString()
 		{
-			return $"Is {ComparisonResult}";
-		}
-
-		public override string ToDetailedString()
-		{
 			return ComparisonResult switch
 			{
-				ComparisonResultType.Equals => $"{PropertyName} value \"{Value}\" {ComparisonResult} border value {Value}",
-				ComparisonResultType.Less => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
-				ComparisonResultType.More => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
+				ComparisonResultType.Less => $"{Value} is {ComparisonResult} than {ComparedWithValue}",
+				ComparisonResultType.More => $"{Value} is {ComparisonResult} than {ComparedWithValue}",
 				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
 			};
 		}
@@ -134,16 +116,10 @@ namespace Velvetech.Domain.Common.Validation
 
 		public override string ToString()
 		{
-			return $"Is {ComparisonResult}";
-		}
-
-		public override string ToDetailedString()
-		{
 			return ComparisonResult switch
 			{
-				ComparisonResultType.Equals => $"{PropertyName} length \"{Value}\" {ComparisonResult} border value {ComparedWithValue}",
-				ComparisonResultType.Less => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
-				ComparisonResultType.More => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
+				ComparisonResultType.Less => $"Length is {ComparisonResult} than {ComparedWithValue}",
+				ComparisonResultType.More => $"Length is {ComparisonResult} than {ComparedWithValue}",
 				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
 			};
 		}
