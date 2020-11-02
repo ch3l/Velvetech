@@ -13,7 +13,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 
 			IsWhitespaces(value, propertyName);
-			IsExceedSize(value, 25, propertyName);
+			IsMoreThanLength(value, 25, propertyName);
 		}
 	}
 }

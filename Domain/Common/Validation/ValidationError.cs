@@ -6,15 +6,17 @@ namespace Velvetech.Domain.Common.Validation
 {
 	public abstract class ValidationError
 	{
-		protected ValidationError(string name)
+		protected ValidationError(string propertyName)
 		{
-			PropertyName = name;
+			PropertyName = propertyName;
 		}
 
 		/// <summary>
-		/// Target property name
+		/// Target property propertyName
 		/// </summary>
 		public string PropertyName { get; }
+
+		public abstract override string ToString();
 	}
 
 	public abstract class DetailedValidationError<TValue> : ValidationError
@@ -30,14 +32,13 @@ namespace Velvetech.Domain.Common.Validation
 			Value = value;
 		}
 
-		public abstract override string ToString();
 		public abstract string ToDetailedString();
 	}
 
-	public class NullValidationError<TValue> : DetailedValidationError<TValue>
+	public class NullValidationError: ValidationError
 	{
-		public NullValidationError(string name, TValue value) 
-			: base(name, value)
+		public NullValidationError(string propertyName) 
+			: base(propertyName)
 		{
 		}
 
@@ -45,17 +46,12 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			return "Is null";
 		}
-
-		public override string ToDetailedString()
-		{
-			return $"{PropertyName} is null";
-		}
 	}
 
 	public class EmptyValidationError<TValue> : DetailedValidationError<TValue>
 	{
-		public EmptyValidationError(string name, TValue value)
-			: base(name, value)
+		public EmptyValidationError(string propertyName, TValue value)
+			: base(propertyName, value)
 		{
 		}
 
@@ -70,10 +66,10 @@ namespace Velvetech.Domain.Common.Validation
 		}
 	}
 
-	public class WhitespacesValidationError<TValue> : DetailedValidationError<TValue>
+	public class WhitespacesValidationError : DetailedValidationError<string>
 	{
-		public WhitespacesValidationError(string name, TValue value)
-			: base(name, value)
+		public WhitespacesValidationError(string propertyName, string value)
+			: base(propertyName, value)
 		{
 		}
 
@@ -88,13 +84,20 @@ namespace Velvetech.Domain.Common.Validation
 		}
 	}
 
+	public enum ComparisonResultType
+	{
+		Equals,
+		Less,
+		More
+	}
+
 	public class ComparisonValidationError<TValue> : DetailedValidationError<TValue>
 	{
 		public ComparisonResultType ComparisonResult { get; }
 		public TValue ComparedWithValue { get; }
 
-		public ComparisonValidationError(string name, TValue value, TValue comparedWithValue, ComparisonResultType comparisonResult)
-			: base(name, value)
+		public ComparisonValidationError(string propertyName, TValue value, TValue comparedWithValue, ComparisonResultType comparisonResult)
+			: base(propertyName, value)
 		{
 			ComparisonResult = comparisonResult;
 			ComparedWithValue = comparedWithValue;
@@ -109,18 +112,40 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			return ComparisonResult switch
 			{
-				ComparisonResultType.Equals => $"{PropertyName} value \"{Value}\" {ComparisonResult}",
+				ComparisonResultType.Equals => $"{PropertyName} value \"{Value}\" {ComparisonResult} border value {Value}",
 				ComparisonResultType.Less => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
 				ComparisonResultType.More => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
 				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
 			};
 		}
+	}
 
-		public enum ComparisonResultType
+	public class LengthComparisonValidationError<TValue> : DetailedValidationError<TValue>
+	{
+		public ComparisonResultType ComparisonResult { get; }
+		public TValue ComparedWithValue { get; }
+
+		public LengthComparisonValidationError(string propertyName, TValue value, TValue comparedWithValue, ComparisonResultType comparisonResult)
+			: base(propertyName, value)
 		{
-			Equals,
-			Less,
-			More
+			ComparisonResult = comparisonResult;
+			ComparedWithValue = comparedWithValue;
+		}
+
+		public override string ToString()
+		{
+			return $"Is {ComparisonResult}";
+		}
+
+		public override string ToDetailedString()
+		{
+			return ComparisonResult switch
+			{
+				ComparisonResultType.Equals => $"{PropertyName} length \"{Value}\" {ComparisonResult} border value {ComparedWithValue}",
+				ComparisonResultType.Less => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
+				ComparisonResultType.More => $"{PropertyName} value \"{Value}\" is {ComparisonResult} than {Value}",
+				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
+			};
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
-			IsExceedSize(value, 40, propertyName);
+			IsMoreThanLength(value, 40, propertyName);
 		}
 
 		public void Middlename(ref string value)
@@ -31,7 +31,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 
 			IsWhitespaces(value, propertyName);
-			IsExceedSize(value, 60, propertyName);
+			IsMoreThanLength(value, 60, propertyName);
 		}
 
 		public void Lastname(string value)
@@ -45,7 +45,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
-			IsExceedSize(value, 40, propertyName);
+			IsMoreThanLength(value, 40, propertyName);
 		}
 
 		public void Callsign(ref string value)
@@ -59,7 +59,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
-			IsCountOutOfRange(value, 6, 16, propertyName);
+			IsLengthOutOfRange(value, 6, 16, propertyName);
 		}
 
 		public void SexId(int sexId)
