@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Shared.Dtos;
 using Velvetech.Presentation.Shared.Requests;

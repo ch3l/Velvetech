@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Ardalis.Specification;
-
 using Velvetech.Domain.Common;
 
-namespace Velvetech.Domain.Services.Interfaces
+namespace Velvetech.Domain.Services.External.Interfaces
 {
 	public interface ICrudService<TEntity, in TKey>  where TEntity : Entity<TKey>
 	{

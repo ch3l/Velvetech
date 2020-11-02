@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Shared;
 using Velvetech.Presentation.Shared.Dtos;

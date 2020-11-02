@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Ardalis.Specification;
@@ -40,6 +42,12 @@ namespace Velvetech.Data
 
 		public async Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification) =>
 			await FromSpecification(specification).FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+		public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> condition, ISpecification<TEntity> specification) =>
+			await FromSpecification(specification).FirstOrDefaultAsync(condition);
+
+		public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> condition) =>
+			await GetEntity().FirstOrDefaultAsync(condition);
 
 		public IAsyncEnumerable<TEntity> ListAsync() =>
 			GetEntity().AsAsyncEnumerable();

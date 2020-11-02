@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External.Interfaces;
 
-namespace Velvetech.Domain.Services
+namespace Velvetech.Domain.Services.External
 {
 	public class ListService<TEntity, TKey> : IListService<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot

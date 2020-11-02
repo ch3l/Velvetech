@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 
-namespace Velvetech.Domain.Services
+namespace Velvetech.Domain.Services.External
 {
 	public class GroupCrudService : ICrudService<Group, Guid>
 	{

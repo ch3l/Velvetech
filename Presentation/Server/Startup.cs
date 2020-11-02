@@ -10,7 +10,8 @@ using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External;
+using Velvetech.Domain.Services.External.Interfaces;
 
 namespace Velvetech.Presentation.Server
 {

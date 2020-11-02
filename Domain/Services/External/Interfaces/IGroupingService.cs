@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Velvetech.Domain.Services.Interfaces
+namespace Velvetech.Domain.Services.External.Interfaces
 {
 	public interface IGroupingService
 	{

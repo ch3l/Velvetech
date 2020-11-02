@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.Interfaces;
+using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 
-namespace Velvetech.Domain.Services
+namespace Velvetech.Domain.Services.External
 {
 	public class GroupingService : IGroupingService
 	{
