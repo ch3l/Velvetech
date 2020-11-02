@@ -6,35 +6,49 @@ namespace Velvetech.Domain.Common.Validation
 {
 	public class Validator
 	{
-		private Dictionary<string, List<string>> _errors;
+		private Dictionary<string, List<string>> _textErrors;
+		private Dictionary<string, List<ValidationError>> _errors;
 
-		public bool HasValidationErrors => _errors != null && _errors.Count > 0;
+		public bool HasValidationErrors => _textErrors != null && _textErrors.Count > 0;
 
 		public IDictionary<string, string[]> Errors =>
-			_errors is null
+			_textErrors is null
 				? new Dictionary<string, string[]>()
-				: _errors.ToDictionary(
+				: _textErrors.ToDictionary(
 					pair => pair.Key,
 					pair => pair.Value.ToArray());
 
 		protected void ValidationFail(string propertyName, string error)
 		{
-			_errors ??= new Dictionary<string, List<string>>();
+			_textErrors ??= new Dictionary<string, List<string>>();
 
-			if (!_errors.TryGetValue(propertyName, out var errorsList))
+			if (!_textErrors.TryGetValue(propertyName, out var errorsList))
 			{
 				errorsList = new List<string>();
-				_errors[propertyName] = errorsList;
+				_textErrors[propertyName] = errorsList;
 			}
 
 			errorsList.Add(error);
 		}
 
+		protected void ValidationFail<TValue>(ValidationError validationError)
+		{
+			_errors ??= new Dictionary<string, List<ValidationError>>();
+
+			if (!_errors.TryGetValue(validationError.PropertyName, out var errorsList))
+			{
+				errorsList = new List<ValidationError>();
+				_errors[validationError.PropertyName] = errorsList;
+			}
+
+			errorsList.Add(validationError);
+		}  
+
 		public bool IsNull<TValue>(TValue value, string propertyName)
 		{
 			if (value is null)
 			{
-				ValidationFail(propertyName, $"{propertyName} is null");
+				ValidationFail(propertyName, $"Is null");
 				return true;
 			}
 
@@ -52,7 +66,7 @@ namespace Velvetech.Domain.Common.Validation
 			return false;
 		}
 
-		public bool EmptyAsNull(ref string value, string propertyName)
+		public bool EmptyAsNull(ref string value)
 		{
 			if (value == string.Empty)
 			{

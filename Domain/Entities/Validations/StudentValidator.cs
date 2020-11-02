@@ -27,7 +27,7 @@ namespace Velvetech.Domain.Entities.Validations
 			if (value is null)
 				return;
 
-			if (EmptyAsNull(ref value, propertyName))
+			if (EmptyAsNull(ref value))
 				return;
 
 			IsWhitespaces(value, propertyName);
@@ -55,7 +55,7 @@ namespace Velvetech.Domain.Entities.Validations
 			if (value is null)
 				return;
 
-			if (EmptyAsNull(ref value, propertyName))
+			if (EmptyAsNull(ref value))
 				return;
 			
 			IsWhitespaces(value, propertyName);
