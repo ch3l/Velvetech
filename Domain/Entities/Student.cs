@@ -26,7 +26,7 @@ namespace Velvetech.Domain.Entities
 
 		private readonly List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
-	
+
 		public bool ExcludeFromAllGroups()
 		{
 			if (_grouping.Count > 0)

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Data
 {

@@ -12,6 +12,8 @@ using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services;
 using Velvetech.Domain.Services.External;
 using Velvetech.Domain.Services.External.Interfaces;
+using Velvetech.Domain.Services.Internal;
+using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Presentation.Server
 {
@@ -39,8 +41,7 @@ namespace Velvetech.Presentation.Server
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
-
-			
+			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Velvetech.Domain.Common.Validation.Errors;
+using Velvetech.Domain.Common.Validation.Errors.Base;
 
 namespace Velvetech.Domain.Common.Validation
 {

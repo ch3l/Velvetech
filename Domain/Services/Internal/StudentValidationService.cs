@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ardalis.Specification;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Domain.Services.Internal
 {
-	class StudentValidationService: IValidationService<string>
+	public class StudentValidationService : IStudentValidationService
 	{
-		private IAsyncRepository<Student, Guid> _repository;
-		
+		private readonly IAsyncRepository<Student, Guid> _repository;
+
 		public StudentValidationService(IAsyncRepository<Student, Guid> repository)
 		{
 			_repository = repository;
 		}
 
-		public bool IsValueAlreadyExists(string value)
+		public bool CallsignExists(string value)
 		{
 			if (value == null)
 				return false;

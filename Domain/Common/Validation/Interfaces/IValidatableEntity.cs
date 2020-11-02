@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Velvetech.Domain.Common.Validation
+namespace Velvetech.Domain.Common.Validation.Interfaces
 {
 	public interface IValidatableEntity
 	{
