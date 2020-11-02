@@ -15,12 +15,12 @@ namespace Velvetech.Domain.Services.Internal
 			_repository = repository;
 		}
 
-		public bool CallsignExists(string value)
+		public async Task<bool> CallsignExistsAsync(string value)
 		{
 			if (value == null)
 				return false;
 
-			Student foundValue = null;//  await _repository.FirstOrDefault(student => student.Callsign.Equals(value));
+			Student foundValue = await _repository.FirstOrDefault(student => student.Callsign.Equals(value));
 			return foundValue != null;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Common.Validation.Errors;
@@ -69,9 +70,12 @@ namespace Velvetech.Domain.Entities.Validations
 			
 			IsWhitespaces(value, propertyName);
 			IsLengthOutOfRange(value, 6, 16, propertyName);
+		}
 
-			if (_studentValidationService.CallsignExists(value))
-				ValidationFail(new UniquenessError(propertyName));
+		public async Task CallsignUniqueness(string value)
+		{
+			if (await _studentValidationService.CallsignExistsAsync(value))
+				ValidationFail(new UniquenessError(nameof(Callsign)));
 		}
 
 		public void SexId(int sexId)

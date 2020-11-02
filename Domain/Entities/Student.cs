@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Entities.Validations;
@@ -58,9 +58,10 @@ namespace Velvetech.Domain.Entities
 			Lastname = lastname;
 		}
 
-		public void SetCallsign(string callsign)
+		public async Task SetCallsignAsync(string callsign)
 		{
 			Validate.Callsign(ref callsign);
+			await Validate.CallsignUniqueness(callsign);
 			if (HasValidationErrors)
 				return;
 

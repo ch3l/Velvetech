@@ -151,7 +151,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetFirstname(dto.Firstname);
 			entry.SetMiddlename(dto.Middlename);
 			entry.SetLastname(dto.Lastname);
-			entry.SetCallsign(dto.Callsign);
+			await entry.SetCallsignAsync(dto.Callsign);
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
@@ -177,7 +177,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetFirstname(dto.Firstname);
 			entry.SetMiddlename(dto.Middlename);
 			entry.SetLastname(dto.Lastname);
-			entry.SetCallsign(dto.Callsign);
+			await entry.SetCallsignAsync(dto.Callsign);
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
