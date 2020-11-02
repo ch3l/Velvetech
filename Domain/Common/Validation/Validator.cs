@@ -100,60 +100,60 @@ namespace Velvetech.Domain.Common.Validation
 			IsMoreThan(value, max, propertyName);
 		}
 
-		public void IsMoreThanSize<T>(ICollection<T> value, int compareTo, string propertyName)
+		public void IsBiggerThan<T>(ICollection<T> value, int comparisonValue, string propertyName)
 		{
-			if (value.Count > compareTo)
+			if (value.Count > comparisonValue)
 				ValidationFail(
 					new LengthComparisonValidationError<int>(
 						propertyName, 
 						value.Count,
-						compareTo,
+						comparisonValue,
 						ComparisonResultType.More));
 		}
 
-		public void IsMoreThanLength(string value, int compareTo, string propertyName)
+		public void IsLongerThan(string value, int comparisonValue, string propertyName)
 		{
-			if (value.Length > compareTo)
+			if (value.Length > comparisonValue)
 				ValidationFail(
 					new LengthComparisonValidationError<int>(
 						propertyName,
 						value.Length,
-						compareTo,
+						comparisonValue,
 						ComparisonResultType.More));
 		}
 
-		public void IsLessThanSize<T>(ICollection<T> value, int compareTo, string propertyName)
+		public void IsSmallerThan<T>(ICollection<T> value, int comparisonValue, string propertyName)
 		{
-			if (value.Count < compareTo)
+			if (value.Count < comparisonValue)
 				ValidationFail(
 					new LengthComparisonValidationError<int>(
 						propertyName,
 						value.Count,
-						compareTo,
+						comparisonValue,
 						ComparisonResultType.Less));
 		}
 
-		public void IsLessThanLength(string value, int compareTo, string propertyName)
+		public void IsShorterThan(string value, int comparisonValue, string propertyName)
 		{
-			if (value.Length < compareTo)
+			if (value.Length < comparisonValue)
 				ValidationFail(
 					new LengthComparisonValidationError<int>(
 						propertyName,
 						value.Length,
-						compareTo,
+						comparisonValue,
 						ComparisonResultType.Less));
 		}
 
 		public void IsSizeOutOfRange<TValue> (ICollection<TValue> value, int minLength, int maxLength, string propertyName)
 		{
-			IsLessThanSize(value, minLength, propertyName);
-			IsMoreThanSize(value, maxLength, propertyName);
+			IsSmallerThan(value, minLength, propertyName);
+			IsBiggerThan(value, maxLength, propertyName);
 		}
 
 		public void IsLengthOutOfRange(string value, int minLength, int maxLength, string propertyName)
 		{
-			IsLessThanLength(value, minLength, propertyName);
-			IsMoreThanLength(value, maxLength, propertyName);
+			IsShorterThan(value, minLength, propertyName);
+			IsLongerThan(value, maxLength, propertyName);
 		}
 	}
 }

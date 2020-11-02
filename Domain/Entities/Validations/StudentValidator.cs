@@ -17,7 +17,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
-			IsMoreThanLength(value, 40, propertyName);
+			IsLongerThan(value, 40, propertyName);
 		}
 
 		public void Middlename(ref string value)
@@ -31,7 +31,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 
 			IsWhitespaces(value, propertyName);
-			IsMoreThanLength(value, 60, propertyName);
+			IsLongerThan(value, 60, propertyName);
 		}
 
 		public void Lastname(string value)
@@ -45,7 +45,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
-			IsMoreThanLength(value, 40, propertyName);
+			IsLongerThan(value, 40, propertyName);
 		}
 
 		public void Callsign(ref string value)
