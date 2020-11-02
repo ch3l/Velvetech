@@ -7,13 +7,6 @@ namespace Velvetech.Domain.Entities.Validations
 {
 	public class StudentValidator : Validator
 	{
-		private IStudentValidationService _studentValidationService;
-
-		//public StudentValidator(IStudentValidationService studentValidationService)
-		//{
-		//	_studentValidationService = studentValidationService;
-		//}
-
 		public void Firstname(string value)
 		{
 			const string propertyName = nameof(Firstname);

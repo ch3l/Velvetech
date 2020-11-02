@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-using LinqKit;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
@@ -43,7 +36,7 @@ namespace Velvetech.Domain.Entities
 			Validate.Firstname(firstName);
 			if (HasValidationErrors)
 				return;
-			
+
 			Firstname = firstName;
 		}
 

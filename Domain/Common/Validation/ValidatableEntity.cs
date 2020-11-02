@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+
 using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Domain.Common.Validation

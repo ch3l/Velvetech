@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 
@@ -17,7 +18,9 @@ namespace Velvetech.Domain.Common.Validation
 				? new Dictionary<string, string[]>()
 				: _errors.ToDictionary(
 					pair => pair.Key,
-					pair => pair.Value.Select(error => error.ToString()).ToArray());
+					pair => pair.Value
+						.Select(error => error.ToString())
+						.ToArray());
 
 		private void ValidationFail(ValidationError validationError)
 		{
@@ -77,9 +80,9 @@ namespace Velvetech.Domain.Common.Validation
 			if (value.CompareTo(compareTo) < 0)
 				ValidationFail(
 					new ComparisonValidationError<TValue>(
-						propertyName, 
-						value, 
-						compareTo, 
+						propertyName,
+						value,
+						compareTo,
 						ComparisonResultType.Less));
 		}
 
@@ -89,9 +92,9 @@ namespace Velvetech.Domain.Common.Validation
 			if (value.CompareTo(compareTo) > 0)
 				ValidationFail(
 					new ComparisonValidationError<TValue>(
-						propertyName, 
-						value, 
-						compareTo, 
+						propertyName,
+						value,
+						compareTo,
 						ComparisonResultType.More));
 		}
 
@@ -107,7 +110,7 @@ namespace Velvetech.Domain.Common.Validation
 			if (value.Count > comparisonValue)
 				ValidationFail(
 					new LengthComparisonValidationError<int>(
-						propertyName, 
+						propertyName,
 						value.Count,
 						comparisonValue,
 						ComparisonResultType.More));
@@ -146,7 +149,7 @@ namespace Velvetech.Domain.Common.Validation
 						ComparisonResultType.Less));
 		}
 
-		public void IsSizeOutOfRange<TValue> (ICollection<TValue> value, int minLength, int maxLength, string propertyName)
+		public void IsSizeOutOfRange<TValue>(ICollection<TValue> value, int minLength, int maxLength, string propertyName)
 		{
 			IsSmallerThan(value, minLength, propertyName);
 			IsBiggerThan(value, maxLength, propertyName);
