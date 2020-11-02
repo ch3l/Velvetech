@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.Internal.Interfaces;
@@ -20,7 +20,8 @@ namespace Velvetech.Domain.Services.Internal
 			if (value == null)
 				return false;
 
-			return _repository.FirstOrDefault(student => student.Callsign.Equals(value)) != null;
+			Student foundValue = null;//  await _repository.FirstOrDefault(student => student.Callsign.Equals(value));
+			return foundValue != null;
 		}
 	}
 }

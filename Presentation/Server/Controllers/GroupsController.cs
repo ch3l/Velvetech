@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Shared.Dtos;
@@ -41,6 +42,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
 		{
 			var entry = new Group();
+			
+			var validator = new GroupValidator();
+			entry.SelectValidator(validator);
 
 			entry.SetName(dto.Name);
 
@@ -61,6 +65,9 @@ namespace Velvetech.Presentation.Server.Controllers
 			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
 				return NotFound();
+
+			var validator = new GroupValidator();
+			entry.SelectValidator(validator);
 
 			entry.SetName(dto.Name);
 

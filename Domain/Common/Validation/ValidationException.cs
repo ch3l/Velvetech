@@ -5,18 +5,11 @@ using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Domain.Common.Validation
 {
-	public class ValidationException : Exception
+	public class ValidatorMissingException : Exception
 	{
-		public ValidationException(IValidatableEntity entity)
+		public ValidatorMissingException(IValidatableEntity entity)
+			:base($"Entity \"{entity.GetType().FullName}\" has no selected validator")
 		{
-			var stringBuilder = new StringBuilder();
-
-			foreach (var (propertyName, errorsList) in entity.Errors)
-			{
-				stringBuilder.Append($"Property \"{propertyName}\" has following validation errors:\n");
-				foreach (var errorText in errorsList)
-					stringBuilder.Append(errorText);
-			}
 		}
 	}
 }

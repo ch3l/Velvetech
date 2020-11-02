@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Domain.Entities;
+using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
+using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Presentation.Shared;
 using Velvetech.Presentation.Shared.Dtos;
@@ -18,14 +20,16 @@ namespace Velvetech.Presentation.Server.Controllers
 	[ApiController]
 	public class StudentsController : ControllerBase
 	{
-		readonly ICrudService<Student, Guid> _studentCrudService;
-		readonly IListService<Sex, int> _sexList;
+		private readonly ICrudService<Student, Guid> _studentCrudService;
+		private readonly IStudentValidationService _studentValidationService;
+		private readonly IListService<Sex, int> _sexList;
 
 		public StudentsController(ICrudService<Student, Guid> studentCrudService,
-			IListService<Sex, int> sexList)
+			IListService<Sex, int> sexList, IStudentValidationService studentValidationService)
 		{
 			_studentCrudService = studentCrudService;
 			_sexList = sexList;
+			_studentValidationService = studentValidationService;
 		}
 
 		// GET: api/Test/Students
@@ -140,6 +144,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
 			var entry = new Student();
+			
+			var validator = new StudentValidator(_studentValidationService);
+			entry.SelectValidator(validator);
 
 			entry.SetFirstname(dto.Firstname);
 			entry.SetMiddlename(dto.Middlename);
@@ -163,6 +170,9 @@ namespace Velvetech.Presentation.Server.Controllers
 			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
 				return NotFound();
+
+			var validator = new StudentValidator(_studentValidationService);
+			entry.SelectValidator(validator);
 
 			entry.SetFirstname(dto.Firstname);
 			entry.SetMiddlename(dto.Middlename);

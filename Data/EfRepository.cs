@@ -32,9 +32,9 @@ namespace Velvetech.Data
 		void CheckIfValidatable(TEntity entity)
 		{
 			if (entity is IValidatableEntity validatableEntity &&
-			    validatableEntity.HasValidationErrors)
+			    !validatableEntity.HasValidator)
 			{
-				throw new ValidationException(validatableEntity);
+				throw new ValidatorMissingException(validatableEntity);
 			}
 		}
 

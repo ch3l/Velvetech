@@ -1,4 +1,6 @@
-﻿namespace Velvetech.Domain.Services.Internal.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Velvetech.Domain.Services.Internal.Interfaces
 {
 	public interface IStudentValidationService
 	{

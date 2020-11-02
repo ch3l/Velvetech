@@ -1,12 +1,20 @@
 ﻿using System;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Domain.Entities.Validations
 {
 	public class StudentValidator : Validator
 	{
+		private readonly IStudentValidationService _studentValidationService;
+
+		public StudentValidator(IStudentValidationService studentValidationService)
+		{
+			_studentValidationService = studentValidationService;
+		}
+
 		public void Firstname(string value)
 		{
 			const string propertyName = nameof(Firstname);
@@ -61,6 +69,9 @@ namespace Velvetech.Domain.Entities.Validations
 			
 			IsWhitespaces(value, propertyName);
 			IsLengthOutOfRange(value, 6, 16, propertyName);
+
+			if (_studentValidationService.CallsignExists(value))
+				ValidationFail(new UniquenessError(propertyName));
 		}
 
 		public void SexId(int sexId)
