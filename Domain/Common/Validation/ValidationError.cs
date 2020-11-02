@@ -82,21 +82,21 @@ namespace Velvetech.Domain.Common.Validation
 	public class ComparisonValidationError<TValue> : DetailedValidationError<TValue>
 	{
 		public ComparisonResultType ComparisonResult { get; }
-		public TValue ComparedWithValue { get; }
+		public TValue ComparisonValue { get; }
 
-		public ComparisonValidationError(string propertyName, TValue value, TValue comparedWithValue, ComparisonResultType comparisonResult)
+		public ComparisonValidationError(string propertyName, TValue value, TValue comparionValue, ComparisonResultType comparisonResult)
 			: base(propertyName, value)
 		{
 			ComparisonResult = comparisonResult;
-			ComparedWithValue = comparedWithValue;
+			ComparisonValue = comparionValue;
 		}
 
 		public override string ToString()
 		{
 			return ComparisonResult switch
 			{
-				ComparisonResultType.Less => $"{Value} is {ComparisonResult} than {ComparedWithValue}",
-				ComparisonResultType.More => $"{Value} is {ComparisonResult} than {ComparedWithValue}",
+				ComparisonResultType.Less => $"{Value} is {ComparisonResult} than {ComparisonValue}",
+				ComparisonResultType.More => $"{Value} is {ComparisonResult} than {ComparisonValue}",
 				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
 			};
 		}
@@ -105,21 +105,21 @@ namespace Velvetech.Domain.Common.Validation
 	public class LengthComparisonValidationError<TValue> : DetailedValidationError<TValue>
 	{
 		public ComparisonResultType ComparisonResult { get; }
-		public TValue ComparedWithValue { get; }
+		public TValue ComparisonValue { get; }
 
-		public LengthComparisonValidationError(string propertyName, TValue value, TValue comparedWithValue, ComparisonResultType comparisonResult)
+		public LengthComparisonValidationError(string propertyName, TValue value, TValue comparisonValue, ComparisonResultType comparisonResult)
 			: base(propertyName, value)
 		{
 			ComparisonResult = comparisonResult;
-			ComparedWithValue = comparedWithValue;
+			ComparisonValue = comparisonValue;
 		}
 
 		public override string ToString()
 		{
 			return ComparisonResult switch
 			{
-				ComparisonResultType.Less => $"Length is {ComparisonResult} than {ComparedWithValue}",
-				ComparisonResultType.More => $"Length is {ComparisonResult} than {ComparedWithValue}",
+				ComparisonResultType.Less => $"Length is {ComparisonResult} than {ComparisonValue}",
+				ComparisonResultType.More => $"Length is {ComparisonResult} than {ComparisonValue}",
 				_ => throw new ArgumentOutOfRangeException(nameof(ComparisonResult))
 			};
 		}
