@@ -24,9 +24,11 @@ namespace Velvetech.Domain.Common.Validation
 
 		public IReadOnlyDictionary<string, ValidationError[]> Errors =>
 			new ReadOnlyDictionary<string, ValidationError[]>(
-				_errors.ToDictionary(
-					pair => pair.Key,
-					pair => pair.Value.ToArray()));
+				_errors is null 
+					? new Dictionary<string, ValidationError[]>()
+					: _errors.ToDictionary(
+						pair => pair.Key,
+						pair => pair.Value.ToArray()));
 
 		/*
 		protected void ClearErrors(string propertyName)
