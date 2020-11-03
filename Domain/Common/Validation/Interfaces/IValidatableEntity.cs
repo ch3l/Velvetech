@@ -6,6 +6,6 @@ namespace Velvetech.Domain.Common.Validation.Interfaces
 	{
 		bool HasValidationErrors { get; }
 		bool HasValidator { get; }
-		public IDictionary<string, string[]> Errors { get; }
+		public IDictionary<string, string[]> ErrorsStrings { get; }
 	}
 }

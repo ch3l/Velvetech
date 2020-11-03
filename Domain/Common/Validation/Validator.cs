@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-
+using System.Security.Cryptography.X509Certificates;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 
@@ -13,16 +14,32 @@ namespace Velvetech.Domain.Common.Validation
 
 		public bool HasValidationErrors => _errors != null && _errors.Count > 0;
 
-		public IDictionary<string, string[]> Errors =>
-			_errors is null
-				? new Dictionary<string, string[]>()
-				: _errors.ToDictionary(
+		public IReadOnlyDictionary<string, string[]> ErrorsStrings => 
+			new ReadOnlyDictionary<string, string[]>(
+				_errors.ToDictionary(
 					pair => pair.Key,
 					pair => pair.Value
 						.Select(error => error.ToString())
-						.ToArray());
+						.ToArray()));
 
-		
+		public IReadOnlyDictionary<string, ValidationError[]> Errors =>
+			new ReadOnlyDictionary<string, ValidationError[]>(
+				_errors.ToDictionary(
+					pair => pair.Key,
+					pair => pair.Value.ToArray()));
+
+		/*
+		protected void ClearErrors(string propertyName)
+		{
+			if (_errors is null)
+				return;
+			
+			if (_errors.TryGetValue(propertyName, out var errorsList))
+				errorsList?.Clear();
+				
+		}
+		*/
+
 		protected void ValidationFail(ValidationError validationError)
 		{
 			_errors ??= new Dictionary<string, List<ValidationError>>();

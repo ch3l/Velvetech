@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Domain.Common.Validation
@@ -21,7 +22,8 @@ namespace Velvetech.Domain.Common.Validation
 
 		public bool HasValidationErrors => _validate?.HasValidationErrors ?? false;
 		public bool HasValidator => _validate != null;
-		public IDictionary<string, string[]> Errors => _validate?.Errors ?? new Dictionary<string, string[]>();
+		public IDictionary<string, string[]> ErrorsStrings => _validate?.ErrorsStrings ?? new Dictionary<string, string[]>();
+		public IDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new Dictionary<string, ValidationError[]>();
 
 		/// <summary>
 		/// Only once sets validator instance 
