@@ -34,6 +34,7 @@ namespace Velvetech.Domain.Entities
 		public void SetFirstname(string firstName)
 		{
 			Validate.Firstname(ref firstName);
+			
 			if (HasValidationErrors)
 				return;
 
@@ -43,6 +44,7 @@ namespace Velvetech.Domain.Entities
 		public void SetMiddlename(string middlename)
 		{
 			Validate.Middlename(ref middlename);
+			
 			if (HasValidationErrors)
 				return;
 
@@ -52,6 +54,7 @@ namespace Velvetech.Domain.Entities
 		public void SetLastname(string lastname)
 		{
 			Validate.Lastname(ref lastname);
+			
 			if (HasValidationErrors)
 				return;
 
@@ -61,7 +64,12 @@ namespace Velvetech.Domain.Entities
 		public async Task SetCallsignAsync(string callsign)
 		{
 			Validate.Callsign(ref callsign);
+			
+			if (Callsign == callsign)
+				return;
+
 			await Validate.CallsignUniqueness(callsign);
+			
 			if (HasValidationErrors)
 				return;
 
