@@ -22,6 +22,7 @@ namespace Velvetech.Domain.Common.Validation
 						.Select(error => error.ToString())
 						.ToArray());
 
+		
 		protected void ValidationFail(ValidationError validationError)
 		{
 			_errors ??= new Dictionary<string, List<ValidationError>>();
