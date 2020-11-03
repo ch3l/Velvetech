@@ -7,8 +7,17 @@ namespace Velvetech.Domain.Common.Validation
 {
 	public abstract class ValidatableEntity<TKey, TValidator> : Entity<TKey>, IValidatableEntity
 		where TValidator : Validator
-	{ 
-		protected TValidator Validate { get; private set; }
+	{
+		private TValidator _validate;
+
+		protected TValidator Validate
+		{
+			get => _validate ?? throw new Exception(
+				$"Validator \"{typeof(TValidator).FullName}\" has not been selected " +
+				$"in entity \"{this.GetType().FullName}\" " +
+				$"using \"{nameof(SelectValidator)}\" method");
+			private set => _validate = value;
+		}
 
 		public bool HasValidationErrors => Validate?.HasValidationErrors ?? false;
 		public bool HasValidator => Validate != null;
