@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Velvetech.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Velvetech.Domain.Entities.Tests
+namespace Velvetech.UnitTests.Entities
 {
 	[TestClass()]
 	public class StudentTests

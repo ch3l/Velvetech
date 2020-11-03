@@ -1,19 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Velvetech.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using Velvetech.Domain.Common.Validation.Errors;
+using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 
-namespace Velvetech.Domain.Entities.Tests
+namespace Velvetech.UnitTests.Entities
 {
-	[TestClass()]
+	[TestClass]
 	public class GroupTests
 	{
-		[TestMethod()]
+		[TestMethod]
 		public void SetNameTestIsNull()
 		{
 			const string className = nameof(Group);
@@ -28,18 +23,26 @@ namespace Velvetech.Domain.Entities.Tests
 			string newName = null;
 			group.SetName(newName);
 
-			Assert.AreEqual(group.Errors.ContainsKey(propertyName), true, 
+			Assert.AreEqual(true, group.Errors.ContainsKey(propertyName),
 				$"{className}'s property \"{propertyName}\" not found in errors list");
 
-			Assert.AreEqual(group.Errors[propertyName].Length, targetErrorsCount, 
+			Assert.AreEqual(targetErrorsCount, group.Errors[propertyName].Length,
 				$"Errors count after validation {className}'s property \"{propertyName}\" are not equal {targetErrorsCount}");
 
-			if (group.Errors[propertyName][0] is NullValidationError)
+			var error = group.Errors[propertyName][0];
+
+			if (error is NullValidationError nullValidationError)
 			{
-
+				Assert.AreEqual(propertyName, nullValidationError.PropertyName,
+					$"Property {nameof(NullValidationError.PropertyName)} with value \"{nullValidationError.PropertyName}\" are not equals " +
+					$"{propertyName}");
 			}
-
-			Assert.Fail();
+			else
+			{
+				Assert.AreEqual(typeof(NullValidationError), error.GetType(), 
+					$"Current error type \"{error.GetType().Name}\" " +
+					$"not equals to target error type \"{typeof(NullValidationError).Name}\"");
+			}
 		}
 
 		[TestMethod()]
