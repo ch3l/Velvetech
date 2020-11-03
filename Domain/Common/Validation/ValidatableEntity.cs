@@ -19,9 +19,9 @@ namespace Velvetech.Domain.Common.Validation
 			private set => _validate = value;
 		}
 
-		public bool HasValidationErrors => Validate?.HasValidationErrors ?? false;
-		public bool HasValidator => Validate != null;
-		public IDictionary<string, string[]> Errors => Validate?.Errors ?? new Dictionary<string, string[]>();
+		public bool HasValidationErrors => _validate?.HasValidationErrors ?? false;
+		public bool HasValidator => _validate != null;
+		public IDictionary<string, string[]> Errors => _validate?.Errors ?? new Dictionary<string, string[]>();
 
 		/// <summary>
 		/// Only once sets validator instance 
@@ -29,7 +29,7 @@ namespace Velvetech.Domain.Common.Validation
 		/// <param name="validator"></param>
 		public void SelectValidator([NotNull] TValidator validator)
 		{
-			if (Validate != null)
+			if (_validate != null)
 				throw new Exception("Validator selected already");
 
 			Validate = validator ?? throw new ArgumentNullException(nameof(validator));

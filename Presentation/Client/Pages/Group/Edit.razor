@@ -18,7 +18,7 @@
 				<EditForm Model="Group">
 					<DataAnnotationsValidator />
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Edit @Group.Name</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Editing group</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -68,7 +68,7 @@
 																	<td>@student.Callsign</td>
 																	<td>
 																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
 																		<button class="btn btn-primary" @onclick="async () => await ExcludeAsync(i)">
 																			Exclude
@@ -109,7 +109,7 @@
 																	<td>@student.Callsign</td>
 																	<td>
 																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
 																		<button class="btn btn-primary" @onclick="async () => await IncludeAsync(i)">
 																			Include
