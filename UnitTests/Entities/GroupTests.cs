@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Velvetech.Domain.Common;
-using Velvetech.Domain.Common.Validation;
+
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
@@ -27,7 +24,7 @@ namespace Velvetech.UnitTests.Entities
 
 			var errors = GetErrorsOfSetName(value);
 			CheckErrorsCount(1, errors, ClassName, PropertyName);
-			
+
 			var error = errors[0];
 			CheckErrorType<NullValidationError>(error);
 		}
@@ -47,8 +44,8 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		public void SetNameTestForWhitespacesAndBoundary()
 		{
-			string upperBoundaryValue = new string(Enumerable.Range(1,UpperLengthBoundary).Select(x => ' ').ToArray());
-			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary+1).Select(x => ' ').ToArray());
+			string upperBoundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => ' ').ToArray());
+			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => ' ').ToArray());
 
 			// Checking upper boundary without crossing
 			{
@@ -73,7 +70,7 @@ namespace Velvetech.UnitTests.Entities
 		public void SetNameTestLengthUpperBoundary()
 		{
 			string boundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => 'X').ToArray());
-			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary+1).Select(x => 'X').ToArray());
+			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => 'X').ToArray());
 
 			// Checking upper boundary without crossing
 			{
@@ -85,7 +82,7 @@ namespace Velvetech.UnitTests.Entities
 			{
 				var errors = GetErrorsOfSetName(longerValue);
 				CheckErrorsCount(1, errors, ClassName, PropertyName);
-				
+
 				var error = errors[0];
 				CheckErrorType<LengthComparisonValidationError>(error);
 
@@ -130,7 +127,15 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod()]
 		public void IncludeStudentTest()
 		{
-			Assert.Fail();
+			var group = new Group();
+			var student1 = new Student();
+			var student2 = new Student();
+
+			Assert.AreEqual(true, group.IncludeStudent(student1.Id));
+			Assert.AreEqual(1, group.Grouping.Count);
+
+			Assert.AreEqual(true, group.IncludeStudent(student2.Id));
+			Assert.AreEqual(2, group.Grouping.Count);
 		}
 
 		[TestMethod()]

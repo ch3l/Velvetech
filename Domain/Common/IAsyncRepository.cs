@@ -19,12 +19,12 @@ namespace Velvetech.Domain.Common
 		IAsyncEnumerable<TEntity> ListAsync(ISpecification<TEntity> specification);
 
 		Task<int> CountAsync();
-		Task<int> CountAsync(ISpecification<TEntity> filterFunc);
+		Task<int> CountAsync(ISpecification<TEntity> specification);
 
 		Task<TEntity> AddAsync(TEntity entity);
 		Task UpdateAsync(TEntity entity);
         Task RemoveAsync(TEntity entity);
-		Task RemoveRangeAsync(TEntity[] entity);
+		Task RemoveRangeAsync(TEntity[] entities);
 		
 	}
 }
