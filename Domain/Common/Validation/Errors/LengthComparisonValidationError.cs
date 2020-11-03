@@ -3,12 +3,12 @@ using Velvetech.Domain.Common.Validation.Errors.Base;
 
 namespace Velvetech.Domain.Common.Validation.Errors
 {
-	public class LengthComparisonValidationError<TValue> : DetailedValidationError<TValue>
+	public class LengthComparisonValidationError : DetailedValidationError<int>
 	{
 		public ComparisonResultType ComparisonResult { get; }
-		public TValue ComparisonValue { get; }
+		public int ComparisonValue { get; }
 
-		public LengthComparisonValidationError(string propertyName, TValue value, TValue comparisonValue, ComparisonResultType comparisonResult)
+		public LengthComparisonValidationError(string propertyName, int value, int comparisonValue, ComparisonResultType comparisonResult)
 			: base(propertyName, value)
 		{
 			ComparisonResult = comparisonResult;

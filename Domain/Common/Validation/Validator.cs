@@ -127,7 +127,7 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			if (value.Count > comparisonValue)
 				ValidationFail(
-					new LengthComparisonValidationError<int>(
+					new LengthComparisonValidationError(
 						propertyName,
 						value.Count,
 						comparisonValue,
@@ -138,7 +138,7 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			if (value.Length > comparisonValue)
 				ValidationFail(
-					new LengthComparisonValidationError<int>(
+					new LengthComparisonValidationError(
 						propertyName,
 						value.Length,
 						comparisonValue,
@@ -149,7 +149,7 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			if (value.Count < comparisonValue)
 				ValidationFail(
-					new LengthComparisonValidationError<int>(
+					new LengthComparisonValidationError(
 						propertyName,
 						value.Count,
 						comparisonValue,
@@ -160,7 +160,7 @@ namespace Velvetech.Domain.Common.Validation
 		{
 			if (value.Length < comparisonValue)
 				ValidationFail(
-					new LengthComparisonValidationError<int>(
+					new LengthComparisonValidationError(
 						propertyName,
 						value.Length,
 						comparisonValue,
