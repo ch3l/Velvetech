@@ -5,10 +5,10 @@ using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Domain.Common.Validation
 {
-	public class ValidatorMissingException : Exception
+	public class MissedValidationErrorsProcessingException : Exception
 	{
-		public ValidatorMissingException(IValidatableEntity entity)
-			:base($"Entity \"{entity.GetType().FullName}\" has no selected validator")
+		public MissedValidationErrorsProcessingException(IValidatableEntity entity)
+			:base($"Entity \"{entity.GetType().FullName}\" validation errors has not been processed")
 		{
 		}
 	}

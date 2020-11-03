@@ -34,7 +34,7 @@ namespace Velvetech.Data
 			if (entity is IValidatableEntity validatableEntity &&
 			    validatableEntity.HasValidationErrors)
 			{
-				throw new ValidatorMissingException(validatableEntity);
+				throw new MissedValidationErrorsProcessingException(validatableEntity);
 			}
 		}
 
