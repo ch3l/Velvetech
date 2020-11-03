@@ -9,8 +9,11 @@
 	<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				@*<h1>@_errorMessage</h1>*@
-				<br />
+				@if (_errorMessage != null)
+				{
+					<h1>@_errorMessage</h1>
+					<br />
+				}
 
 				<EditForm Model="Group">
 					<DataAnnotationsValidator />
@@ -22,11 +25,7 @@
 					</div>
 					<div class="modal-body">
 
-						@if (Group == null)
-						{
-
-						}
-						else
+						@if (Group != null)
 						{
 							<div class="container">
 								<div class="row">
@@ -69,7 +68,7 @@
 																	<td>@student.Callsign</td>
 																	<td>
 																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+																<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
 																		<button class="btn btn-primary" @onclick="async () => await ExcludeAsync(i)">
 																			Exclude
@@ -110,7 +109,7 @@
 																	<td>@student.Callsign</td>
 																	<td>
 																		@*<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
-																			<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
+																<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>*@
 
 																		<button class="btn btn-primary" @onclick="async () => await IncludeAsync(i)">
 																			Include
@@ -179,8 +178,6 @@
 			_groupNameErrorsString = null;
 			if (errors.TryGetValue("Name", out var name))
 				_groupNameErrorsString = string.Join(", ", name);
-
-			_errorMessage = string.Join(", ", errors.First().Value);
 		}
 	}
 

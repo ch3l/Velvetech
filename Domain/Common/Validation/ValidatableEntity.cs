@@ -21,7 +21,7 @@ namespace Velvetech.Domain.Common.Validation
 		public void SelectValidator([NotNull] TValidator validator)
 		{
 			if (Validate != null)
-				return;
+				throw new Exception("Validator selected already");
 
 			Validate = validator ?? throw new ArgumentNullException(nameof(validator));
 		}

@@ -8,8 +8,11 @@
 	<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				@*<h1>@_errorMessage</h1>*@
-				<br />
+				@if (_errorMessage != null)
+				{
+					<h1>@_errorMessage</h1>
+					<br />
+				}
 
 				<EditForm Model="Student" OnValidSubmit="@SaveClick">
 					<DataAnnotationsValidator />
@@ -20,12 +23,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-
-						@if (Student == null)
-						{
-
-						}
-						else
+						@if (Student != null)
 						{
 							<div class="container">
 								<div class="row">
@@ -163,8 +161,6 @@
 
 			if (errors.TryGetValue("Callsign", out var callsignErrors))
 				_callsignErrorsString = string.Join(", ", callsignErrors);
-
-			_errorMessage = string.Join(", ", errors.First().Value);
 		}
 	}
 

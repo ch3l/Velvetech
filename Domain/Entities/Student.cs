@@ -33,7 +33,10 @@ namespace Velvetech.Domain.Entities
 
 		public void SetFirstname(string firstName)
 		{
-			Validate.Firstname(firstName);
+			if (Firstname == firstName)
+				return;
+
+			Validate.Firstname(ref firstName);
 			if (HasValidationErrors)
 				return;
 
@@ -42,6 +45,9 @@ namespace Velvetech.Domain.Entities
 
 		public void SetMiddlename(string middlename)
 		{
+			if (Middlename == middlename)
+				return;
+
 			Validate.Middlename(ref middlename);
 			if (HasValidationErrors)
 				return;
@@ -51,7 +57,10 @@ namespace Velvetech.Domain.Entities
 
 		public void SetLastname(string lastname)
 		{
-			Validate.Lastname(lastname);
+			if (Lastname == lastname)
+				return;
+
+			Validate.Lastname(ref lastname);
 			if (HasValidationErrors)
 				return;
 
@@ -60,6 +69,9 @@ namespace Velvetech.Domain.Entities
 
 		public async Task SetCallsignAsync(string callsign)
 		{
+			if (Callsign == callsign)
+				return;
+
 			Validate.Callsign(ref callsign);
 			await Validate.CallsignUniqueness(callsign);
 			if (HasValidationErrors)
@@ -70,6 +82,9 @@ namespace Velvetech.Domain.Entities
 
 		public void SetSexId(int sexId)
 		{
+			if (SexId == sexId)
+				return;
+
 			Validate.SexId(sexId);
 			if (HasValidationErrors)
 				return;

@@ -16,7 +16,7 @@ namespace Velvetech.Domain.Entities
 
 		public void SetName(string name)
 		{
-			Validate.Name(name, nameof(Name));
+			Validate.Name(ref name);
 			if (HasValidationErrors)
 				return;
 

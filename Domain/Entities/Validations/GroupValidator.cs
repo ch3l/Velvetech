@@ -4,8 +4,10 @@ namespace Velvetech.Domain.Entities.Validations
 {
 	public class GroupValidator: Validator
 	{
-		public void Name(string value, string propertyName)
+		public void Name(ref string value)
 		{
+			var propertyName = nameof(Name);
+
 			if (IsNull(value, propertyName))
 				return;
 
@@ -13,6 +15,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 
 			IsWhitespaces(value, propertyName);
+			value = value.Trim();
 			IsLongerThan(value, 25, propertyName);
 		}
 	}

@@ -16,7 +16,7 @@ namespace Velvetech.Domain.Entities.Validations
 			_studentValidationService = studentValidationService;
 		}
 
-		public void Firstname(string value)
+		public void Firstname(ref string value)
 		{
 			const string propertyName = nameof(Firstname);
 
@@ -25,8 +25,9 @@ namespace Velvetech.Domain.Entities.Validations
 
 			if (IsEmpty(value, propertyName))
 				return;
-			
+
 			IsWhitespaces(value, propertyName);
+			value = value.Trim();
 			IsLongerThan(value, 40, propertyName);
 		}
 
@@ -41,10 +42,11 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 
 			IsWhitespaces(value, propertyName);
+			value = value.Trim();
 			IsLongerThan(value, 60, propertyName);
 		}
 
-		public void Lastname(string value)
+		public void Lastname(ref string value)
 		{
 			const string propertyName = nameof(Lastname);
 
@@ -55,6 +57,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
+			value = value.Trim();
 			IsLongerThan(value, 40, propertyName);
 		}
 
@@ -69,6 +72,7 @@ namespace Velvetech.Domain.Entities.Validations
 				return;
 			
 			IsWhitespaces(value, propertyName);
+			value = value.Trim();
 			IsLengthOutOfRange(value, 6, 16, propertyName);
 		}
 
