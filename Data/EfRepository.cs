@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Data
@@ -31,10 +32,13 @@ namespace Velvetech.Data
 
 		void CheckIfValidatable(TEntity entity)
 		{
-			if (entity is IValidatableEntity validatableEntity &&
-			    validatableEntity.HasValidationErrors)
+			if (entity is IValidatableEntity validatableEntity)
 			{
-				throw new MissedValidationErrorsProcessingException(validatableEntity);
+				if (!validatableEntity.HasValidator)
+					throw new NotSelectedValidatorException(entity.GetType());
+
+				if (validatableEntity.HasValidationErrors)
+					throw new MissedValidationErrorsProcessingException(validatableEntity);
 			}
 		}
 

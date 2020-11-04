@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JetBrains.Annotations;
 using Velvetech.Domain.Common.Validation.Errors.Base;
+using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.Domain.Common.Validation
@@ -18,10 +19,11 @@ namespace Velvetech.Domain.Common.Validation
 				$"Validator \"{typeof(TValidator).FullName}\" has not been selected " +
 				$"in entity \"{this.GetType().FullName}\" " +
 				$"using \"{nameof(SelectValidator)}\" method");
+
 			private set => _validate = value;
 		}
 
-		public bool HasValidationErrors => _validate?.HasValidationErrors ?? false;
+		public bool HasValidationErrors => _validate?.HasValidationErrors ?? throw new NotSelectedValidatorException(GetType());
 		public bool HasValidator => _validate != null;
 		public IReadOnlyDictionary<string, string[]> ErrorsStrings => _validate?.ErrorsStrings ?? new ReadOnlyDictionary<string, string[]>(new Dictionary<string, string[]>());
 		public IReadOnlyDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new ReadOnlyDictionary<string, ValidationError[]>(new Dictionary<string, ValidationError[]>());

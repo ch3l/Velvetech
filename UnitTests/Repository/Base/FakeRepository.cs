@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Ardalis.Specification;
 using JetBrains.Annotations;
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Common.Validation.Exceptions;
+using Velvetech.Domain.Common.Validation.Interfaces;
 
 namespace Velvetech.UnitTests.Repository.Base
 {
@@ -78,8 +80,22 @@ namespace Velvetech.UnitTests.Repository.Base
 			return CountAsync();
 		}
 
+		void CheckIfValidatable(TEntity entity)
+		{
+			if (entity is IValidatableEntity validatableEntity)
+			{
+				if (!validatableEntity.HasValidator)
+					throw new NotSelectedValidatorException(entity.GetType());
+
+				if (validatableEntity.HasValidationErrors)
+					throw new MissedValidationErrorsProcessingException(validatableEntity);
+			}
+		}
+
 		public async Task<TEntity> AddAsync([NotNull] TEntity entity)
 		{
+			CheckIfValidatable(entity);
+
 			if (entity == null) 
 				throw new ArgumentNullException(nameof(entity));
 				   
@@ -99,6 +115,8 @@ namespace Velvetech.UnitTests.Repository.Base
 
 		public async Task UpdateAsync(TEntity entity)
 		{
+			CheckIfValidatable(entity);
+
 			if (!_items.TryGetValue(entity.Id, out var savedEntity))
 				throw new ObjectNotFoundException(nameof(Entity<TKey>.Id));
 
@@ -112,6 +130,8 @@ namespace Velvetech.UnitTests.Repository.Base
 				property.SetValue(savedEntity, property.GetValue(entity));
 
 			_items[savedEntity.Id] = savedEntity;
+
+			await Task.CompletedTask;
 		}
 
 		public async Task RemoveAsync(TEntity entity)
