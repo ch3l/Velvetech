@@ -2,41 +2,41 @@
 
 namespace Velvetech.UnitTests.Entities
 {
-	[TestClass()]
+	[TestClass]
 	public class StudentTests
 	{
-		[TestMethod()]
-		public void ExcludeFromAllGroupsTest()
-		{
-			Assert.Fail();
-		}
-
-		[TestMethod()]
+		[TestMethod]
 		public void SetFirstnameTest()
 		{
 			Assert.Fail();
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public void SetMiddlenameTest()
 		{
 			Assert.Fail();
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public void SetLastnameTest()
 		{
 			Assert.Fail();
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public void SetCallsignAsyncTest()
 		{
 			Assert.Fail();
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public void SetSexIdTest()
+		{
+			Assert.Fail();
+		}
+
+		[TestMethod]
+		public void ExcludeFromAllGroupsTest()
 		{
 			Assert.Fail();
 		}

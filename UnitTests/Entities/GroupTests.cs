@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Velvetech.Domain.Common;
+
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
-using Velvetech.Domain.Services.Internal;
 using Velvetech.UnitTests.Entities.Builders;
 using Velvetech.UnitTests.Repository;
 
@@ -36,7 +35,7 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		public void SetNameTestIsEmpty()
 		{
-			string value = "";
+			var value = "";
 
 			var errors = GetErrorsOfSetName(value);
 			CheckErrorsCount(1, errors, ClassName, PropertyName);
@@ -48,8 +47,8 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		public void SetNameTestForWhitespacesAndBoundary()
 		{
-			string upperBoundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => ' ').ToArray());
-			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => ' ').ToArray());
+			var upperBoundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => ' ').ToArray());
+			var longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => ' ').ToArray());
 
 			// Checking upper boundary without crossing
 			{
@@ -73,8 +72,8 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		public void SetNameTestLengthUpperBoundary()
 		{
-			string boundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => 'X').ToArray());
-			string longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => 'X').ToArray());
+			var boundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => 'X').ToArray());
+			var longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => 'X').ToArray());
 
 			// Checking upper boundary without crossing
 			{
@@ -97,7 +96,7 @@ namespace Velvetech.UnitTests.Entities
 		}
 
 		[TestMethod]
-		ValidationError[] GetErrorsOfSetName(string value)
+		private ValidationError[] GetErrorsOfSetName(string value)
 		{
 			var group = new Group();
 			var validator = new GroupValidator();
@@ -110,23 +109,20 @@ namespace Velvetech.UnitTests.Entities
 
 			if (group.Errors.TryGetValue(PropertyName, out var errors))
 				return errors;
+
 			return new ValidationError[0];
 		}
 
-		void CheckErrorType<TTargetValidationError>(ValidationError error)
-			where TTargetValidationError : ValidationError
-		{
+		private void CheckErrorType<TTargetValidationError>(ValidationError error)
+			where TTargetValidationError : ValidationError =>
 			Assert.AreEqual(typeof(TTargetValidationError), error.GetType(),
 				$"Current error type \"{error.GetType().Name}\" " +
 				$"not equals to target error type \"{typeof(TTargetValidationError).Name}\"");
-		}
 
-		void CheckErrorsCount(int targetErrorsCount, ValidationError[] errors, string className, string propertyName)
-		{
+		private void CheckErrorsCount(int targetErrorsCount, ValidationError[] errors, string className, string propertyName) =>
 			Assert.AreEqual(targetErrorsCount, errors.Length,
 				$"Errors count \"{errors.Length}\" after validation {className}'s property \"{propertyName}\" " +
 				$"not equals to target errors count {targetErrorsCount}");
-		}
 
 		[TestMethod]
 		public async Task IncludeStudentTestAsync()
@@ -157,7 +153,7 @@ namespace Velvetech.UnitTests.Entities
 			Assert.AreEqual(2, group.Grouping.Count);
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public async Task ExcludeStudentTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
@@ -181,7 +177,7 @@ namespace Velvetech.UnitTests.Entities
 			Assert.AreEqual(0, group.Grouping.Count);
 		}
 
-		[TestMethod()]
+		[TestMethod]
 		public async Task ExcludeAllStudentsTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
@@ -198,7 +194,7 @@ namespace Velvetech.UnitTests.Entities
 			group.IncludeStudent(student2);
 			Assert.AreEqual(true, group.ExcludeAllStudents());
 			Assert.AreEqual(0, group.Grouping.Count);
-			
+
 			group.IncludeStudent(student1);
 			group.IncludeStudent(student2);
 

@@ -38,7 +38,7 @@ namespace Velvetech.Data
 					throw new NotSelectedValidatorException(entity.GetType());
 
 				if (validatableEntity.HasValidationErrors)
-					throw new MissedValidationErrorsProcessingException(validatableEntity);
+					throw new MissedErrorsValidationProcessingException(validatableEntity);
 			}
 		}
 

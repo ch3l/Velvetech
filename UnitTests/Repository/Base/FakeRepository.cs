@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+
 using Ardalis.Specification;
+
 using JetBrains.Annotations;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Common.Validation.Interfaces;
@@ -36,7 +38,7 @@ namespace Velvetech.UnitTests.Repository.Base
 
 		public async Task<TEntity> FirstOrDefault(TKey id, ISpecification<TEntity> specification)
 		{
-			CheckSpecification(specification);			
+			CheckSpecification(specification);
 
 			if (_items.TryGetValue(id, out var item))
 				return await Task.FromResult(item);
@@ -88,7 +90,7 @@ namespace Velvetech.UnitTests.Repository.Base
 					throw new NotSelectedValidatorException(entity.GetType());
 
 				if (validatableEntity.HasValidationErrors)
-					throw new MissedValidationErrorsProcessingException(validatableEntity);
+					throw new MissedErrorsValidationProcessingException(validatableEntity);
 			}
 		}
 
@@ -96,12 +98,12 @@ namespace Velvetech.UnitTests.Repository.Base
 		{
 			CheckIfValidatable(entity);
 
-			if (entity == null) 
+			if (entity == null)
 				throw new ArgumentNullException(nameof(entity));
-				   
+
 			var properties = entity.GetType().GetProperties()
 				.Where(property => property.CanWrite && property.CanRead);
-			
+
 			var newEntity = new TEntity();
 			foreach (var property in properties)
 				property.SetValue(newEntity, property.GetValue(entity));
