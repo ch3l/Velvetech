@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
+using Velvetech.UnitTests.Repository;
 
 namespace Velvetech.UnitTests.Entities
 {
@@ -125,9 +126,18 @@ namespace Velvetech.UnitTests.Entities
 		}
 
 		[TestMethod()]
-		public void IncludeStudentTest()
+		public async Task IncludeStudentTestAsync()
 		{
 			var group = new Group();
+			
+			var groupValidator = new GroupValidator();
+			group.SelectValidator(groupValidator);
+			group.SetName("First group");
+			Assert.AreEqual(false, group.HasValidationErrors);
+
+			var repository = new FakeGroupRepository();
+			group = await repository.AddAsync(group);
+
 			var student1 = new Student();
 			var student2 = new Student();
 

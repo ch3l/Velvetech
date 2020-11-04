@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using Ardalis.Specification;
 using JetBrains.Annotations;
 using Velvetech.Domain.Common;
 
-namespace Velvetech.UnitTests.Repository
+namespace Velvetech.UnitTests.Repository.Base
 {
 	abstract class FakeRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot, new()
@@ -82,16 +81,16 @@ namespace Velvetech.UnitTests.Repository
 		{
 			if (entity == null) 
 				throw new ArgumentNullException(nameof(entity));
-
+				   
+			var properties = entity.GetType().GetProperties()
+				.Where(property => property.CanWrite && property.CanRead);
+			
 			var newEntity = new TEntity();
+			foreach (var property in properties)
+				property.SetValue(newEntity, property.GetValue(entity));
 
-			foreach (var property in entity.GetType().GetProperties())
-			{
-				property.SetValue(newEntity, property.GetValue(entity));				
-			}
-
-			typeof(TEntity).GetProperty(nameof(Entity<TKey>.Id)).SetValue(newEntity, NewKey());
-
+			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, NewKey());
+			
 			_items.Add(NewKey(), newEntity);
 			return await Task.FromResult(newEntity);
 		}
