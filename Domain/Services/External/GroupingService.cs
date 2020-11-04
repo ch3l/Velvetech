@@ -10,17 +10,21 @@ namespace Velvetech.Domain.Services.External
 	public class GroupingService : IGroupingService
 	{
 		readonly IAsyncRepository<Group, Guid> _groupRepository;
+		readonly IAsyncRepository<Student, Guid> _studentRepository;
 
-		public GroupingService(IAsyncRepository<Group, Guid> groupRepository)
+		public GroupingService(IAsyncRepository<Group, Guid> groupRepository, 
+			IAsyncRepository<Student, Guid> studentRepository)
 		{
 			_groupRepository = groupRepository;
+			_studentRepository = studentRepository;
 		}
 
 		public async Task<bool> IncludeStudentAsync(Guid studentId, Guid groupId)
 		{
 			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
+			var student = await _studentRepository.GetById(studentId);
 
-			var included = group.IncludeStudent(studentId);
+			var included = group.IncludeStudent(student);
 			await _groupRepository.UpdateAsync(group);
 
 			return included;
@@ -29,8 +33,9 @@ namespace Velvetech.Domain.Services.External
 		public async Task<bool> ExcludeStudentAsync(Guid studentId, Guid groupId)
 		{
 			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
+			var student = await _studentRepository.GetById(studentId);
 
-			var included = group.ExcludeStudent(studentId);
+			var included = group.ExcludeStudent(student);
 			await _groupRepository.UpdateAsync(group);
 
 			return included;

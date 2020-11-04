@@ -24,15 +24,15 @@ namespace Velvetech.Domain.Entities
 			Name = name;
 		}
 
-		public bool IncludeStudent(Guid studentId)
+		public bool IncludeStudent(Student student)
 		{
-			var groupingEntry = new Grouping(studentId, Id);
+			var groupingEntry = new Grouping(student.Id, Id);
 			return _grouping.Add(groupingEntry);
 		}
 
-		public bool ExcludeStudent(Guid studentId)
+		public bool ExcludeStudent(Student student)
 		{
-			var groupingEntry = new Grouping(studentId, Id);
+			var groupingEntry = new Grouping(student.Id, Id);
 			return _grouping.Remove(groupingEntry);
 		}
 

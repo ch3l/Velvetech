@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Services.Internal;
 using Velvetech.UnitTests.Repository;
 
 namespace Velvetech.UnitTests.Entities
@@ -125,39 +127,109 @@ namespace Velvetech.UnitTests.Entities
 				$"not equals to target errors count {targetErrorsCount}");
 		}
 
+		Group MakeGroup(int index)
+		{
+			var group = new Group();
+			var groupValidator = new GroupValidator();
+			group.SelectValidator(groupValidator);
+			group.SetName($"Group #{index}");
+			Assert.AreEqual(false, group.HasValidationErrors);
+			return group;
+		}
+
+		async Task<Student> MakeStudent(int index, IAsyncRepository<Student,Guid> repository)
+		{
+			var student = new Student();
+			var studentValidator = new StudentValidator(new StudentValidationService(repository));
+			student.SelectValidator(studentValidator);
+			student.SetSexId(1);
+			student.SetFirstname($"Firstname {index}");
+			student.SetMiddlename($"Middlename {index}");
+			student.SetLastname($"Lastname {index}");
+			await student.SetCallsignAsync($"Callsign {index}");
+			return student;
+		}
+
 		[TestMethod()]
 		public async Task IncludeStudentTestAsync()
 		{
-			var group = new Group();
-			
-			var groupValidator = new GroupValidator();
-			group.SelectValidator(groupValidator);
-			group.SetName("First group");
-			Assert.AreEqual(false, group.HasValidationErrors);
+			var groupRepository = new FakeGroupRepository();
+			var studentRepository = new FakeStudentRepository();
 
-			var repository = new FakeGroupRepository();
-			group = await repository.AddAsync(group);
+			var group = await groupRepository.AddAsync(MakeGroup(1));
+			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
+			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
 
-			var student1 = new Student();
-			var student2 = new Student();
-
-			Assert.AreEqual(true, group.IncludeStudent(student1.Id));
+			Assert.AreEqual(true, group.IncludeStudent(student1));
 			Assert.AreEqual(1, group.Grouping.Count);
 
-			Assert.AreEqual(true, group.IncludeStudent(student2.Id));
+			Assert.AreEqual(true, group.IncludeStudent(student2));
+			Assert.AreEqual(2, group.Grouping.Count);
+
+			Assert.AreEqual(false, group.IncludeStudent(student1));
+			Assert.AreEqual(2, group.Grouping.Count);
+			group.ExcludeStudent(student1);
+			Assert.AreEqual(true, group.IncludeStudent(student1));
+			Assert.AreEqual(2, group.Grouping.Count);
+
+			Assert.AreEqual(false, group.IncludeStudent(student2));
+			Assert.AreEqual(2, group.Grouping.Count);
+			group.ExcludeStudent(student2);
+			Assert.AreEqual(true, group.IncludeStudent(student2));
 			Assert.AreEqual(2, group.Grouping.Count);
 		}
 
 		[TestMethod()]
-		public void ExcludeStudentTest()
+		public async Task ExcludeStudentTestAsync()
 		{
-			Assert.Fail();
+			var groupRepository = new FakeGroupRepository();
+			var studentRepository = new FakeStudentRepository();
+
+			var group = await groupRepository.AddAsync(MakeGroup(1));
+			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
+			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
+
+			group.IncludeStudent(student1);
+			group.IncludeStudent(student2);
+
+			Assert.AreEqual(true, group.ExcludeStudent(student1));
+			Assert.AreEqual(1, group.Grouping.Count);
+			Assert.AreEqual(false, group.ExcludeStudent(student1));
+			Assert.AreEqual(1, group.Grouping.Count);
+
+			Assert.AreEqual(true, group.ExcludeStudent(student2));
+			Assert.AreEqual(0, group.Grouping.Count);
+			Assert.AreEqual(false, group.ExcludeStudent(student2));
+			Assert.AreEqual(0, group.Grouping.Count);
 		}
 
 		[TestMethod()]
-		public void ExcludeAllStudentsTest()
+		public async Task ExcludeAllStudentsTestAsync()
 		{
-			Assert.Fail();
+			var groupRepository = new FakeGroupRepository();
+			var studentRepository = new FakeStudentRepository();
+
+			var group = await groupRepository.AddAsync(MakeGroup(1));
+			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
+			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
+
+			group.IncludeStudent(student1);
+			Assert.AreEqual(true, group.ExcludeAllStudents());
+			Assert.AreEqual(0, group.Grouping.Count);
+
+			group.IncludeStudent(student2);
+			Assert.AreEqual(true, group.ExcludeAllStudents());
+			Assert.AreEqual(0, group.Grouping.Count);
+			
+			group.IncludeStudent(student1);
+			group.IncludeStudent(student2);
+
+			group.IncludeStudent(student2);
+			Assert.AreEqual(true, group.ExcludeAllStudents());
+			Assert.AreEqual(0, group.Grouping.Count);
+
+			Assert.AreEqual(false, group.ExcludeAllStudents());
+			Assert.AreEqual(0, group.Grouping.Count);
 		}
 	}
 }

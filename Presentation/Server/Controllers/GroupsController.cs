@@ -49,7 +49,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)
-				return BadRequest(entry.Errors);
+				return BadRequest(entry.ErrorsStrings);
 
 			entry = await _groupCrudService.AddAsync(entry);
 			return Ok(entry);
@@ -72,7 +72,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)
-				return BadRequest(entry.Errors);
+				return BadRequest(entry.ErrorsStrings);
 
 			await _groupCrudService.UpdateAsync(entry);
 			return Ok(entry);

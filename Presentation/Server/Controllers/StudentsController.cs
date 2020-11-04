@@ -155,7 +155,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
-				return BadRequest(entry.Errors);
+				return BadRequest(entry.ErrorsStrings);
 
 			entry = await _studentCrudService.AddAsync(entry);
 			return Ok(entry);
@@ -181,7 +181,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			entry.SetSexId(dto.SexId);
 
 			if (entry.HasValidationErrors)
-				return BadRequest(entry.Errors);
+				return BadRequest(entry.ErrorsStrings);
 
 			await _studentCrudService.UpdateAsync(entry);
 			return Ok(entry);
