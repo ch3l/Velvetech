@@ -34,9 +34,6 @@ namespace Velvetech.Data
 		{
 			if (entity is IValidatableEntity validatableEntity)
 			{
-				if (!validatableEntity.HasValidator)
-					throw new NotSelectedValidatorException(validatableEntity);
-
 				if (validatableEntity.HasValidationErrors)
 					throw new MissedErrorsValidationProcessingException(validatableEntity);
 			}

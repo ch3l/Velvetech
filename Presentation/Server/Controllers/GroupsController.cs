@@ -79,10 +79,12 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> IncludeStudentAsync(StudentGroupRequest request)
 		{
-			if (await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId))
+			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
+			
+			if (includeResult)
 				return Ok();
-
-			return Ok("Already included");
+			else
+				return Ok("Already included");
 		}
 
 		// PUT: api/Groups/AddStudent

@@ -16,11 +16,10 @@ namespace Velvetech.Domain.Common.Validation
 		protected TValidator Validate
 		{
 			get => _validate ?? throw new NotSelectedValidatorException(this);
-
 			private set => _validate = value;
 		}
 
-		public bool HasValidationErrors => Validate.HasValidationErrors;
+		public bool HasValidationErrors => _validate?.HasValidationErrors ?? false;
 		public bool HasValidator => _validate != null;
 		public IReadOnlyDictionary<string, string[]> ErrorsStrings => _validate?.ErrorsStrings ?? new ReadOnlyDictionary<string, string[]>(new Dictionary<string, string[]>());
 		public IReadOnlyDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new ReadOnlyDictionary<string, ValidationError[]>(new Dictionary<string, ValidationError[]>());

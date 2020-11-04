@@ -21,27 +21,15 @@ namespace Velvetech.UnitTests.Entities
 		private const int UpperLengthBoundary = 25;
 
 		[TestMethod]
-		public void SetNameTestIsNull()
+		public void SetNameTest()
 		{
-			string value = null;
-
-			var errors = GetErrorsOfSetName(value);
-			CheckErrorsCount(1, errors, ClassName, PropertyName);
-
-			var error = errors[0];
-			CheckErrorType<NullValidationError>(error);
+			CheckSetName<NullValidationError>(null);
 		}
 
 		[TestMethod]
 		public void SetNameTestIsEmpty()
 		{
-			var value = "";
-
-			var errors = GetErrorsOfSetName(value);
-			CheckErrorsCount(1, errors, ClassName, PropertyName);
-
-			var error = errors[0];
-			CheckErrorType<EmptyValidationError<IEnumerable<char>>>(error);
+			CheckSetName<EmptyValidationError<IEnumerable<char>>>("");
 		}
 
 		[TestMethod]
@@ -51,22 +39,10 @@ namespace Velvetech.UnitTests.Entities
 			var longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => ' ').ToArray());
 
 			// Checking upper boundary without crossing
-			{
-				var errors = GetErrorsOfSetName(upperBoundaryValue);
-				CheckErrorsCount(1, errors, ClassName, PropertyName);
-
-				var error = errors[0];
-				CheckErrorType<WhitespacesValidationError>(error);
-			}
+			CheckSetName<WhitespacesValidationError>(upperBoundaryValue);
 
 			// Checking upper boundary cross
-			{
-				var errors = GetErrorsOfSetName(longerValue);
-				CheckErrorsCount(1, errors, ClassName, PropertyName);
-
-				var error = errors[0];
-				CheckErrorType<WhitespacesValidationError>(error);
-			}
+			CheckSetName<WhitespacesValidationError>(longerValue);
 		}
 
 		[TestMethod]
@@ -78,45 +54,22 @@ namespace Velvetech.UnitTests.Entities
 			// Checking upper boundary without crossing
 			{
 				var errors = GetErrorsOfSetName(boundaryValue);
-				CheckErrorsCount(0, errors, ClassName, PropertyName);
+				EntityTestHelper.CheckErrorsCount(0, errors, ClassName, PropertyName);
 			}
 
 			// Checking upper boundary cross
 			{
 				var errors = GetErrorsOfSetName(longerValue);
-				CheckErrorsCount(1, errors, ClassName, PropertyName);
+				EntityTestHelper.CheckErrorsCount(1, errors, ClassName, PropertyName);
 
 				var error = errors[0];
-				CheckErrorType<LengthComparisonValidationError>(error);
+				EntityTestHelper.CheckErrorType<LengthComparisonValidationError>(error);
 
 				var lengthComparisonError = (LengthComparisonValidationError)error;
 				Assert.AreEqual(25, lengthComparisonError.ComparisonValue);
 				Assert.AreEqual(ComparisonResultType.More, lengthComparisonError.ComparisonResult);
 			}
 		}
-
-		[TestMethod]
-		private ValidationError[] GetErrorsOfSetName(string value)
-		{
-			var validator = new GroupValidator();
-			var group = Group.Build(validator, value);
-
-			if (group.Errors.TryGetValue(PropertyName, out var errors))
-				return errors;
-
-			return new ValidationError[0];
-		}
-
-		private void CheckErrorType<TTargetValidationError>(ValidationError error)
-			where TTargetValidationError : ValidationError =>
-			Assert.AreEqual(typeof(TTargetValidationError), error.GetType(),
-				$"Current error type \"{error.GetType().Name}\" " +
-				$"not equals to target error type \"{typeof(TTargetValidationError).Name}\"");
-
-		private void CheckErrorsCount(int targetErrorsCount, ValidationError[] errors, string className, string propertyName) =>
-			Assert.AreEqual(targetErrorsCount, errors.Length,
-				$"Errors count \"{errors.Length}\" after validation {className}'s property \"{propertyName}\" " +
-				$"not equals to target errors count {targetErrorsCount}");
 
 		[TestMethod]
 		public async Task IncludeStudentTestAsync()
@@ -136,14 +89,8 @@ namespace Velvetech.UnitTests.Entities
 
 			Assert.AreEqual(false, group.IncludeStudent(student1));
 			Assert.AreEqual(2, group.Grouping.Count);
-			group.ExcludeStudent(student1);
-			Assert.AreEqual(true, group.IncludeStudent(student1));
-			Assert.AreEqual(2, group.Grouping.Count);
-
+			
 			Assert.AreEqual(false, group.IncludeStudent(student2));
-			Assert.AreEqual(2, group.Grouping.Count);
-			group.ExcludeStudent(student2);
-			Assert.AreEqual(true, group.IncludeStudent(student2));
 			Assert.AreEqual(2, group.Grouping.Count);
 		}
 
@@ -198,6 +145,27 @@ namespace Velvetech.UnitTests.Entities
 
 			Assert.AreEqual(false, group.ExcludeAllStudents());
 			Assert.AreEqual(0, group.Grouping.Count);
+		}
+
+		void CheckSetName<TTargetValidationError>(string value)
+			where TTargetValidationError : ValidationError
+		{
+			var errors = GetErrorsOfSetName(value);
+			EntityTestHelper.CheckErrorsCount(1, errors, ClassName, PropertyName);
+
+			var error = errors[0];
+			EntityTestHelper.CheckErrorType<TTargetValidationError>(error);
+		}
+
+		private ValidationError[] GetErrorsOfSetName(string value)
+		{
+			var validator = new GroupValidator();
+			var group = Group.Build(validator, value);
+
+			if (group.Errors.TryGetValue(PropertyName, out var errors))
+				return errors;
+
+			return new ValidationError[0];
 		}
 	}
 }
