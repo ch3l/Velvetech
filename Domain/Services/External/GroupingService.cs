@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Core;
 using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -21,8 +22,13 @@ namespace Velvetech.Domain.Services.External
 
 		public async Task<bool> IncludeStudentAsync(Guid studentId, Guid groupId)
 		{
-			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
 			var student = await _studentRepository.GetById(studentId);
+			if (student is null)
+				return false;
+
+			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
+			if (group is null)
+				return false;
 
 			var included = group.IncludeStudent(student);
 			await _groupRepository.UpdateAsync(group);
@@ -32,8 +38,13 @@ namespace Velvetech.Domain.Services.External
 
 		public async Task<bool> ExcludeStudentAsync(Guid studentId, Guid groupId)
 		{
-			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
 			var student = await _studentRepository.GetById(studentId);
+			if (student is null)
+				return false;
+
+			var group = await _groupRepository.FirstOrDefault(groupId, new GroupSpecification());
+			if (group is null)
+				return false;
 
 			var included = group.ExcludeStudent(student);
 			await _groupRepository.UpdateAsync(group);

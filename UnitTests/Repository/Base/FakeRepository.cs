@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Velvetech.UnitTests.Repository.Base
 		where TEntity : Entity<TKey>, IAggregateRoot, new()
 
 	{
-		private IDictionary<TKey, TEntity> _items = new ConcurrentDictionary<TKey, TEntity>();
+		private readonly IDictionary<TKey, TEntity> _items = new Dictionary<TKey, TEntity>();
 
 		protected abstract TKey NewKey();
 
@@ -89,15 +90,28 @@ namespace Velvetech.UnitTests.Repository.Base
 			foreach (var property in properties)
 				property.SetValue(newEntity, property.GetValue(entity));
 
-			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, NewKey());
-			
-			_items.Add(NewKey(), newEntity);
+			var newKey = NewKey();
+			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, newKey);
+			_items.Add(newKey, newEntity);
+
 			return await Task.FromResult(newEntity);
 		}
 
 		public async Task UpdateAsync(TEntity entity)
 		{
-			await Task.FromResult(_items[entity.Id] = entity);
+			if (!_items.TryGetValue(entity.Id, out var savedEntity))
+				throw new ObjectNotFoundException(nameof(Entity<TKey>.Id));
+
+			if (entity == null)
+				throw new ArgumentNullException(nameof(entity));
+
+			var properties = entity.GetType().GetProperties()
+				.Where(property => property.CanWrite && property.CanRead);
+
+			foreach (var property in properties)
+				property.SetValue(savedEntity, property.GetValue(entity));
+
+			_items[savedEntity.Id] = savedEntity;
 		}
 
 		public async Task RemoveAsync(TEntity entity)

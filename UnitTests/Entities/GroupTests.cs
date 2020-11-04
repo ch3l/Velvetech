@@ -9,6 +9,7 @@ using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.Internal;
+using Velvetech.UnitTests.Entities.Builders;
 using Velvetech.UnitTests.Repository;
 
 namespace Velvetech.UnitTests.Entities
@@ -127,38 +128,15 @@ namespace Velvetech.UnitTests.Entities
 				$"not equals to target errors count {targetErrorsCount}");
 		}
 
-		Group MakeGroup(int index)
-		{
-			var group = new Group();
-			var groupValidator = new GroupValidator();
-			group.SelectValidator(groupValidator);
-			group.SetName($"Group #{index}");
-			Assert.AreEqual(false, group.HasValidationErrors);
-			return group;
-		}
-
-		async Task<Student> MakeStudent(int index, IAsyncRepository<Student,Guid> repository)
-		{
-			var student = new Student();
-			var studentValidator = new StudentValidator(new StudentValidationService(repository));
-			student.SelectValidator(studentValidator);
-			student.SetSexId(1);
-			student.SetFirstname($"Firstname {index}");
-			student.SetMiddlename($"Middlename {index}");
-			student.SetLastname($"Lastname {index}");
-			await student.SetCallsignAsync($"Callsign {index}");
-			return student;
-		}
-
-		[TestMethod()]
+		[TestMethod]
 		public async Task IncludeStudentTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var studentRepository = new FakeStudentRepository();
+			var group = await new GroupBuilder().Build(groupRepository, 1);
 
-			var group = await groupRepository.AddAsync(MakeGroup(1));
-			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
-			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
+			var studentRepository = new FakeStudentRepository();
+			var student1 = await new StudentBuilder().Build(studentRepository, 1);
+			var student2 = await new StudentBuilder().Build(studentRepository, 2);
 
 			Assert.AreEqual(true, group.IncludeStudent(student1));
 			Assert.AreEqual(1, group.Grouping.Count);
@@ -183,11 +161,11 @@ namespace Velvetech.UnitTests.Entities
 		public async Task ExcludeStudentTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var studentRepository = new FakeStudentRepository();
+			var group = await new GroupBuilder().Build(groupRepository, 1);
 
-			var group = await groupRepository.AddAsync(MakeGroup(1));
-			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
-			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
+			var studentRepository = new FakeStudentRepository();
+			var student1 = await new StudentBuilder().Build(studentRepository, 1);
+			var student2 = await new StudentBuilder().Build(studentRepository, 2);
 
 			group.IncludeStudent(student1);
 			group.IncludeStudent(student2);
@@ -207,11 +185,11 @@ namespace Velvetech.UnitTests.Entities
 		public async Task ExcludeAllStudentsTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var studentRepository = new FakeStudentRepository();
+			var group = await new GroupBuilder().Build(groupRepository, 1);
 
-			var group = await groupRepository.AddAsync(MakeGroup(1));
-			var student1 = await studentRepository.AddAsync(await MakeStudent(1, studentRepository));
-			var student2 = await studentRepository.AddAsync(await MakeStudent(2, studentRepository));
+			var studentRepository = new FakeStudentRepository();
+			var student1 = await new StudentBuilder().Build(studentRepository, 1);
+			var student2 = await new StudentBuilder().Build(studentRepository, 2);
 
 			group.IncludeStudent(student1);
 			Assert.AreEqual(true, group.ExcludeAllStudents());

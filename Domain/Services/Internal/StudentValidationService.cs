@@ -20,7 +20,11 @@ namespace Velvetech.Domain.Services.Internal
 			if (value == null)
 				return false;
 
-			Student foundValue = await _repository.FirstOrDefault(student => student.Callsign.Equals(value));
+			var foundValue = await _repository
+				.FirstOrDefault(student => 
+					student.Callsign != null && 
+					student.Callsign.Equals(value));
+
 			return foundValue != null;
 		}
 	}
