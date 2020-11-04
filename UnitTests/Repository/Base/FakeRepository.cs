@@ -10,14 +10,15 @@ using Ardalis.Specification;
 using JetBrains.Annotations;
 
 using Velvetech.Domain.Common;
+using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Common.Validation.Interfaces;
+using BindingFlags = System.Reflection.BindingFlags;
 
 namespace Velvetech.UnitTests.Repository.Base
 {
 	abstract class FakeRepository<TEntity, TKey> : IAsyncRepository<TEntity, TKey>
-		where TEntity : Entity<TKey>, IAggregateRoot, new()
-
+		where TEntity : Entity<TKey>, IAggregateRoot
 	{
 		private readonly IDictionary<TKey, TEntity> _items = new Dictionary<TKey, TEntity>();
 
@@ -94,6 +95,11 @@ namespace Velvetech.UnitTests.Repository.Base
 			}
 		}
 
+		public TEntity NewEntity()
+		{
+			return (TEntity) Activator.CreateInstance(typeof(TEntity), true);
+		}
+
 		public async Task<TEntity> AddAsync([NotNull] TEntity entity)
 		{
 			CheckIfValidatable(entity);
@@ -104,7 +110,7 @@ namespace Velvetech.UnitTests.Repository.Base
 			var properties = entity.GetType().GetProperties()
 				.Where(property => property.CanWrite && property.CanRead);
 
-			var newEntity = new TEntity();
+			var newEntity = NewEntity();
 			foreach (var property in properties)
 				property.SetValue(newEntity, property.GetValue(entity));
 

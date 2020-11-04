@@ -98,14 +98,8 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		private ValidationError[] GetErrorsOfSetName(string value)
 		{
-			var group = new Group();
 			var validator = new GroupValidator();
-			group.SelectValidator(validator);
-
-			Assert.AreEqual(true, group.HasValidator,
-				$"{ClassName}'s validator not initialized");
-
-			group.SetName(value);
+			var group = Group.Build(validator, value);
 
 			if (group.Errors.TryGetValue(PropertyName, out var errors))
 				return errors;

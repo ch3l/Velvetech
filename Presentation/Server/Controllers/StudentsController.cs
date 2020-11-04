@@ -143,16 +143,8 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
-			var entry = new Student();
-			
 			var validator = new StudentValidator(_studentValidationService);
-			entry.SelectValidator(validator);
-
-			entry.SetFirstname(dto.Firstname);
-			entry.SetMiddlename(dto.Middlename);
-			entry.SetLastname(dto.Lastname);
-			await entry.SetCallsignAsync(dto.Callsign);
-			entry.SetSexId(dto.SexId);
+			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
 
 			if (entry.HasValidationErrors)
 				return BadRequest(entry.ErrorsStrings);

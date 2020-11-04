@@ -41,13 +41,9 @@ namespace Velvetech.Presentation.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
 		{
-			var entry = new Group();
-			
 			var validator = new GroupValidator();
-			entry.SelectValidator(validator);
-
-			entry.SetName(dto.Name);
-
+			var entry = Group.Build(validator, dto.Name);
+			
 			if (entry.HasValidationErrors)
 				return BadRequest(entry.ErrorsStrings);
 
@@ -68,7 +64,6 @@ namespace Velvetech.Presentation.Server.Controllers
 
 			var validator = new GroupValidator();
 			entry.SelectValidator(validator);
-
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)

@@ -12,15 +12,14 @@ namespace Velvetech.UnitTests.Entities.Builders
 	{
 		public async Task<Student> Build(IAsyncRepository<Student, Guid> repository, int index)
 		{
-			var student = new Student();
 			var validator = new StudentValidator(new StudentValidationService(repository));
+			var student = await Student.BuildAsync(validator, 
+				(index%2)+1, 
+				$"Firstname {index}", 
+				$"Middlename {index}", 
+				$"Lastname {index}", 
+				$"Callsign {index}");
 
-			student.SelectValidator(validator);
-			student.SetFirstname($"Firstname {index}");
-			student.SetMiddlename($"Middlename {index}");
-			student.SetLastname($"Lastname {index}");
-			await student.SetCallsignAsync($"Callsign {index}");
-			
 			student = await repository.AddAsync(student);
 
 			return student;

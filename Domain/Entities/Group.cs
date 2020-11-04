@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
+using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
@@ -13,6 +14,20 @@ namespace Velvetech.Domain.Entities
 
 		private readonly HashSet<Grouping> _grouping = new HashSet<Grouping>();
 		public IReadOnlyCollection<Grouping> Grouping => _grouping;
+
+		private Group()
+		{
+		}
+
+		public static Group Build(GroupValidator validator, string name)
+		{
+			var instance = new Group();
+			
+			instance.SelectValidator(validator);
+			instance.SetName(name);
+			
+			return instance;
+		}
 
 		public void SetName(string name)
 		{

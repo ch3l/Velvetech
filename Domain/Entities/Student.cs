@@ -20,6 +20,29 @@ namespace Velvetech.Domain.Entities
 		private readonly List<Grouping> _grouping = new List<Grouping>();
 		public IReadOnlyList<Grouping> Grouping => _grouping.AsReadOnly();
 
+		private Student()
+		{
+		}
+
+		public static async Task<Student> BuildAsync(StudentValidator validator, 
+			int sexId, 
+			string firstname, 
+			string middlename,
+			string lastname,
+			string callsign)
+		{
+			var instance = new Student();
+			
+			instance.SelectValidator(validator);
+			instance.SetSexId(sexId);
+			instance.SetFirstname(firstname);
+			instance.SetMiddlename(middlename);
+			instance.SetLastname(lastname);
+			await instance.SetCallsignAsync(callsign);
+
+			return instance;
+		}
+
 		public bool ExcludeFromAllGroups()
 		{
 			if (_grouping.Count > 0)
