@@ -15,11 +15,11 @@ namespace Velvetech.UnitTests.Entities.Builders
 		{
 			var group = new Group();
 			var validator = new GroupValidator();
-			
-			group = await repository.AddAsync(group);
+
 			group.SelectValidator(validator);
 			group.SetName($"Name {index}");
-
+			group = await repository.AddAsync(group);
+			
 			return group;
 		}
 	}

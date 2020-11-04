@@ -14,8 +14,8 @@ namespace Velvetech.Domain.Common.Validation.Exceptions
 
 	public class NotSelectedValidatorException : Exception
 	{
-		public NotSelectedValidatorException(Type entityType)
-			: base($"Validator has not been selected for {entityType.Name}")
+		public NotSelectedValidatorException(IValidatableEntity entity)
+			: base($"Validator has not been selected for {entity.GetType().Name}")
 		{
 		}
 	}

@@ -15,15 +15,12 @@ namespace Velvetech.Domain.Common.Validation
 
 		protected TValidator Validate
 		{
-			get => _validate ?? throw new Exception(
-				$"Validator \"{typeof(TValidator).FullName}\" has not been selected " +
-				$"in entity \"{this.GetType().FullName}\" " +
-				$"using \"{nameof(SelectValidator)}\" method");
+			get => _validate ?? throw new NotSelectedValidatorException(this);
 
 			private set => _validate = value;
 		}
 
-		public bool HasValidationErrors => _validate?.HasValidationErrors ?? throw new NotSelectedValidatorException(GetType());
+		public bool HasValidationErrors => Validate.HasValidationErrors;
 		public bool HasValidator => _validate != null;
 		public IReadOnlyDictionary<string, string[]> ErrorsStrings => _validate?.ErrorsStrings ?? new ReadOnlyDictionary<string, string[]>(new Dictionary<string, string[]>());
 		public IReadOnlyDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new ReadOnlyDictionary<string, ValidationError[]>(new Dictionary<string, ValidationError[]>());

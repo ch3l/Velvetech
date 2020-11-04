@@ -15,13 +15,13 @@ namespace Velvetech.UnitTests.Entities.Builders
 			var student = new Student();
 			var validator = new StudentValidator(new StudentValidationService(repository));
 
-			student = await repository.AddAsync(student);
 			student.SelectValidator(validator);
 			student.SetFirstname($"Firstname {index}");
 			student.SetMiddlename($"Middlename {index}");
 			student.SetLastname($"Lastname {index}");
 			await student.SetCallsignAsync($"Callsign {index}");
-			await repository.UpdateAsync(student);
+			
+			student = await repository.AddAsync(student);
 
 			return student;
 		}

@@ -87,7 +87,7 @@ namespace Velvetech.UnitTests.Repository.Base
 			if (entity is IValidatableEntity validatableEntity)
 			{
 				if (!validatableEntity.HasValidator)
-					throw new NotSelectedValidatorException(entity.GetType());
+					throw new NotSelectedValidatorException(validatableEntity);
 
 				if (validatableEntity.HasValidationErrors)
 					throw new MissedErrorsValidationProcessingException(validatableEntity);
