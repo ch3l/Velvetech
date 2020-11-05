@@ -17,8 +17,9 @@ namespace Velvetech.UnitTests.Entities
 	public class GroupTests
 	{
 		private const string ClassName = nameof(Group);
+
 		private const string Name = nameof(Group.Name);
-		private const int NameLengthLengthUpperBoundary = 25;
+		private const int NameLengthUpperBoundary = 25;
 
 		#region Properties validation
 
@@ -29,38 +30,38 @@ namespace Velvetech.UnitTests.Entities
 			{
 				string value = null;
 				var errors = GetNameInitializationErrors(value);
-				CheckForOnlyOneError<NullValidationError>(Name, errors);
+				EntityTestHelper.CheckForOnlyOneError<NullValidationError>(ClassName, Name, errors);
 			}
 
 			// Empty value Test
 			{
 				string value = "";
 				var errors = GetNameInitializationErrors(value);
-				CheckForOnlyOneError<EmptyValidationError<IEnumerable<char>>>(Name, errors);
+				EntityTestHelper.CheckForOnlyOneError<EmptyValidationError<IEnumerable<char>>>(ClassName, Name, errors);
 			}
 
 			// Whitespaces only Test
 			{
-				var upperBoundaryValue = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary).Select(x => ' ').ToArray());
-				var longerValue = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary + 1).Select(x => ' ').ToArray());
+				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary).Select(x => ' ').ToArray());
+				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => ' ').ToArray());
 
 				// Checking upper boundary without crossing
 				{
-					var errors = GetNameInitializationErrors(upperBoundaryValue);
-					CheckForOnlyOneError<WhitespacesValidationError>(Name, errors);
+					var errors = GetNameInitializationErrors(valueWithUpperBoundaryLength);
+					EntityTestHelper.CheckForOnlyOneError<WhitespacesValidationError>(ClassName, Name, errors);
 				}
 
 				// Checking upper boundary cross
 				{
-					var errors = GetNameInitializationErrors(longerValue);
-					CheckForOnlyOneError<WhitespacesValidationError>(Name, errors);
+					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
+					EntityTestHelper.CheckForOnlyOneError<WhitespacesValidationError>(ClassName, Name, errors);
 				}
 			}
 
 			// Upper boundary test
 			{
-				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary).Select(x => 'X').ToArray());
-				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary + 1).Select(x => 'X').ToArray());
+				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary).Select(x => 'X').ToArray());
+				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => 'X').ToArray());
 
 				// Checking upper boundary without crossing
 				{
@@ -71,22 +72,13 @@ namespace Velvetech.UnitTests.Entities
 				// Checking upper boundary cross
 				{
 					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
-					var error = CheckForOnlyOneError<LengthComparisonValidationError>(Name, errors);
-					EntityTestHelper.CheckUpperBoundaryCross(NameLengthLengthUpperBoundary, error);
+					var error = EntityTestHelper.CheckForOnlyOneError<LengthComparisonValidationError>(ClassName, Name, errors);
+					EntityTestHelper.CheckUpperBoundaryCross(NameLengthUpperBoundary, error);
 				}
 			}
 		}
 
-		private TTargetValidationError CheckForOnlyOneError<TTargetValidationError>(string propertyName, ValidationError[] errors)
-			where TTargetValidationError : ValidationError
-		{
-			EntityTestHelper.CheckErrorsCount(1, errors, ClassName, propertyName);
-
-			var error = errors[0];
-			EntityTestHelper.CheckErrorType<TTargetValidationError>(error);
-
-			return (TTargetValidationError)error;
-		}
+		
 
 		private ValidationError[] GetNameInitializationErrors(string value)
 		{

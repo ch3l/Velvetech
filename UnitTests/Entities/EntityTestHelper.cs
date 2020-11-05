@@ -26,7 +26,7 @@ namespace Velvetech.UnitTests.Entities
 		}
 
 		/// <summary>
-		/// Not triggers if boundary cross exists
+		/// Not triggers if boundary crossed
 		/// </summary>
 		/// <param name="upperBoundary"></param>
 		/// <param name="error"></param>
@@ -44,7 +44,7 @@ namespace Velvetech.UnitTests.Entities
 		}
 
 		/// <summary>
-		/// Not triggers if boundary cross exists
+		/// Not triggers if boundary crossed
 		/// </summary>
 		/// <param name="lowerBoundary"></param>
 		/// <param name="error"></param>
@@ -59,6 +59,17 @@ namespace Velvetech.UnitTests.Entities
 			Assert.AreEqual(targetComparisonResult, error.ComparisonResult,
 				$"Expected comparison result \"{targetComparisonResult}\" differs from " +
 				$"comparison result in {nameof(LengthComparisonValidationError)}");
+		}
+
+		public static TTargetValidationError CheckForOnlyOneError<TTargetValidationError>(string className, string propertyName, ValidationError[] errors)
+			where TTargetValidationError : ValidationError
+		{
+			CheckErrorsCount(1, errors, className, propertyName);
+
+			var error = errors[0];
+			CheckErrorType<TTargetValidationError>(error);
+
+			return (TTargetValidationError)error;
 		}
 	}
 }
