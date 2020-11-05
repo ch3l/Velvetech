@@ -17,59 +17,89 @@ namespace Velvetech.UnitTests.Entities
 	public class GroupTests
 	{
 		private const string ClassName = nameof(Group);
-		private const string PropertyName = nameof(Group.Name);
-		private const int UpperLengthBoundary = 25;
+		private const string Name = nameof(Group.Name);
+		private const int NameLengthLengthUpperBoundary = 25;
+
+		#region Properties validation
 
 		[TestMethod]
 		public void SetNameTest()
 		{
-			CheckSetName<NullValidationError>(null);
-		}
-
-		[TestMethod]
-		public void SetNameTestIsEmpty()
-		{
-			CheckSetName<EmptyValidationError<IEnumerable<char>>>("");
-		}
-
-		[TestMethod]
-		public void SetNameTestForWhitespacesAndBoundary()
-		{
-			var upperBoundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => ' ').ToArray());
-			var longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => ' ').ToArray());
-
-			// Checking upper boundary without crossing
-			CheckSetName<WhitespacesValidationError>(upperBoundaryValue);
-
-			// Checking upper boundary cross
-			CheckSetName<WhitespacesValidationError>(longerValue);
-		}
-
-		[TestMethod]
-		public void SetNameTestLengthUpperBoundary()
-		{
-			var boundaryValue = new string(Enumerable.Range(1, UpperLengthBoundary).Select(x => 'X').ToArray());
-			var longerValue = new string(Enumerable.Range(1, UpperLengthBoundary + 1).Select(x => 'X').ToArray());
-
-			// Checking upper boundary without crossing
+			// Null value test
 			{
-				var errors = GetErrorsOfSetName(boundaryValue);
-				EntityTestHelper.CheckErrorsCount(0, errors, ClassName, PropertyName);
+				string value = null;
+				var errors = GetNameInitializationErrors(value);
+				CheckForOnlyOneError<NullValidationError>(Name, errors);
 			}
 
-			// Checking upper boundary cross
+			// Empty value Test
 			{
-				var errors = GetErrorsOfSetName(longerValue);
-				EntityTestHelper.CheckErrorsCount(1, errors, ClassName, PropertyName);
+				string value = "";
+				var errors = GetNameInitializationErrors(value);
+				CheckForOnlyOneError<EmptyValidationError<IEnumerable<char>>>(Name, errors);
+			}
 
-				var error = errors[0];
-				EntityTestHelper.CheckErrorType<LengthComparisonValidationError>(error);
+			// Whitespaces only Test
+			{
+				var upperBoundaryValue = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary).Select(x => ' ').ToArray());
+				var longerValue = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary + 1).Select(x => ' ').ToArray());
 
-				var lengthComparisonError = (LengthComparisonValidationError)error;
-				Assert.AreEqual(25, lengthComparisonError.ComparisonValue);
-				Assert.AreEqual(ComparisonResultType.More, lengthComparisonError.ComparisonResult);
+				// Checking upper boundary without crossing
+				{
+					var errors = GetNameInitializationErrors(upperBoundaryValue);
+					CheckForOnlyOneError<WhitespacesValidationError>(Name, errors);
+				}
+
+				// Checking upper boundary cross
+				{
+					var errors = GetNameInitializationErrors(longerValue);
+					CheckForOnlyOneError<WhitespacesValidationError>(Name, errors);
+				}
+			}
+
+			// Upper boundary test
+			{
+				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary).Select(x => 'X').ToArray());
+				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthLengthUpperBoundary + 1).Select(x => 'X').ToArray());
+
+				// Checking upper boundary without crossing
+				{
+					var errors = GetNameInitializationErrors(valueWithUpperBoundaryLength);
+					EntityTestHelper.CheckErrorsCount(0, errors, ClassName, Name);
+				}
+
+				// Checking upper boundary cross
+				{
+					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
+					var error = CheckForOnlyOneError<LengthComparisonValidationError>(Name, errors);
+					EntityTestHelper.CheckUpperBoundaryCross(NameLengthLengthUpperBoundary, error);
+				}
 			}
 		}
+
+		private TTargetValidationError CheckForOnlyOneError<TTargetValidationError>(string propertyName, ValidationError[] errors)
+			where TTargetValidationError : ValidationError
+		{
+			EntityTestHelper.CheckErrorsCount(1, errors, ClassName, propertyName);
+
+			var error = errors[0];
+			EntityTestHelper.CheckErrorType<TTargetValidationError>(error);
+
+			return (TTargetValidationError)error;
+		}
+
+		private ValidationError[] GetNameInitializationErrors(string value)
+		{
+			var validator = new GroupValidator();
+			var group = Group.Build(validator, value);
+
+			if (group.Errors.TryGetValue(Name, out var errors))
+				return errors;
+
+			return new ValidationError[0];
+		}
+
+		#endregion
 
 		[TestMethod]
 		public async Task IncludeStudentTestAsync()
@@ -89,7 +119,7 @@ namespace Velvetech.UnitTests.Entities
 
 			Assert.AreEqual(false, group.IncludeStudent(student1));
 			Assert.AreEqual(2, group.Grouping.Count);
-			
+
 			Assert.AreEqual(false, group.IncludeStudent(student2));
 			Assert.AreEqual(2, group.Grouping.Count);
 		}
@@ -145,27 +175,6 @@ namespace Velvetech.UnitTests.Entities
 
 			Assert.AreEqual(false, group.ExcludeAllStudents());
 			Assert.AreEqual(0, group.Grouping.Count);
-		}
-
-		void CheckSetName<TTargetValidationError>(string value)
-			where TTargetValidationError : ValidationError
-		{
-			var errors = GetErrorsOfSetName(value);
-			EntityTestHelper.CheckErrorsCount(1, errors, ClassName, PropertyName);
-
-			var error = errors[0];
-			EntityTestHelper.CheckErrorType<TTargetValidationError>(error);
-		}
-
-		private ValidationError[] GetErrorsOfSetName(string value)
-		{
-			var validator = new GroupValidator();
-			var group = Group.Build(validator, value);
-
-			if (group.Errors.TryGetValue(PropertyName, out var errors))
-				return errors;
-
-			return new ValidationError[0];
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace Velvetech.Domain.Common.Validation
 		public IReadOnlyDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new ReadOnlyDictionary<string, ValidationError[]>(new Dictionary<string, ValidationError[]>());
 
 		/// <summary>
-		/// Only once sets validator instance 
+		/// Applies validator instance once
 		/// </summary>
 		/// <param name="validator"></param>
 		public void SelectValidator([NotNull] TValidator validator)
