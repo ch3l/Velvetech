@@ -90,10 +90,15 @@ namespace Velvetech.Domain.Common.Validation
 			return false;
 		}
 
-		public void IsWhitespaces(string value, string propertyName)
+		public bool IsWhitespaces(string value, string propertyName)
 		{
 			if (value.Trim() == string.Empty)
+			{
 				ValidationFail(new WhitespacesValidationError(propertyName, value));
+				return true;
+			}
+
+			return false;
 		}
 
 		public void IsLessThan<TValue>(TValue value, TValue compareTo, string propertyName)

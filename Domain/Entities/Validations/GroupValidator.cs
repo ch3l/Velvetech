@@ -14,7 +14,9 @@ namespace Velvetech.Domain.Entities.Validations
 			if (IsEmpty(value, propertyName))
 				return;
 
-			IsWhitespaces(value, propertyName);
+			if (IsWhitespaces(value, propertyName))
+				return;
+
 			value = value.Trim();
 			IsLongerThan(value, 25, propertyName);
 		}

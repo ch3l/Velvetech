@@ -30,14 +30,14 @@ namespace Velvetech.UnitTests.Entities
 			{
 				string value = null;
 				var errors = GetNameInitializationErrors(value);
-				EntityTestHelper.CheckForOnlyOneError<NullValidationError>(ClassName, Name, errors);
+				EntityTestHelper.CheckForSingleError<NullValidationError>(ClassName, Name, errors);
 			}
 
 			// Empty value Test
 			{
 				string value = "";
 				var errors = GetNameInitializationErrors(value);
-				EntityTestHelper.CheckForOnlyOneError<EmptyValidationError<IEnumerable<char>>>(ClassName, Name, errors);
+				EntityTestHelper.CheckForSingleError<EmptyValidationError<IEnumerable<char>>>(ClassName, Name, errors);
 			}
 
 			// Whitespaces only Test
@@ -48,13 +48,13 @@ namespace Velvetech.UnitTests.Entities
 				// Checking upper boundary without crossing
 				{
 					var errors = GetNameInitializationErrors(valueWithUpperBoundaryLength);
-					EntityTestHelper.CheckForOnlyOneError<WhitespacesValidationError>(ClassName, Name, errors);
+					EntityTestHelper.CheckForSingleError<WhitespacesValidationError>(ClassName, Name, errors);
 				}
 
 				// Checking upper boundary cross
 				{
 					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
-					EntityTestHelper.CheckForOnlyOneError<WhitespacesValidationError>(ClassName, Name, errors);
+					EntityTestHelper.CheckForSingleError<WhitespacesValidationError>(ClassName, Name, errors);
 				}
 			}
 
@@ -72,13 +72,11 @@ namespace Velvetech.UnitTests.Entities
 				// Checking upper boundary cross
 				{
 					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
-					var error = EntityTestHelper.CheckForOnlyOneError<LengthComparisonValidationError>(ClassName, Name, errors);
+					var error = EntityTestHelper.CheckForSingleError<LengthComparisonValidationError>(ClassName, Name, errors);
 					EntityTestHelper.CheckUpperBoundaryCross(NameLengthUpperBoundary, error);
 				}
 			}
 		}
-
-		
 
 		private ValidationError[] GetNameInitializationErrors(string value)
 		{

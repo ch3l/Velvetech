@@ -1,6 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using Velvetech.Domain.Common;
+﻿using System.Threading.Tasks;
+
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Services.Internal.Interfaces;
@@ -26,7 +25,9 @@ namespace Velvetech.Domain.Entities.Validations
 			if (IsEmpty(value, propertyName))
 				return;
 
-			IsWhitespaces(value, propertyName);
+			if (IsWhitespaces(value, propertyName))
+				return;
+
 			value = value.Trim();
 			IsLongerThan(value, 40, propertyName);
 		}
@@ -41,7 +42,9 @@ namespace Velvetech.Domain.Entities.Validations
 			if (EmptyAsNull(ref value))
 				return;
 
-			IsWhitespaces(value, propertyName);
+			if (IsWhitespaces(value, propertyName))
+				return;
+
 			value = value.Trim();
 			IsLongerThan(value, 60, propertyName);
 		}
@@ -55,8 +58,10 @@ namespace Velvetech.Domain.Entities.Validations
 
 			if (IsEmpty(value, propertyName))
 				return;
-			
-			IsWhitespaces(value, propertyName);
+
+			if (IsWhitespaces(value, propertyName))
+				return;
+
 			value = value.Trim();
 			IsLongerThan(value, 40, propertyName);
 		}
@@ -70,8 +75,10 @@ namespace Velvetech.Domain.Entities.Validations
 
 			if (EmptyAsNull(ref value))
 				return;
+
+			if (IsWhitespaces(value, propertyName))
+				return;
 			
-			IsWhitespaces(value, propertyName);
 			value = value.Trim();
 			IsLengthOutOfRange(value, 6, 16, propertyName);
 		}
@@ -84,7 +91,7 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void SexId(int sexId)
 		{
-			IsOutOfRange(sexId, 1, 2, nameof(sexId));
+			IsOutOfRange(sexId, 1, 2, nameof(SexId));
 		}
 	}
 }
