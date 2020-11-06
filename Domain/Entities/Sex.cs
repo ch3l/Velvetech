@@ -10,9 +10,9 @@ namespace Velvetech.Domain.Entities
 	{
 		private List<Student> _student = new List<Student>();
 
-		public Sex(string name)
+		private Sex()
 		{
-			Name = name;
+
 		}
 
 		public IReadOnlyList<Student> Student => _student.AsReadOnly();

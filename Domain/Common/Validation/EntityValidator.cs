@@ -31,19 +31,7 @@ namespace Velvetech.Domain.Common.Validation
 					: _errors.ToDictionary(
 						pair => pair.Key,
 						pair => pair.Value.ToArray()));
-
-		/*
-		protected void ClearErrors(string propertyName)
-		{
-			if (_errors is null)
-				return;
-			
-			if (_errors.TryGetValue(propertyName, out var errorsList))
-				errorsList?.Clear();
-				
-		}
-		*/
-
+		
 		protected void ValidationFail(ValidationError validationError)
 		{
 			if (validationError == null) throw new ArgumentNullException(nameof(validationError));

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Velvetech.Domain.Common;
-using Velvetech.Domain.Common.Validation.Errors;
-using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.Internal;
 using Velvetech.UnitTests.Entities.Builders;
-using Velvetech.UnitTests.Helpers;
 using Velvetech.UnitTests.Repository;
 
 namespace Velvetech.UnitTests.Entities
@@ -21,36 +14,30 @@ namespace Velvetech.UnitTests.Entities
 	[TestClass]
 	public class StudentTests
 	{
-		private const string ClassName = nameof(Student);
 
-		private const string SexId = nameof(Student.SexId);
 		private const int SexIdMin = 1;
 		private const int SexIdMax = 2;
 		private int ValidSexId => SexIdMax;
-		private int NotValidSexId => SexIdMax+1;
+		private int NotValidSexId => SexIdMax + 1;
 
-		private const string Firstname = nameof(Student.Firstname);
 		private const int FirstnameLengthUpperBoundary = 40;
-		private string ValidFirstname => 
+		private string ValidFirstname =>
 			new string(Enumerable.Range(1, FirstnameLengthUpperBoundary).Select(x => 'f').ToArray());
 		private string NotValidFirstname =>
-			new string(Enumerable.Range(1, FirstnameLengthUpperBoundary+1).Select(x => 'f').ToArray());
+			new string(Enumerable.Range(1, FirstnameLengthUpperBoundary + 1).Select(x => 'f').ToArray());
 
-		private const string Middlename = nameof(Student.Middlename);
 		private const int MiddlenameLengthUpperBoundary = 60;
 		private string ValidMiddlename =>
 			new string(Enumerable.Range(1, MiddlenameLengthUpperBoundary).Select(x => 'm').ToArray());
 		private string NotValidMiddlename =>
 			new string(Enumerable.Range(1, MiddlenameLengthUpperBoundary + 1).Select(x => 'm').ToArray());
 
-		private const string Lastname = nameof(Student.Lastname);
 		private const int LastnameLengthUpperBoundary = 40;
 		private string ValidLastname =>
 			new string(Enumerable.Range(1, LastnameLengthUpperBoundary).Select(x => 'l').ToArray());
 		private string NotValidLastname =>
 			new string(Enumerable.Range(1, LastnameLengthUpperBoundary + 1).Select(x => 'l').ToArray());
 
-		private const string Callsign = nameof(Student.Callsign);
 		private const int CallsignLengthLowerBoundary = 6;
 		private const int CallsignLengthUpperBoundary = 16;
 		private string ValidCallsign =>
@@ -65,11 +52,11 @@ namespace Velvetech.UnitTests.Entities
 			{
 				var repository = new FakeStudentRepository();
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				var student = await Student.BuildAsync(validator, 
-					NotValidSexId, 
-					ValidFirstname, 
-					ValidMiddlename, 
-					ValidLastname, 
+				var student = await Student.BuildAsync(validator,
+					NotValidSexId,
+					ValidFirstname,
+					ValidMiddlename,
+					ValidLastname,
 					ValidCallsign);
 
 				Assert.AreEqual(0, student.SexId);
@@ -274,7 +261,7 @@ namespace Velvetech.UnitTests.Entities
 			}
 		}
 
-		#warning 
+#warning
 		[TestMethod]
 		public async Task ExcludeFromAllGroupsTestAsync()
 		{
@@ -287,10 +274,10 @@ namespace Velvetech.UnitTests.Entities
 			var group2 = await GroupBuilder.BuildAsync(groupRepository, 2);
 
 			var student = await StudentBuilder.BuildAsync(studentRepository, 1);
-													   
+
 			group1.IncludeStudent(student);
 			group2.IncludeStudent(student);
-			
+
 			Assert.AreEqual(true, student.ExcludeFromAllGroups());
 			Assert.AreEqual(0, group1.Grouping.Count);
 			Assert.AreEqual(0, group2.Grouping.Count);
