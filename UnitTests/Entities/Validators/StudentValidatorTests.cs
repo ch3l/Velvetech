@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,7 +40,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 			// Check less than min
 			{
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				int value = min-1;
+				var value = min - 1;
 				validator.SexId(value);
 
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
@@ -54,7 +52,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 			// Check is min
 			{
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				int value = min;
+				var value = min;
 				validator.SexId(value);
 
 				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);
@@ -63,7 +61,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 			// Check is max
 			{
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				int value = max;
+				var value = max;
 				validator.SexId(value);
 
 				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);
@@ -72,7 +70,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 			// Check bigger than max
 			{
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				int value = max + 1;
+				var value = max + 1;
 				validator.SexId(value);
 
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
@@ -387,7 +385,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 			// Check for uniqueness
 			{
 				var validator = new StudentValidator(new StudentValidationService(repository));
-				
+
 				string value = null;
 				await validator.CallsignUniqueness(value);
 				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);

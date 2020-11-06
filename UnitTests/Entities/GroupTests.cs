@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,10 +23,25 @@ namespace Velvetech.UnitTests.Entities
 		private const string Name = nameof(Group.Name);
 		private const int NameLengthUpperBoundary = 25;
 
+
 		[TestMethod]
 		public void SetNameTest()
 		{
-			Assert.Fail();
+			// No valid value 
+			{
+				var value = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => 'x').ToArray());
+				var validator = new GroupValidator();
+				var group = Group.Build(validator, value);
+				Assert.AreEqual(null, group.Name);
+			}
+
+			// Valid value 
+			{
+				var value = "ValidGroupName";
+				var validator = new GroupValidator();
+				var group = Group.Build(validator, value);
+				Assert.AreEqual(value, group.Name);
+			}
 		}
 						  
 		[TestMethod]
@@ -35,18 +51,16 @@ namespace Velvetech.UnitTests.Entities
 			var group = await new GroupBuilder().Build(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
-			var student1 = await new StudentBuilder().Build(studentRepository, 1);
-			var student2 = await new StudentBuilder().Build(studentRepository, 2);
+			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
+			var student2 = await StudentBuilder.BuildAsync(studentRepository, 2);
 
 			Assert.AreEqual(true, group.IncludeStudent(student1));
+			Assert.AreEqual(1, group.Grouping.Count);
+			Assert.AreEqual(false, group.IncludeStudent(student1));
 			Assert.AreEqual(1, group.Grouping.Count);
 
 			Assert.AreEqual(true, group.IncludeStudent(student2));
 			Assert.AreEqual(2, group.Grouping.Count);
-
-			Assert.AreEqual(false, group.IncludeStudent(student1));
-			Assert.AreEqual(2, group.Grouping.Count);
-
 			Assert.AreEqual(false, group.IncludeStudent(student2));
 			Assert.AreEqual(2, group.Grouping.Count);
 		}
@@ -58,8 +72,8 @@ namespace Velvetech.UnitTests.Entities
 			var group = await new GroupBuilder().Build(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
-			var student1 = await new StudentBuilder().Build(studentRepository, 1);
-			var student2 = await new StudentBuilder().Build(studentRepository, 2);
+			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
+			var student2 = await StudentBuilder.BuildAsync(studentRepository, 2);
 
 			group.IncludeStudent(student1);
 			group.IncludeStudent(student2);
@@ -82,8 +96,8 @@ namespace Velvetech.UnitTests.Entities
 			var group = await new GroupBuilder().Build(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
-			var student1 = await new StudentBuilder().Build(studentRepository, 1);
-			var student2 = await new StudentBuilder().Build(studentRepository, 2);
+			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
+			var student2 = await StudentBuilder.BuildAsync(studentRepository, 2);
 
 			group.IncludeStudent(student1);
 			Assert.AreEqual(true, group.ExcludeAllStudents());

@@ -41,7 +41,7 @@ namespace Velvetech.Domain.Entities
 
 		public bool IncludeStudent(Student student)
 		{
-			var groupingEntry = new Grouping(student.Id, Id);
+			var groupingEntry = new Grouping(student, this);
 			return _grouping.Add(groupingEntry);
 		}
 
