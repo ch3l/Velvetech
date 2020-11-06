@@ -5,9 +5,9 @@ using Velvetech.Domain.Common.Validation.Errors.Base;
 
 namespace Velvetech.Domain.Common.Validation.Errors
 {
-	class UniquenessError: ValidationError
+	public class UniquenessValidationError: ValidationError
 	{
-		public UniquenessError(string propertyName) 
+		public UniquenessValidationError(string propertyName) 
 			: base(propertyName)
 		{
 		}

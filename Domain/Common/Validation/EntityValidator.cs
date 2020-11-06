@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using JetBrains.Annotations;
+
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 
@@ -15,7 +14,7 @@ namespace Velvetech.Domain.Common.Validation
 
 		public bool HasValidationErrors => _errors != null && _errors.Count > 0;
 
-		public IReadOnlyDictionary<string, string[]> ErrorsStrings => 
+		public IReadOnlyDictionary<string, string[]> ErrorsStrings =>
 			new ReadOnlyDictionary<string, string[]>(
 				_errors is null
 					? new Dictionary<string, string[]>()
@@ -27,7 +26,7 @@ namespace Velvetech.Domain.Common.Validation
 
 		public IReadOnlyDictionary<string, ValidationError[]> Errors =>
 			new ReadOnlyDictionary<string, ValidationError[]>(
-				_errors is null 
+				_errors is null
 					? new Dictionary<string, ValidationError[]>()
 					: _errors.ToDictionary(
 						pair => pair.Key,

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.UnitTests.Helpers;
 
-namespace Velvetech.UnitTests.Entities.Validations
+namespace Velvetech.UnitTests.Entities.Validators
 {
 	[TestClass]
 	public class GroupValidatorTests
@@ -18,6 +16,7 @@ namespace Velvetech.UnitTests.Entities.Validations
 		public void NameTest()
 		{
 			const string propertyName = nameof(GroupValidator.Name);
+			const int upperBoundary = NameUpperBoundary;
 
 			// Check for null
 			{
@@ -29,7 +28,7 @@ namespace Velvetech.UnitTests.Entities.Validations
 				ValidationsTestHelper.CheckErrorType<NullValidationError>(errors);
 			}
 
-			// Check for null
+			// Check is empty
 			{
 				var validator = new GroupValidator();
 				var value = "";
@@ -42,7 +41,7 @@ namespace Velvetech.UnitTests.Entities.Validations
 			// Whitespaces check without boundary crossing
 			{
 				var validator = new GroupValidator();
-				var value = new string(Enumerable.Range(1, NameUpperBoundary).Select(x => ' ').ToArray());
+				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Name(ref value);
 				
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
@@ -52,7 +51,7 @@ namespace Velvetech.UnitTests.Entities.Validations
 			// Whitespaces check with boundary crossing
 			{
 				var validator = new GroupValidator();
-				var value = new string(Enumerable.Range(1, NameUpperBoundary + 1).Select(x => ' ').ToArray());
+				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Name(ref value);
 				
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
@@ -62,7 +61,7 @@ namespace Velvetech.UnitTests.Entities.Validations
 			// Upper boundary check without crossing
 			{
 				var validator = new GroupValidator();
-				var value = new string(Enumerable.Range(1, NameUpperBoundary).Select(x => 'x').ToArray());
+				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Name(ref value);
 				
 				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);
@@ -71,14 +70,14 @@ namespace Velvetech.UnitTests.Entities.Validations
 			// Upper boundary check with crossing
 			{
 				var validator = new GroupValidator();
-				var value = new string(Enumerable.Range(1, NameUpperBoundary + 1).Select(x => 'x').ToArray());
+				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Name(ref value);
 
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
 				ValidationsTestHelper.CheckErrorType<LengthComparisonValidationError>(errors);
 				ValidationsTestHelper.CheckUpperBoundaryCross(
-					(LengthComparisonValidationError)validator.Errors[propertyName][0], 
-					NameUpperBoundary);
+					(LengthComparisonValidationError)validator.Errors[propertyName][0],
+					upperBoundary);
 			}
 		}
 	}

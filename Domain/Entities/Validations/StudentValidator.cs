@@ -86,7 +86,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public async Task CallsignUniqueness(string value)
 		{
 			if (await _studentValidationService.CallsignExistsAsync(value))
-				ValidationFail(new UniquenessError(nameof(Callsign)));
+				ValidationFail(new UniquenessValidationError(nameof(Callsign)));
 		}
 
 		public void SexId(int sexId)
