@@ -9,7 +9,7 @@ using Velvetech.Domain.Common.Validation.Interfaces;
 namespace Velvetech.Domain.Common.Validation
 {
 	public abstract class ValidatableEntity<TKey, TValidator> : Entity<TKey>, IValidatableEntity
-		where TValidator : Validator
+		where TValidator : EntityValidator
 	{
 		private TValidator _validate;
 

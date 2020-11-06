@@ -2,7 +2,7 @@
 
 namespace Velvetech.Domain.Entities.Validations
 {
-	public class GroupValidator: Validator
+	public class GroupValidator: EntityValidator
 	{
 		public void Name(ref string value)
 		{

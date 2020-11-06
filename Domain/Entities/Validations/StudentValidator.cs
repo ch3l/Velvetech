@@ -6,7 +6,7 @@ using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Domain.Entities.Validations
 {
-	public class StudentValidator : Validator
+	public class StudentValidator : EntityValidator
 	{
 		private readonly IStudentValidationService _studentValidationService;
 

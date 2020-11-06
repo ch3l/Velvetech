@@ -9,6 +9,7 @@ using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.UnitTests.Entities.Builders;
+using Velvetech.UnitTests.Helpers;
 using Velvetech.UnitTests.Repository;
 
 namespace Velvetech.UnitTests.Entities
@@ -21,76 +22,12 @@ namespace Velvetech.UnitTests.Entities
 		private const string Name = nameof(Group.Name);
 		private const int NameLengthUpperBoundary = 25;
 
-		#region Properties validation
-
 		[TestMethod]
 		public void SetNameTest()
 		{
-			// Null value test
-			{
-				string value = null;
-				var errors = GetNameInitializationErrors(value);
-				EntityTestHelper.CheckForSingleError<NullValidationError>(ClassName, Name, errors);
-			}
-
-			// Empty value Test
-			{
-				string value = "";
-				var errors = GetNameInitializationErrors(value);
-				EntityTestHelper.CheckForSingleError<EmptyValidationError<IEnumerable<char>>>(ClassName, Name, errors);
-			}
-
-			// Whitespaces only Test
-			{
-				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary).Select(x => ' ').ToArray());
-				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => ' ').ToArray());
-
-				// Checking upper boundary without crossing
-				{
-					var errors = GetNameInitializationErrors(valueWithUpperBoundaryLength);
-					EntityTestHelper.CheckForSingleError<WhitespacesValidationError>(ClassName, Name, errors);
-				}
-
-				// Checking upper boundary cross
-				{
-					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
-					EntityTestHelper.CheckForSingleError<WhitespacesValidationError>(ClassName, Name, errors);
-				}
-			}
-
-			// Upper boundary test
-			{
-				var valueWithUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary).Select(x => 'X').ToArray());
-				var valueWithCrossingUpperBoundaryLength = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => 'X').ToArray());
-
-				// Checking upper boundary without crossing
-				{
-					var errors = GetNameInitializationErrors(valueWithUpperBoundaryLength);
-					EntityTestHelper.CheckErrorsCount(0, errors, ClassName, Name);
-				}
-
-				// Checking upper boundary cross
-				{
-					var errors = GetNameInitializationErrors(valueWithCrossingUpperBoundaryLength);
-					var error = EntityTestHelper.CheckForSingleError<LengthComparisonValidationError>(ClassName, Name, errors);
-					EntityTestHelper.CheckUpperBoundaryCross(NameLengthUpperBoundary, error);
-				}
-			}
+			Assert.Fail();
 		}
-
-		private ValidationError[] GetNameInitializationErrors(string value)
-		{
-			var validator = new GroupValidator();
-			var group = Group.Build(validator, value);
-
-			if (group.Errors.TryGetValue(Name, out var errors))
-				return errors;
-
-			return new ValidationError[0];
-		}
-
-		#endregion
-
+						  
 		[TestMethod]
 		public async Task IncludeStudentTestAsync()
 		{

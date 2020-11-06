@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using JetBrains.Annotations;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 
 namespace Velvetech.Domain.Common.Validation
 {
-	public class Validator
+	public class EntityValidator
 	{
 		private Dictionary<string, List<ValidationError>> _errors;
 
@@ -46,6 +47,7 @@ namespace Velvetech.Domain.Common.Validation
 
 		protected void ValidationFail(ValidationError validationError)
 		{
+			if (validationError == null) throw new ArgumentNullException(nameof(validationError));
 			_errors ??= new Dictionary<string, List<ValidationError>>();
 
 			if (!_errors.TryGetValue(validationError.PropertyName, out var errorsList))
