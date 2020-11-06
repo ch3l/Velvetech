@@ -21,12 +21,14 @@ namespace Velvetech.UnitTests.Helpers
 			return new ValidationError[0];
 		}
 
-		public static void CheckErrorType<TTargetValidationError>(ValidationError[] errors, int errorIndex = 0)
+		public static TTargetValidationError CheckErrorType<TTargetValidationError>(ValidationError[] errors, int errorIndex = 0)
 			where TTargetValidationError : ValidationError
 		{
 			Assert.AreEqual(true, errors[errorIndex] is TTargetValidationError,
 				$"{errors[errorIndex].GetType().Name} not equals " +
 				$"{typeof(TTargetValidationError).Name}");
+
+			return (TTargetValidationError)errors[errorIndex];
 		}
 
 		public static void CheckUpperBoundaryCross(LengthComparisonValidationError error, int upperBoundary)

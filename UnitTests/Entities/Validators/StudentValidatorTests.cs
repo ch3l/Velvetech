@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +18,9 @@ namespace Velvetech.UnitTests.Entities.Validators
 	[TestClass]
 	public class StudentValidatorTests
 	{
+		private const int SexIdMin = 1;
+		private const int SexIdMax = 2;
+
 		private const int FirstnameUpperBoundary = 40;
 
 		private const int MiddlenameUpperBoundary = 60;
@@ -24,6 +29,58 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 		private const int CallsignLowerBoundary = 6;
 		private const int CallsignUpperBoundary = 16;
+
+		[TestMethod]
+		public void SexIdTest()
+		{
+			const string propertyName = nameof(StudentValidator.SexId);
+			const int min = SexIdMin;
+			const int max = SexIdMax;
+
+			var repository = new FakeStudentRepository();
+
+			// Check less than min
+			{
+				var validator = new StudentValidator(new StudentValidationService(repository));
+				int value = min-1;
+				validator.SexId(value);
+
+				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
+				var error = ValidationsTestHelper.CheckErrorType<ComparisonValidationError<int>>(errors);
+				Assert.AreEqual(ComparisonResultType.Less, error.ComparisonResult);
+				Assert.AreEqual(min, error.ComparisonValue);
+			}
+
+			// Check is min
+			{
+				var validator = new StudentValidator(new StudentValidationService(repository));
+				int value = min;
+				validator.SexId(value);
+
+				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);
+			}
+
+			// Check is max
+			{
+				var validator = new StudentValidator(new StudentValidationService(repository));
+				int value = max;
+				validator.SexId(value);
+
+				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 0);
+			}
+
+			// Check bigger than max
+			{
+				var validator = new StudentValidator(new StudentValidationService(repository));
+				int value = max + 1;
+				validator.SexId(value);
+
+				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
+				var error = ValidationsTestHelper.CheckErrorType<ComparisonValidationError<int>>(errors);
+				Assert.AreEqual(ComparisonResultType.More, error.ComparisonResult);
+				Assert.AreEqual(max, error.ComparisonValue);
+			}
+		}
 
 		[TestMethod]
 		public void FirstnameTest()
