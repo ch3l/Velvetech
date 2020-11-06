@@ -48,7 +48,7 @@ namespace Velvetech.UnitTests.Entities
 		public async Task IncludeStudentTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var group = await new GroupBuilder().Build(groupRepository, 1);
+			var group = await GroupBuilder.BuildAsync(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
 			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
@@ -69,7 +69,7 @@ namespace Velvetech.UnitTests.Entities
 		public async Task ExcludeStudentTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var group = await new GroupBuilder().Build(groupRepository, 1);
+			var group = await GroupBuilder.BuildAsync(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
 			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
@@ -93,7 +93,7 @@ namespace Velvetech.UnitTests.Entities
 		public async Task ExcludeAllStudentsTestAsync()
 		{
 			var groupRepository = new FakeGroupRepository();
-			var group = await new GroupBuilder().Build(groupRepository, 1);
+			var group = await GroupBuilder.BuildAsync(groupRepository, 1);
 
 			var studentRepository = new FakeStudentRepository();
 			var student1 = await StudentBuilder.BuildAsync(studentRepository, 1);
@@ -109,11 +109,8 @@ namespace Velvetech.UnitTests.Entities
 
 			group.IncludeStudent(student1);
 			group.IncludeStudent(student2);
-
-			group.IncludeStudent(student2);
 			Assert.AreEqual(true, group.ExcludeAllStudents());
 			Assert.AreEqual(0, group.Grouping.Count);
-
 			Assert.AreEqual(false, group.ExcludeAllStudents());
 			Assert.AreEqual(0, group.Grouping.Count);
 		}

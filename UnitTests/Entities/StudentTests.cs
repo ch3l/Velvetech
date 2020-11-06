@@ -12,6 +12,7 @@ using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.Internal;
+using Velvetech.UnitTests.Entities.Builders;
 using Velvetech.UnitTests.Helpers;
 using Velvetech.UnitTests.Repository;
 
@@ -273,51 +274,26 @@ namespace Velvetech.UnitTests.Entities
 			}
 		}
 
+		#warning 
 		[TestMethod]
 		public async Task ExcludeFromAllGroupsTestAsync()
 		{
+			Assert.Fail("Has to be in integration tests");
+
 			var groupRepository = new FakeGroupRepository();
-			var groupValidator = new GroupValidator();
-
 			var studentRepository = new FakeStudentRepository();
-			var studentValidator = new StudentValidator(new StudentValidationService(studentRepository));
 
-			var group1 = Group.Build(groupValidator, "Group1");
-			var group2 = Group.Build(groupValidator, "Group2");
-			
-			var student1 = await Student.BuildAsync(studentValidator,
-				ValidSexId, 
-				ValidFirstname,
-				ValidMiddlename,
-				ValidLastname,
-				"Callsign1");
-			
-			var student2 = await Student.BuildAsync(studentValidator,
-				ValidSexId,
-				ValidFirstname,
-				ValidMiddlename,
-				ValidLastname,
-				"Callsign2");
-					  
-			//group1 = await groupRepository.AddAsync(group1);
-			//group2 = await groupRepository.AddAsync(group2);
-			//student1 = await studentRepository.AddAsync(student1);
-			//student2 = await studentRepository.AddAsync(student2);
+			var group1 = await GroupBuilder.BuildAsync(groupRepository, 1);
+			var group2 = await GroupBuilder.BuildAsync(groupRepository, 2);
 
+			var student = await StudentBuilder.BuildAsync(studentRepository, 1);
+													   
+			group1.IncludeStudent(student);
+			group2.IncludeStudent(student);
+			
+			Assert.AreEqual(true, student.ExcludeFromAllGroups());
 			Assert.AreEqual(0, group1.Grouping.Count);
 			Assert.AreEqual(0, group2.Grouping.Count);
-
-			var student1ToGroup1IncludeResult = group1.IncludeStudent(student1);
-			Assert.AreEqual(true, student1ToGroup1IncludeResult);
-			Assert.AreEqual(1, group1.Grouping.Count);
-			Assert.AreEqual(student1.Id, group1.Grouping.ToArray()[0].StudentId);
-			
-			var student2ToGroup1IncludeResult = group1.IncludeStudent(student2);
-			Assert.AreEqual(true, student2ToGroup1IncludeResult);
-			Assert.AreEqual(2, group1.Grouping.Count);
-			Assert.AreEqual(student2.Id, group1.Grouping.ToArray()[1].StudentId);
-
-			//Assert.AreEqual(0, group1.Grouping.Count);
 		}
 	}
 }
