@@ -343,7 +343,12 @@ namespace Velvetech.UnitTests.Entities.Validators
 				await repository.AddAsync(student);
 				await validator.CallsignUniqueness(value);
 				var errors = ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
-				ValidationsTestHelper.CheckErrorType<UniquenessValidationError>(errors);
+				ValidationsTestHelper.CheckErrorType<UniquenessValidationError<string>>(errors);
+
+				value = null;
+				await validator.CallsignUniqueness(value);
+				ValidationsTestHelper.CheckErrorsCount(validator, propertyName, 1);
+				ValidationsTestHelper.CheckErrorType<UniquenessValidationError<string>>(errors);
 			}
 		}
 	}
