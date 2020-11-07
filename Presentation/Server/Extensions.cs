@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-using Castle.DynamicProxy.Generators;
 using Velvetech.Domain.Entities;
 using Velvetech.Presentation.Shared.Dtos;
 
