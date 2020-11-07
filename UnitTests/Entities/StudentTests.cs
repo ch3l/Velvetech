@@ -261,7 +261,6 @@ namespace Velvetech.UnitTests.Entities
 			}
 		}
 
-#warning
 		[TestMethod]
 		public async Task ExcludeFromAllGroupsTestAsync()
 		{

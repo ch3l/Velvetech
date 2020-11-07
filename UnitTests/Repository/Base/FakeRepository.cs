@@ -55,7 +55,7 @@ namespace Velvetech.UnitTests.Repository.Base
 
 		public async Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> condition)
 		{
-			return _items.Values.FirstOrDefault(value => condition.Compile().Invoke(value));
+			return await Task.FromResult(_items.Values.FirstOrDefault(value => condition.Compile().Invoke(value)));
 		}
 
 		public async IAsyncEnumerable<TEntity> ListAsync()
