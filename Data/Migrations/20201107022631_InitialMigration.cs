@@ -7,7 +7,7 @@ namespace Velvetech.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+	        migrationBuilder.CreateTable(
                 name: "Group",
                 columns: table => new
                 {
@@ -93,7 +93,7 @@ namespace Velvetech.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Student_SexId",
                 table: "Student",
-                column: "SexId");
+                column: "SexId");  
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

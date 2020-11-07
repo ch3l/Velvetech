@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
-using Velvetech.Domain.Common.Validation.Exceptions;
 using Velvetech.Domain.Entities.Validations;
 
 namespace Velvetech.Domain.Entities
@@ -22,17 +21,17 @@ namespace Velvetech.Domain.Entities
 		public static Group Build(GroupValidator validator, string name)
 		{
 			var instance = new Group();
-			
+
 			instance.SelectValidator(validator);
 			instance.SetName(name);
-			
+
 			return instance;
 		}
 
 		public void SetName(string name)
 		{
 			Validate.Name(ref name);
-			
+
 			if (HasValidationErrors)
 				return;
 
