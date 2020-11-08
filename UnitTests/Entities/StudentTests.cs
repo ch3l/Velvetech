@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Velvetech.Data;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.Internal;
@@ -264,10 +265,10 @@ namespace Velvetech.UnitTests.Entities
 		[TestMethod]
 		public async Task ExcludeFromAllGroupsTestAsync()
 		{
-			Assert.Fail("Has to be in integration tests");
+			await using var context = await AppDbContext.MakeSqlLiteAsync();
 
-			var groupRepository = new FakeGroupRepository();
-			var studentRepository = new FakeStudentRepository();
+			var studentRepository = new EfRepository<Student, Guid>(context);
+			var groupRepository = new EfRepository<Group, Guid>(context);
 
 			var group1 = await GroupBuilder.BuildAsync(groupRepository, 1);
 			var group2 = await GroupBuilder.BuildAsync(groupRepository, 2);
