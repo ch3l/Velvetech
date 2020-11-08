@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Velvetech.Data.csproj" />
     <ProjectReference Include="..\Domain\Velvetech.Domain.csproj" />
   </ItemGroup>
 

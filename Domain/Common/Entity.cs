@@ -16,7 +16,7 @@ namespace Velvetech.Domain.Common
 				                      $"\"{nameof(Id)}\" in Entity<{typeof(TKey).Name}> " +
 				                      $"\"{GetType().Name}\"") 
 				: _id;
-			protected set => _id = value;
+			private set => _id = value;
 		}
 
 		public override int GetHashCode()
