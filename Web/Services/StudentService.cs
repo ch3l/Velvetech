@@ -81,10 +81,7 @@ namespace Velvetech.Web.Services
 
 		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request)
 		{
-			if (!request.GroupId.HasValue)
-				return new StudentDto[0];//BadRequest($"Corrupted or missing {nameof(request.GroupId)}");
-
-			var filter = new IncludedStudentsSpecification(request.GroupId.Value);
+			var filter = new IncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
@@ -92,12 +89,9 @@ namespace Velvetech.Web.Services
 			return students;
 		}
 
-		public async Task<StudentDto[]> ListNotIncludedAsync([FromQuery] IncludedStudentsRequest request)
+		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request)
 		{
-			if (!request.GroupId.HasValue)
-				return new StudentDto[0];//BadRequest($"Corrupted or missing {nameof(request.GroupId)}");
-
-			var filter = new NotIncludedStudentsSpecification(request.GroupId.Value);
+			var filter = new NotIncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();

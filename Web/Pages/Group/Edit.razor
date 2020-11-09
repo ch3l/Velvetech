@@ -214,7 +214,7 @@
 	async Task LoadNotIncludedStudents()
 	{
 		if (Group != null)
-			includedStudents = await StudentService.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
+			notIncludedStudents = await StudentService.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
 	}
 
 	async Task ExcludeAsync(int i)

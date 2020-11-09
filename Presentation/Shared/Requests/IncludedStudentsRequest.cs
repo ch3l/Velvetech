@@ -4,6 +4,6 @@ namespace Velvetech.Presentation.Shared.Requests
 {
 	public class IncludedStudentsRequest
 	{
-		public Guid? GroupId { get; set; }
+		public Guid GroupId { get; set; }
 	}
 }
