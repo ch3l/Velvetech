@@ -36,9 +36,10 @@ namespace Velvetech.Web.Services
 				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
-			//var x = new HttpClient();
-			//x.BaseAddress = new Uri("http://localhost:5000");
-			//var sexes = await x.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
+			var x = new HttpClient();
+			x.BaseAddress = new Uri("http://localhost:5000") ;
+			
+			var sexes = await x.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
 
 			return result1;
 		}
