@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
@@ -112,7 +112,7 @@ namespace Velvetech.Web.Services
 			var validator = new StudentValidator(_studentValidationService);
 			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return new StudentErrors(entry.ErrorsStrings);
 
 			entry = await _studentCrudService.AddAsync(entry);
@@ -137,16 +137,13 @@ namespace Velvetech.Web.Services
 			await entry.SetCallsignAsync(dto.Callsign);
 			entry.SetSexId(dto.SexId);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return new StudentErrors(entry.ErrorsStrings);
 
 			await _studentCrudService.UpdateAsync(entry);
 			return new SuccessfulEntityAction<StudentDto>(entry.ToDto());
 		}
 
-		public async Task DeleteAsync(Guid id)
-		{
-			await _studentCrudService.DeleteAsync(id);
-		}
+		public async Task DeleteAsync(Guid id) => await _studentCrudService.DeleteAsync(id);
 	}
 }

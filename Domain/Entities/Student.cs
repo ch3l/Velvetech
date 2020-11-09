@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
@@ -58,7 +59,7 @@ namespace Velvetech.Domain.Entities
 		{
 			Validate.Firstname(ref firstName);
 			
-			if (HasValidationErrors)
+			if (HasErrorsInProperty(nameof(Firstname)))
 				return;
 
 			Firstname = firstName;
@@ -67,8 +68,8 @@ namespace Velvetech.Domain.Entities
 		public void SetMiddlename(string middlename)
 		{
 			Validate.Middlename(ref middlename);
-			
-			if (HasValidationErrors)
+
+			if (HasErrorsInProperty(nameof(Middlename)))
 				return;
 
 			Middlename = middlename;
@@ -77,8 +78,8 @@ namespace Velvetech.Domain.Entities
 		public void SetLastname(string lastname)
 		{
 			Validate.Lastname(ref lastname);
-			
-			if (HasValidationErrors)
+
+			if (HasErrorsInProperty(nameof(Lastname)))
 				return;
 
 			Lastname = lastname;
@@ -92,8 +93,8 @@ namespace Velvetech.Domain.Entities
 				return;
 
 			await Validate.CallsignUniqueness(callsign);
-			
-			if (HasValidationErrors)
+
+			if (HasErrorsInProperty(nameof(Callsign)))
 				return;
 
 			Callsign = callsign;
@@ -102,7 +103,8 @@ namespace Velvetech.Domain.Entities
 		public void SetSexId(int sexId)
 		{
 			Validate.SexId(sexId);
-			if (HasValidationErrors)
+			if (HasErrorsInProperty(nameof(SexId)))
+
 				return;
 
 			SexId = sexId;

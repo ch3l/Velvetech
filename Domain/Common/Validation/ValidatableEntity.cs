@@ -19,8 +19,9 @@ namespace Velvetech.Domain.Common.Validation
 			private set => _validate = value;
 		}
 
-		public bool HasValidationErrors => _validate?.HasValidationErrors ?? false;
+		public bool HasErrors => _validate?.HasErrors ?? false;
 		public bool HasValidator => _validate != null;
+
 		public IReadOnlyDictionary<string, string[]> ErrorsStrings => _validate?.ErrorsStrings ?? new ReadOnlyDictionary<string, string[]>(new Dictionary<string, string[]>());
 		public IReadOnlyDictionary<string, ValidationError[]> Errors => _validate?.Errors ?? new ReadOnlyDictionary<string, ValidationError[]>(new Dictionary<string, ValidationError[]>());
 
@@ -35,5 +36,8 @@ namespace Velvetech.Domain.Common.Validation
 
 			Validate = validator ?? throw new ArgumentNullException(nameof(validator));
 		}
+
+		public bool HasErrorsInProperty(string key) => _validate?.HasErrorsInProperty(key) ?? false;
+
 	}
 }

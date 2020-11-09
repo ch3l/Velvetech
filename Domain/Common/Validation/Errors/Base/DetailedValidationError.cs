@@ -1,4 +1,6 @@
-﻿namespace Velvetech.Domain.Common.Validation.Errors.Base
+﻿using System;
+
+namespace Velvetech.Domain.Common.Validation.Errors.Base
 {
 	public abstract class DetailedValidationError<TValue> : ValidationError
 	{
@@ -11,6 +13,19 @@
 			: base(propertyName)
 		{
 			Value = value;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(base.GetHashCode(), Value);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is DetailedValidationError<TValue> validationError
+			       && validationError.GetType() == this.GetType()
+			       && validationError.PropertyName == PropertyName
+			       && validationError.Value.Equals(Value);
 		}
 	}
 }

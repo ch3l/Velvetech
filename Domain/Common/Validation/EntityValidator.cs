@@ -10,9 +10,9 @@ namespace Velvetech.Domain.Common.Validation
 {
 	public class EntityValidator
 	{
-		private Dictionary<string, List<ValidationError>> _errors;
+		private Dictionary<string, HashSet<ValidationError>> _errors;
 
-		public bool HasValidationErrors => _errors != null && _errors.Count > 0;
+		public bool HasErrors => _errors != null && _errors.Count > 0;
 
 		public IReadOnlyDictionary<string, string[]> ErrorsStrings =>
 			new ReadOnlyDictionary<string, string[]>(
@@ -35,15 +35,27 @@ namespace Velvetech.Domain.Common.Validation
 		protected void ValidationFail(ValidationError validationError)
 		{
 			if (validationError == null) throw new ArgumentNullException(nameof(validationError));
-			_errors ??= new Dictionary<string, List<ValidationError>>();
+			_errors ??= new Dictionary<string, HashSet<ValidationError>>();
 
-			if (!_errors.TryGetValue(validationError.PropertyName, out var errorsList))
+			if (!_errors.TryGetValue(validationError.PropertyName, out var errorsSet))
 			{
-				errorsList = new List<ValidationError>();
-				_errors[validationError.PropertyName] = errorsList;
+				errorsSet = new HashSet<ValidationError>();
+				_errors[validationError.PropertyName] = errorsSet;
 			}
 
-			errorsList.Add(validationError);
+			errorsSet.Add(validationError);
+		}
+
+		public bool HasErrorsInProperty(string key)
+		{
+			return _errors != null && _errors.ContainsKey(key);
+		}
+
+		protected void ClearErrors(string key)
+		{
+			if (_errors != null && 
+			    _errors.TryGetValue(key, out var errors))
+				errors?.Clear();
 		}
 
 		public bool IsNull<TValue>(TValue value, string propertyName)

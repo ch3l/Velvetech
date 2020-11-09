@@ -18,6 +18,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public void Firstname(ref string value)
 		{
 			const string propertyName = nameof(Firstname);
+			ClearErrors(propertyName);
 
 			if (IsNull(value, propertyName))
 				return;
@@ -35,6 +36,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public void Middlename(ref string value)
 		{
 			const string propertyName = nameof(Middlename);
+			ClearErrors(propertyName);
 
 			if (value is null)
 				return;
@@ -52,6 +54,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public void Lastname(ref string value)
 		{
 			const string propertyName = nameof(Lastname);
+			ClearErrors(propertyName);
 
 			if (IsNull(value, propertyName))
 				return;
@@ -69,6 +72,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public void Callsign(ref string value)
 		{
 			const string propertyName = nameof(Callsign);
+			ClearErrors(propertyName);
 
 			if (value is null)
 				return;
@@ -91,7 +95,9 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void SexId(int sexId)
 		{
-			IsOutOfRange(sexId, 1, 2, nameof(SexId));
+			const string propertyName = nameof(SexId);
+			ClearErrors(propertyName);
+			IsOutOfRange(sexId, 1, 2, propertyName);
 		}
 	}
 }

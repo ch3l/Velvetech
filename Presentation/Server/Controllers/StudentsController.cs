@@ -140,7 +140,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			var validator = new StudentValidator(_studentValidationService);
 			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return BadRequest(entry.ErrorsStrings);
 
 			entry = await _studentCrudService.AddAsync(entry);
@@ -166,7 +166,7 @@ namespace Velvetech.Presentation.Server.Controllers
 			await entry.SetCallsignAsync(dto.Callsign);
 			entry.SetSexId(dto.SexId);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return BadRequest(entry.ErrorsStrings);
 
 			await _studentCrudService.UpdateAsync(entry);

@@ -41,7 +41,7 @@ namespace Velvetech.Api.Controllers
 			var validator = new GroupValidator();
 			var entry = Group.Build(validator, dto.Name);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return BadRequest(entry.ErrorsStrings);
 
 			entry = await _groupCrudService.AddAsync(entry);
@@ -63,7 +63,7 @@ namespace Velvetech.Api.Controllers
 			entry.SelectValidator(validator);
 			entry.SetName(dto.Name);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return BadRequest(entry.ErrorsStrings);
 
 			await _groupCrudService.UpdateAsync(entry);

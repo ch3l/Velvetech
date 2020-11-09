@@ -87,7 +87,7 @@ namespace Velvetech.UnitTests.Repository.Base
 		{
 			if (entity is IValidatableEntity validatableEntity)
 			{
-				if (validatableEntity.HasValidationErrors)
+				if (validatableEntity.HasErrors)
 					throw new MissedErrorsValidationProcessingException(validatableEntity);
 			}
 		}

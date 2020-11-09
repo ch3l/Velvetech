@@ -32,7 +32,7 @@ namespace Velvetech.Domain.Entities
 		{
 			Validate.Name(ref name);
 
-			if (HasValidationErrors)
+			if (HasErrorsInProperty(nameof(Name)))
 				return;
 
 			Name = name;

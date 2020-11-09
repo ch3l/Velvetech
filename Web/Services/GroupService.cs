@@ -32,7 +32,7 @@ namespace Velvetech.Web.Services
 			var validator = new GroupValidator();
 			var entry = Group.Build(validator, dto.Name);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return new GroupErrors(entry.ErrorsStrings);
 
 			entry = await _groupCrudService.AddAsync(entry);
@@ -53,7 +53,7 @@ namespace Velvetech.Web.Services
 
 			entry.SetName(dto.Name);
 
-			if (entry.HasValidationErrors)
+			if (entry.HasErrors)
 				return new GroupErrors(entry.ErrorsStrings);
 
 			await _groupCrudService.UpdateAsync(entry);
