@@ -40,8 +40,8 @@ namespace Velvetech.Web
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 
-			services.AddScoped<StudentService>();
-			services.AddScoped<GroupService>();
+			services.AddTransient<StudentService>();
+			services.AddTransient<GroupService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

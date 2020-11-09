@@ -114,7 +114,7 @@
 	public SexDto[] SexList { get; set; }
 
 	[Parameter]
-	public  EventCallback OnSave { get; set; }
+	public EventCallback OnSave { get; set; }
 
 	string SexId
 	{
@@ -156,7 +156,7 @@
 				if (errors.Firstname != null)
 					_firstnameErrorsString = string.Join(", ", errors.Firstname);
 
-				if (errors.Middlename!= null)
+				if (errors.Middlename != null)
 					_middlenameErrorsString = string.Join(", ", errors.Middlename);
 
 				if (errors.Lastname != null)

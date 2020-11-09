@@ -44,9 +44,13 @@ namespace Velvetech.Web.Services
 			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
 				return new EntityNotFound();
-			
-			var validator = new GroupValidator();
-			entry.SelectValidator(validator);
+
+			if (!entry.HasValidator)
+			{
+				var validator = new GroupValidator();
+				entry.SelectValidator(validator);
+			}
+
 			entry.SetName(dto.Name);
 
 			if (entry.HasValidationErrors)

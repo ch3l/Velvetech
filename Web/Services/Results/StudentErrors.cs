@@ -17,7 +17,7 @@ namespace Velvetech.Web.Services.Results
 			Firstname = errorStrings.TryGetValue(nameof(Firstname), out var firstnameErrors) ? firstnameErrors : null;
 			Middlename = errorStrings.TryGetValue(nameof(Middlename), out var middlenameErrors) ? middlenameErrors : null;
 			Lastname = errorStrings.TryGetValue(nameof(Lastname), out var lastnameErrors) ? lastnameErrors : null;
-			Callsign = errorStrings.TryGetValue(nameof(CallSite), out var callsignErrors) ? callsignErrors : null;
+			Callsign = errorStrings.TryGetValue(nameof(Callsign), out var callsignErrors) ? callsignErrors : null;
 		}
 	}
 }

@@ -116,7 +116,7 @@ namespace Velvetech.Web.Services
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
 			var validator = new StudentValidator(_studentValidationService);
-			var entry = await Domain.Entities.Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
+			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
 
 			if (entry.HasValidationErrors)
 				return new StudentErrors(entry.ErrorsStrings);
@@ -131,8 +131,11 @@ namespace Velvetech.Web.Services
 			if (entry is null)
 				return new EntityNotFound();
 
-			var validator = new StudentValidator(_studentValidationService);
-			entry.SelectValidator(validator);
+			if (!entry.HasValidator)
+			{
+				var validator = new StudentValidator(_studentValidationService);
+				entry.SelectValidator(validator);
+			}
 
 			entry.SetFirstname(dto.Firstname);
 			entry.SetMiddlename(dto.Middlename);
