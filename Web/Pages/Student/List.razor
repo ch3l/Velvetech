@@ -1,0 +1,196 @@
+﻿@page "/pages/students"
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using Velvetech.Presentation.Shared
+@using Velvetech.Presentation.Shared.Dtos
+@using System.Timers
+@using System.Net.Http.Json
+
+@namespace Velvetech.Web.Pages.Student
+
+<h1>Students</h1>
+<h1>@title</h1>
+
+<button class="btn btn-primary" @onclick="Add">Add student</button>
+<br />
+<br />
+
+@if (page == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Full name</th>
+				<th>Sex</th>
+				<th>Callsign</th>
+				<th>Groups</th>
+				<th></th>
+			</tr>
+			<tr>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="fullname"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="sex"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="callsign"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th>
+
+					<input type="text"
+						   class="form-control"
+						   @bind-value="group"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				counter = 0;
+			}
+			@foreach (var student in page.Items)
+			{
+				var i = counter++;
+
+				<tr class="">
+					<td>@student.FullName</td>
+					<td>@student.Sex.Name</td>
+
+					<td>@student.Callsign</td>
+					<td>@(string.Join(", ", student.Groups))</td>
+					<td>
+						<button class="btn btn-primary" @onclick="() => Edit(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await DeleteAsync(i)">Remove</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<button class="btn btn-primary" disabled="@(page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
+	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
+}
+
+<Velvetech.Web.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update" />
+<Velvetech.Web.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update" />
+
+@code
+{
+	int counter;
+	Page<StudentDto> page;
+	string title = string.Empty;
+
+	SexDto[] SexList;
+
+	private Add AddComponent { get; set; }
+	private Edit EditComponent { get; set; }
+
+	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
+
+	string sex = "", fullname = "", callsign = "", group = "";
+	string previousSex, previousFullname, previousCallsign, previousGroup;
+
+	void StartSearchTimer()
+	{
+		_searchDelayTimer.Enabled = false;
+		_searchDelayTimer.Enabled = true;
+	}
+
+	void Add()
+	{
+		if (AddComponent is null)
+			return;
+		AddComponent.Student = new StudentDto() { SexId = 1 };
+		AddComponent.Open();
+	}
+
+	void Edit(int index)
+	{
+		if (EditComponent is null)
+			return;
+		EditComponent.Student = page.Items[index];
+		EditComponent.Open();
+	}
+
+	async Task DeleteAsync(int index)
+	{
+		var guid = page.Items[index].Id;
+		await Http.DeleteAsync($"api/Students/Delete/{guid}");
+		await Update();
+	}
+
+	async Task Update()
+	{
+		await LoadPage(page.PageSize, page.PageIndex); ;
+	}
+
+	async Task NextPage()
+	{
+		if (page != null &&
+			!page.IsLastPage)
+			await LoadPage(10, page.PageIndex + 1);
+	}
+
+	async Task PreviousPage()
+	{
+		if (page != null &&
+			page.PageIndex > 0)
+			await LoadPage(10, page.PageIndex - 1);
+	}
+
+	async Task LoadPage(int size = 0, int index = 0)
+	{
+		page = await Http.GetFromJsonAsync<Page<StudentDto>>(
+			"api/Students/List" +
+			$"?pageSize={size}" +
+			(index == 0 ? string.Empty : $"&pageindex={index}") +
+			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
+			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
+			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
+			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}"));
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
+		await LoadPage();
+
+		_searchDelayTimer.Elapsed += async (sender, args) =>
+		{
+			if (previousSex == sex &&
+				previousFullname == fullname &&
+				previousCallsign == callsign &&
+				previousGroup == group)
+				return;
+
+			await LoadPage();
+
+			previousSex = sex;
+			previousFullname = fullname;
+			previousCallsign = callsign;
+			previousGroup = group;
+
+			StateHasChanged();
+		};
+	}
+}

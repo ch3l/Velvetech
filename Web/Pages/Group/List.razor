@@ -1,0 +1,132 @@
+﻿@page "/pages/groups"
+
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using System.Timers
+@using Velvetech.Presentation.Shared.Dtos
+@using System.Net.Http.Json
+
+@namespace Velvetech.Web.Pages.Group
+
+<h1>Groups</h1>
+<h1>@_errorMessage</h1>
+
+<button class="btn btn-primary" @onclick="Add">Add group</button>
+<br />
+@*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
+
+@if (groups == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Group name</th>
+				<th>Student count</th>
+				<th></th>
+			</tr>
+
+			<tr>
+				<th><input type="text"
+				           class="form-control"
+				           @bind-value="group"
+				           @bind-value:event="oninput"
+				           @onkeyup="@StartSearchTimer" /></th>
+				<th>
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				counter = 0;
+			}
+			@foreach (var group in groups)
+			{
+				var i = counter++;
+
+				<tr class="">
+					<td>@group.Name</td>
+					<td>@group.StudentsCount</td>
+					<td>
+						<button class="btn btn-primary" @onclick="async () => await EditAsync(i)">Edit</button>
+						<button class="btn btn-primary" @onclick="async () => await RemoveAsync(i)">Remove</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+<Velvetech.Web.Pages.Group.Add @ref="AddComponent" OnSave="LoadList" />
+<Velvetech.Web.Pages.Group.Edit @ref="EditComponent" OnSave="LoadList" />
+
+@code
+{
+	int counter;
+	GroupDto[] groups;
+
+	string _errorMessage;
+	private Add AddComponent { get; set; }
+	private Edit EditComponent { get; set; }
+
+	string group = "";
+	string previousGroup;
+
+	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
+
+	void StartSearchTimer()
+	{
+		_searchDelayTimer.Enabled = false;
+		_searchDelayTimer.Enabled = true;
+	}
+
+	void Add()
+	{
+		if (AddComponent is null)
+			return;
+		AddComponent.Group = new GroupDto();
+		AddComponent.Open();
+	}
+
+	async Task EditAsync(int index)
+	{
+		if (EditComponent is null)
+			return;
+		EditComponent.Group = groups[index];
+		await EditComponent.OpenAsync();
+	}
+
+	async Task RemoveAsync(int index)
+	{
+		var guid = groups[index].Id;
+		await Http.DeleteAsync($"api/Groups/Delete/{guid}");
+		await LoadList();
+	}
+
+	async Task LoadList()
+	{
+		groups = await Http.GetFromJsonAsync<GroupDto[]>(
+			$"api/Groups/List" +
+			(string.IsNullOrEmpty(group) ? string.Empty : $"?group={group}"));
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadList();
+
+		_searchDelayTimer.Elapsed += async (sender, args) =>
+		{
+			if (previousGroup == group)
+				return;
+
+			await LoadList();
+
+			previousGroup = group;
+			StateHasChanged();
+		};
+	}
+}

@@ -1,0 +1,185 @@
+﻿@inject HttpClient Http
+@using Velvetech.Presentation.Shared.Dtos
+@using System.Net.Http.Json
+
+@namespace Velvetech.Web.Pages.Student
+
+@if (Student != null)
+{
+	<div class="modal @_modalClass" tabindex="-1" role="dialog" style="display:@_modalDisplay">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				@if (_errorMessage != null)
+				{
+					<h1>@_errorMessage</h1>
+					<br />
+				}
+
+				<EditForm Model="Student" OnValidSubmit="@SaveClick">
+					<DataAnnotationsValidator />
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Editing student</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						@if (Student != null)
+						{
+							<div class="container">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Firstname</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.Firstname" />
+												<ValidationMessage For="(() => Student.Firstname)" />
+												@if (_firstnameErrorsString != null)
+												{
+													<b>@_firstnameErrorsString</b>
+												}
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Middlename</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.Middlename" />
+												<ValidationMessage For="(() => Student.Middlename)" />
+												@if (_middlenameErrorsString != null)
+												{
+													<b>@_middlenameErrorsString</b>
+												}
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Lastname</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.Lastname" />
+												<ValidationMessage For="(() => Student.Lastname)" />
+												@if (_lastnameErrorsString != null)
+												{
+													<b>@_lastnameErrorsString</b>
+												}
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-6">Callsign</label>
+											<div class="col-md-12">
+												<InputText class="form-control" @bind-Value="Student.Callsign" />
+												<ValidationMessage For="(() => Student.Callsign)" />
+												@if (_callsignErrorsString != null)
+												{
+													<b>@_callsignErrorsString</b>
+												}
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="control-label col-md-6">Sex</label>
+											<div class="col-md-12">
+												<InputSelect @bind-Value="SexId" class="form-control">
+													@foreach (var sex in SexList)
+															{
+														<option value="@sex.Id.ToString()">@sex.Name</option>
+															}
+												</InputSelect>
+												<ValidationMessage For="(() => SexId)" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Cancel</button>
+						<button type="submit" class="btn btn-primary">
+							Save
+						</button>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public SexDto[] SexList { get; set; }
+
+	[Parameter]
+	public EventCallback OnSave { get; set; }
+
+	string SexId
+	{
+		get => Student.SexId.ToString();
+		set => Student.SexId = int.Parse(value);
+	}
+
+	public StudentDto Student { get; set; }
+
+	private string _modalDisplay = "block;";
+	private string _modalClass = "Show";
+	private string _errorMessage;
+
+	string _firstnameErrorsString;
+	string _middlenameErrorsString;
+	string _lastnameErrorsString;
+	string _callsignErrorsString;
+
+	private async Task SaveClick()
+	{
+		if (Student is null)
+		{
+			_errorMessage = "Student is null";
+			return;
+		}
+
+		var result = await Http.PutAsJsonAsync($"api/Students/Update", Student);
+		if (result.StatusCode == System.Net.HttpStatusCode.OK)
+		{
+			await OnSave.InvokeAsync(null);
+			Close();
+		}
+		else
+		{
+			var errors = await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>();
+
+			_firstnameErrorsString = _middlenameErrorsString = _lastnameErrorsString = _callsignErrorsString = null;
+
+			if (errors.TryGetValue("Firstname", out var firstnameErrors))
+				_firstnameErrorsString = string.Join(", ", firstnameErrors);
+
+			if (errors.TryGetValue("Middlename", out var middlenameErrors))
+				_middlenameErrorsString = string.Join(", ", middlenameErrors);
+
+			if (errors.TryGetValue("Lastname", out var lastnameErrors))
+				_lastnameErrorsString = string.Join(", ", lastnameErrors);
+
+			if (errors.TryGetValue("Callsign", out var callsignErrors))
+				_callsignErrorsString = string.Join(", ", callsignErrors);
+		}
+	}
+
+	public void Open()
+	{
+		_firstnameErrorsString = _middlenameErrorsString = _lastnameErrorsString = _callsignErrorsString = null;
+		_errorMessage = "";
+		_modalDisplay = "block;";
+		_modalClass = "Show";
+		StateHasChanged();
+	}
+
+	private void Close()
+	{
+		_firstnameErrorsString = _middlenameErrorsString = _lastnameErrorsString = _callsignErrorsString = null;
+		_modalDisplay = "none";
+		_modalClass = "";
+		StateHasChanged();
+	}
+}
