@@ -29,7 +29,7 @@ namespace Velvetech.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
-			services.AddHttpClient();
+			services.AddServerSideBlazor();
 
 			services.AddDbContext<AppDbContext>();
 
@@ -65,7 +65,7 @@ namespace Velvetech.Web
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapRazorPages();
+				endpoints.MapBlazorHub();
 				endpoints.MapControllers();
 				endpoints.MapFallbackToPage("/_Host");
 			});
