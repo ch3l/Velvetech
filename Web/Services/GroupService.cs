@@ -6,10 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-using Velvetech.Domain.Entities;
-using Velvetech.Domain.Entities.Validations;
-using Velvetech.Domain.Services.External.Interfaces;
-using Velvetech.Domain.Specifications;
 using Velvetech.Shared;
 using Velvetech.Shared.Dtos;
 using Velvetech.Web.Services.Results;
@@ -20,16 +16,10 @@ namespace Velvetech.Web.Services
 {
 	public class GroupService
 	{
-		private readonly ICrudService<Group, Guid> _groupCrudService;
-		private readonly IGroupingService _groupingService;
-
 		private readonly HttpClient HttpClient;
 
-		public GroupService(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
+		public GroupService()
 		{
-			_groupCrudService = groupCrudService;
-			_groupingService = groupingService;
-
 			HttpClient = new HttpClient
 			{
 				BaseAddress = new Uri("http://localhost:5000")

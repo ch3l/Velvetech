@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Velvetech.Data.csproj" />
     <ProjectReference Include="..\Shared\Velvetech.Shared.csproj" />
   </ItemGroup>
 
