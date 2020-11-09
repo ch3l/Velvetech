@@ -68,7 +68,7 @@ namespace Velvetech.Api.Controllers
 				@group: request.Group);
 
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return new Page<StudentDto>
@@ -86,7 +86,7 @@ namespace Velvetech.Api.Controllers
 		{
 			var filter = new IncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return students;
@@ -98,7 +98,7 @@ namespace Velvetech.Api.Controllers
 		{
 			var filter = new NotIncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return students;
@@ -106,8 +106,9 @@ namespace Velvetech.Api.Controllers
 
 		// GET: api/Test/Students
 		[HttpGet]
-		public async Task<ActionResult<SexDto[]>> SexListAsync() => await _sexList.ListAsync()
-				.Select(Extensions.ToDto)
+		public async Task<ActionResult<SexDto[]>> SexListAsync() => 
+			await _sexList.ListAsync()
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 		// GET: api/Test/Get

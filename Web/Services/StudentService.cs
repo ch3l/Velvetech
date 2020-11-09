@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -18,144 +20,86 @@ namespace Velvetech.Web.Services
 {
 	public class StudentService
 	{
-		private readonly ICrudService<Domain.Entities.Student, Guid> _studentCrudService;
-		private readonly IStudentValidationService _studentValidationService;
-		private readonly IListService<Sex, int> _sexList;
+		private readonly HttpClient HttpClient;
 
-		public StudentService(ICrudService<Domain.Entities.Student, Guid> studentCrudService,
-			IListService<Sex, int> sexList, IStudentValidationService studentValidationService)
+		public StudentService()
 		{
-			_studentCrudService = studentCrudService;
-			_sexList = sexList;
-			_studentValidationService = studentValidationService;
+			HttpClient = new HttpClient
+			{
+				BaseAddress = new Uri("http://localhost:5000")
+			};
 		}
 
 		public async Task<SexDto[]> SexListAsync()
 		{
-			var result1 = await _sexList.ListAsync()
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			var x = new HttpClient();
-			x.BaseAddress = new Uri("http://localhost:5000") ;
-			
-			var sexes = await x.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
-
-			return result1;
+			return await HttpClient.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
 		}
 
 		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request)
 		{
-			var pageSize = request.PageSize ?? 10;
-			var pageIndex = request.PageIndex ?? 0;
-
-			if (pageSize < 10)
-				pageSize = 10;
-
-			var totalItems = await _studentCrudService.CountAsync(
-				new StudentSpecification(
-					request.Sex,
-					request.Fullname,
-					request.Callsign,
-					request.Group));
-
-			var lastPageIndex = totalItems / pageSize;
-
-			if (totalItems == pageSize * lastPageIndex)
-				lastPageIndex--;
-
-			if (pageIndex > lastPageIndex)
-				pageIndex = lastPageIndex;
-
-			if (pageIndex < 0)
-				pageIndex = 0;
-
-			var filter = new StudentSpecification(
-				skip: pageSize * pageIndex,
-				take: pageSize,
-				sex: request.Sex,
-				fullname: request.Fullname,
-				callsign: request.Callsign,
-				@group: request.Group);
-
-			var students = await _studentCrudService.ListAsync(filter)
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			return new Page<StudentDto>
-			{
-				IsLastPage = pageIndex == lastPageIndex,
-				PageIndex = pageIndex,
-				PageSize = pageSize,
-				Items = students,
-			};
+			return await HttpClient.GetFromJsonAsync<Page<StudentDto>>(
+				$"api/Students/List" +
+				$"?pageSize={request.PageSize}" +
+				$"&pageIndex={request.PageIndex}" +
+				$"&sex={request.Sex}" +
+				$"&fullname={request.Fullname}" +
+				$"&callsign={request.Callsign}" +
+				$"&group={request.Group}");
 		}
 
 		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request)
 		{
-			var filter = new IncludedStudentsSpecification(request.GroupId);
-			var students = await _studentCrudService.ListAsync(filter)
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			return students;
+			return await HttpClient.GetFromJsonAsync<StudentDto[]>(
+				$"api/Students/ListIncluded?GroupId={request.GroupId}");
 		}
 
 		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request)
 		{
-			var filter = new NotIncludedStudentsSpecification(request.GroupId);
-			var students = await _studentCrudService.ListAsync(filter)
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			return students;
+			return await HttpClient.GetFromJsonAsync<StudentDto[]>(
+				$"api/Students/ListNotIncluded?GroupId={request.GroupId}");
 		}
 
-		public async Task<StudentDto> GetAsync(Guid? id)
+		public async Task<StudentDto> GetAsync(Guid id)
 		{
-			if (id is null)
-				return null;// BadRequest("Corrupted Id");
-
-			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
+			return await HttpClient.GetFromJsonAsync<StudentDto>(
+				$"api/Students/Get?Id={id}");
 		}
 
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
-			var validator = new StudentValidator(_studentValidationService);
-			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
+			var result = await HttpClient.PostAsJsonAsync("api/Students/Add", dto);
+			switch (result.StatusCode)
+			{
+				case HttpStatusCode.OK:
+					return new SuccessfulEntityAction<StudentDto>(await result.Content.ReadFromJsonAsync<StudentDto>());
+				
+				case HttpStatusCode.BadRequest:
+					return new StudentErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
 
-			if (entry.HasErrors)
-				return new StudentErrors(entry.ErrorsStrings);
-
-			entry = await _studentCrudService.AddAsync(entry);
-			return new SuccessfulEntityAction<StudentDto>(entry.ToDto());
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
+			}
 		}
 
 		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
-			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
-			if (entry is null)
-				return new EntityNotFound();
-
-			if (!entry.HasValidator)
+			var result = await HttpClient.PutAsJsonAsync("api/Students/Update", dto);
+			switch (result.StatusCode)
 			{
-				var validator = new StudentValidator(_studentValidationService);
-				entry.SelectValidator(validator);
+				case HttpStatusCode.OK:
+					return new SuccessfulEntityAction<StudentDto>(await result.Content.ReadFromJsonAsync<StudentDto>());
+
+				case HttpStatusCode.BadRequest:
+					return new StudentErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
+
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
 			}
-
-			entry.SetFirstname(dto.Firstname);
-			entry.SetMiddlename(dto.Middlename);
-			entry.SetLastname(dto.Lastname);
-			await entry.SetCallsignAsync(dto.Callsign);
-			entry.SetSexId(dto.SexId);
-
-			if (entry.HasErrors)
-				return new StudentErrors(entry.ErrorsStrings);
-
-			await _studentCrudService.UpdateAsync(entry);
-			return new SuccessfulEntityAction<StudentDto>(entry.ToDto());
 		}
 
-		public async Task DeleteAsync(Guid id) => await _studentCrudService.DeleteAsync(id);
+		public async Task DeleteAsync(Guid id)
+		{
+			await HttpClient.DeleteAsync($"api/Students/Delete/{id}");
+		}
 	}
 }

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 using Velvetech.Domain.Entities;
@@ -7,6 +11,7 @@ using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared;
+using Velvetech.Shared.Dtos;
 using Velvetech.Web.Services.Results;
 using GroupDto = Velvetech.Shared.Dtos.GroupDto;
 using StudentGroupRequest = Velvetech.Shared.Requests.StudentGroupRequest;
@@ -18,66 +23,91 @@ namespace Velvetech.Web.Services
 		private readonly ICrudService<Group, Guid> _groupCrudService;
 		private readonly IGroupingService _groupingService;
 
+		private readonly HttpClient HttpClient;
+
 		public GroupService(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
 		{
 			_groupCrudService = groupCrudService;
 			_groupingService = groupingService;
+
+			HttpClient = new HttpClient
+			{
+				BaseAddress = new Uri("http://localhost:5000")
+			};
 		}
 
-		public async Task<GroupDto[]> ListAsync(string group) => await _groupCrudService.ListAsync(new GroupSpecification(group))
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
+		public async Task<GroupDto[]> ListAsync(string group)
+		{
+			return await HttpClient.GetFromJsonAsync<GroupDto[]>(
+				$"api/Groups/List?group={group}");
+		}
 
 		public async Task<EntityActionResult> AddAsync(GroupDto dto)
 		{
-			var validator = new GroupValidator();
-			var entry = Group.Build(validator, dto.Name);
+			var result = await HttpClient.PostAsJsonAsync("api/Groups/Add", dto);
+			switch (result.StatusCode)
+			{
+				case HttpStatusCode.OK:
+					return new SuccessfulEntityAction<GroupDto>(await result.Content.ReadFromJsonAsync<GroupDto>());
 
-			if (entry.HasErrors)
-				return new GroupErrors(entry.ErrorsStrings);
+				case HttpStatusCode.BadRequest:
+					return new GroupErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
 
-			entry = await _groupCrudService.AddAsync(entry);
-			return new SuccessfulEntityAction<GroupDto>(entry.ToDto());
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
+			}
 		}
 
 		public async Task<EntityActionResult> UpdateAsync(GroupDto dto)
 		{
-			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
-			if (entry is null)
-				return new EntityNotFound();
-
-			if (!entry.HasValidator)
+			var result = await HttpClient.PutAsJsonAsync("api/Groups/Update", dto);
+			switch (result.StatusCode)
 			{
-				var validator = new GroupValidator();
-				entry.SelectValidator(validator);
+				case HttpStatusCode.OK:
+					return new SuccessfulEntityAction<GroupDto>(await result.Content.ReadFromJsonAsync<GroupDto>());
+
+				case HttpStatusCode.BadRequest:
+					return new GroupErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
+
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
 			}
-
-			entry.SetName(dto.Name);
-
-			if (entry.HasErrors)
-				return new GroupErrors(entry.ErrorsStrings);
-
-			await _groupCrudService.UpdateAsync(entry);
-			return new SuccessfulEntityAction<GroupDto>(entry.ToDto());
 		}
-		public async Task DeleteAsync(Guid id) => await _groupCrudService.DeleteAsync(id);
+		public async Task DeleteAsync(Guid id)
+		{
+			await HttpClient.DeleteAsync($"api/Groups/Delete/{id}");
+		}
 
 		public async Task<bool> IncludeStudentAsync(StudentGroupRequest request)
 		{
-			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
+			var result = await HttpClient.PostAsJsonAsync("api/Groups/IncludeStudent", request);
+			switch (result.StatusCode)
+			{
+				case HttpStatusCode.OK:
+					return true;
 
-			if (includeResult)
-				return true; // Ok();
-			else
-				return false;// Ok("Already included");
+				case HttpStatusCode.NotFound:
+					return false;
+				
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(IncludeStudentAsync)}");
+			}
 		}
 
 		public async Task<bool> ExcludeStudentAsync(StudentGroupRequest request)
 		{
-			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
-				return true;
+			var result = await HttpClient.PostAsJsonAsync("api/Groups/ExcludeStudent", request);
+			switch (result.StatusCode)
+			{
+				case HttpStatusCode.OK:
+					return true;
 
-			return false;
+				case HttpStatusCode.NotFound:
+					return false;
+
+				default:
+					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(IncludeStudentAsync)}");
+			}
 		}
 	}
 }

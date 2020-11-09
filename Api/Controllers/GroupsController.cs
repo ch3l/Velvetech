@@ -28,8 +28,9 @@ namespace Velvetech.Api.Controllers
 
 		// GET: api/Groups/List
 		[HttpGet]
-		public async Task<GroupDto[]> ListAsync(string group) => await _groupCrudService.ListAsync(new GroupSpecification(group))
-				.Select(Extensions.ToDto)
+		public async Task<GroupDto[]> ListAsync(string group) => 
+			await _groupCrudService.ListAsync(new GroupSpecification(group))
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 		// PUT: api/Groups/Add

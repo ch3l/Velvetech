@@ -1,11 +1,10 @@
 ﻿using System.Linq;
-
 using Velvetech.Domain.Entities;
 using Velvetech.Shared.Dtos;
 
 namespace Velvetech.Api
 {
-	public static class Extensions
+	public static class DtoExtensions
 	{
 		public static StudentDto ToDto(this Student source) =>
 			new StudentDto
