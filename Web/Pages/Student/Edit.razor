@@ -142,7 +142,7 @@
 		}
 
 		var result = await StudentService.UpdateAsync(Student);
-		if (result is SuccessfulStudentAction successfulStudentOperationResult)
+		if (result is SuccessfulEntityAction<StudentDto> student)
 		{
 			await OnSave.InvokeAsync(null);
 			Close();
@@ -153,10 +153,17 @@
 			{
 				_firstnameErrorsString = _middlenameErrorsString = _lastnameErrorsString = _callsignErrorsString = null;
 
-				_firstnameErrorsString = string.Join(", ", errors.Firstname);
-				_middlenameErrorsString = string.Join(", ", errors.Middlename);
-				_lastnameErrorsString = string.Join(", ", errors.Lastname);
-				_callsignErrorsString = string.Join(", ", errors.Callsign);
+				if (errors.Firstname != null)
+					_firstnameErrorsString = string.Join(", ", errors.Firstname);
+
+				if (errors.Middlename!= null)
+					_middlenameErrorsString = string.Join(", ", errors.Middlename);
+
+				if (errors.Lastname!= null)
+					_lastnameErrorsString = string.Join(", ", errors.Lastname);
+
+				if (errors.Callsign!= null)
+					_callsignErrorsString = string.Join(", ", errors.Callsign);
 			}
 		}
 	}

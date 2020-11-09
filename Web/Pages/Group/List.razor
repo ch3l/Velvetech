@@ -1,10 +1,9 @@
 ﻿@page "/pages/groups"
 
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
+@inject GroupService GroupService
 @using System.Timers
 @using Velvetech.Presentation.Shared.Dtos
-@using System.Net.Http.Json
+@using Velvetech.Web.Services
 
 @namespace Velvetech.Web.Pages.Group
 
@@ -103,15 +102,13 @@ else
 	async Task RemoveAsync(int index)
 	{
 		var guid = groups[index].Id;
-		await Http.DeleteAsync($"api/Groups/Delete/{guid}");
+		await GroupService.DeleteAsync(guid);
 		await LoadList();
 	}
 
 	async Task LoadList()
 	{
-		groups = await Http.GetFromJsonAsync<GroupDto[]>(
-			$"api/Groups/List" +
-			(string.IsNullOrEmpty(group) ? string.Empty : $"?group={group}"));
+		groups = await GroupService.ListAsync(null);
 	}
 
 	protected override async Task OnInitializedAsync()

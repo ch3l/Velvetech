@@ -1,24 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Velvetech.Presentation.Shared.Dtos;
 
 namespace Velvetech.Web.Services.Results
 {
-	public class StudentActionResult
-	{
-
-	}
-
-	public class SuccessfulStudentAction : StudentActionResult
-	{
-		public StudentDto Student { get; }
-
-		public SuccessfulStudentAction(StudentDto student)
-		{
-			Student = student;
-		}
-	}
-	public class StudentErrors : StudentActionResult
+	public class StudentErrors : EntityActionResult
 	{
 		public string[] SexId { get; }
 		public string[] Firstname { get; }
@@ -34,10 +19,5 @@ namespace Velvetech.Web.Services.Results
 			Lastname = errorStrings.TryGetValue(nameof(Lastname), out var lastnameErrors) ? lastnameErrors : null;
 			Callsign = errorStrings.TryGetValue(nameof(CallSite), out var callsignErrors) ? callsignErrors : null;
 		}
-	}
-
-	public class StudentNotFound : StudentActionResult
-	{
-
 	}
 }

@@ -1,6 +1,7 @@
-﻿@inject HttpClient Http
+﻿@inject GroupService GroupService
 @using Velvetech.Presentation.Shared.Dtos
-@using System.Net.Http.Json
+@using Velvetech.Web.Services
+@using Velvetech.Web.Services.Results
 
 @namespace Velvetech.Web.Pages.Group
 
@@ -75,19 +76,20 @@
 			return;
 		}
 
-		var result = await Http.PostAsJsonAsync($"api/Groups/Add", Group);
-		if (result.StatusCode == System.Net.HttpStatusCode.OK)
+		var result = await GroupService.AddAsync(Group);
+		if (result is SuccessfulEntityAction<GroupDto> group)
 		{
 			await OnSave.InvokeAsync(null);
 			Close();
 		}
 		else
 		{
-			var errors = await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>();
-
-			_groupNameErrorsString = null;
-			if (errors.TryGetValue("Name", out var name))
-				_groupNameErrorsString = string.Join(", ", name);
+			if (result is GroupErrors errors)
+			{
+				_groupNameErrorsString = null;
+				if (errors.Name != null)
+					_groupNameErrorsString = string.Join(", ", errors.Name);
+			}
 		}
 	}
 

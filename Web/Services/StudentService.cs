@@ -113,7 +113,7 @@ namespace Velvetech.Web.Services
 			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
 		}
 
-		public async Task<StudentActionResult> AddAsync(StudentDto dto)
+		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
 			var validator = new StudentValidator(_studentValidationService);
 			var entry = await Domain.Entities.Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
@@ -122,14 +122,14 @@ namespace Velvetech.Web.Services
 				return new StudentErrors(entry.ErrorsStrings);
 
 			entry = await _studentCrudService.AddAsync(entry);
-			return new SuccessfulStudentAction(entry.ToDto());
+			return new SuccessfulEntityAction<StudentDto>(entry.ToDto());
 		}
 
-		public async Task<StudentActionResult> UpdateAsync(StudentDto dto)
+		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
 			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
-				return new StudentNotFound();
+				return new EntityNotFound();
 
 			var validator = new StudentValidator(_studentValidationService);
 			entry.SelectValidator(validator);
@@ -144,7 +144,7 @@ namespace Velvetech.Web.Services
 				return new StudentErrors(entry.ErrorsStrings);
 
 			await _studentCrudService.UpdateAsync(entry);
-			return new SuccessfulStudentAction(entry.ToDto());
+			return new SuccessfulEntityAction<StudentDto>(entry.ToDto());
 		}
 
 		public async Task DeleteAsync(Guid id)
