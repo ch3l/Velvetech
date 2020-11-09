@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Presentation.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Presentation.Client", "Presentation\Client\Velvetech.Presentation.Client.csproj", "{BFDDA4EE-7CF9-4209-B93E-848D6F75AEED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velvetech.UnitTests", "UnitTests\Velvetech.UnitTests.csproj", "{A1459A24-02DB-42C5-B1D9-6D012CD43997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.UnitTests", "UnitTests\Velvetech.UnitTests.csproj", "{A1459A24-02DB-42C5-B1D9-6D012CD43997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velvetech.Api", "Api\Velvetech.Api.csproj", "{72E9FB55-AB39-4B87-A79E-A309A65A9E41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A1459A24-02DB-42C5-B1D9-6D012CD43997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1459A24-02DB-42C5-B1D9-6D012CD43997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1459A24-02DB-42C5-B1D9-6D012CD43997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E9FB55-AB39-4B87-A79E-A309A65A9E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E9FB55-AB39-4B87-A79E-A309A65A9E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E9FB55-AB39-4B87-A79E-A309A65A9E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E9FB55-AB39-4B87-A79E-A309A65A9E41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
