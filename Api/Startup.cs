@@ -16,6 +16,8 @@ namespace Velvetech.Api
 {
 	public class Startup
 	{
+		private const string CORS_POLICY = "CorsPolicy";
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -27,9 +29,7 @@ namespace Velvetech.Api
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc();
-			//.AddNewtonsoftJson(options => 
-			//	options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+			services.AddControllers();
 
 			services.AddDbContext<AppDbContext>();
 
@@ -39,6 +39,19 @@ namespace Velvetech.Api
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
+
+			/*
+			services.AddCors(options =>
+			{
+				options.AddPolicy(name: CORS_POLICY,
+					builder =>
+					{
+						builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
+						builder.AllowAnyMethod();
+						builder.AllowAnyHeader();
+					});
+			});
+			*/
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,23 +61,16 @@ namespace Velvetech.Api
 			{
 				app.UseDeveloperExceptionPage();
 			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			//app.UseHttpsRedirection();
+			//app.UseStaticFiles();
+			app.UseCors(CORS_POLICY);
 
 			app.UseRouting();
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapRazorPages();
 				endpoints.MapControllers();
-				endpoints.MapFallbackToFile("index.html");
 			});
 		}
 	}
