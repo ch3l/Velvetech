@@ -1,6 +1,4 @@
-﻿using Velvetech.Presentation.Shared.Dtos;
-
-namespace Velvetech.Web.Services.Results
+﻿namespace Velvetech.Web.Services.Results
 {
 	public class EntityActionResult
 	{

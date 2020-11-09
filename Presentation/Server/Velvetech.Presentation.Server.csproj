@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Velvetech.Data.csproj" />
-    <ProjectReference Include="..\Client\Velvetech.Presentation.Client.csproj" />
     <ProjectReference Include="..\Shared\Velvetech.Presentation.Shared.csproj" />
   </ItemGroup>
 

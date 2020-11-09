@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Presentation.Shared.Dtos;
-using Velvetech.Presentation.Shared.Requests;
+
+using GroupDto = Velvetech.Web.Dtos.GroupDto;
+using StudentGroupRequest = Velvetech.Web.Requests.StudentGroupRequest;
 
 namespace Velvetech.Web.Controllers
 {
@@ -26,12 +29,9 @@ namespace Velvetech.Web.Controllers
 
 		// GET: api/Groups/List
 		[HttpGet]
-		public async Task<GroupDto[]> ListAsync(string group)
-		{
-			return await _groupCrudService.ListAsync(new GroupSpecification(group))
+		public async Task<GroupDto[]> ListAsync(string group) => await _groupCrudService.ListAsync(new GroupSpecification(group))
 				.Select(Extensions.ToDto)
 				.ToArrayAsync();
-		}
 
 		// PUT: api/Groups/Add
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -41,7 +41,7 @@ namespace Velvetech.Web.Controllers
 		{
 			var validator = new GroupValidator();
 			var entry = Group.Build(validator, dto.Name);
-			
+
 			if (entry.HasErrors)
 				return BadRequest(entry.ErrorsStrings);
 
@@ -78,7 +78,7 @@ namespace Velvetech.Web.Controllers
 		public async Task<IActionResult> IncludeStudentAsync(StudentGroupRequest request)
 		{
 			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
-			
+
 			if (includeResult)
 				return Ok();
 			else

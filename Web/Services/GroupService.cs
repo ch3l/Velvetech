@@ -6,9 +6,9 @@ using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Presentation.Shared.Dtos;
-using Velvetech.Presentation.Shared.Requests;
 using Velvetech.Web.Services.Results;
+using GroupDto = Velvetech.Web.Dtos.GroupDto;
+using StudentGroupRequest = Velvetech.Web.Requests.StudentGroupRequest;
 
 namespace Velvetech.Web.Services
 {

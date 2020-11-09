@@ -7,6 +7,7 @@ namespace Velvetech.Domain.Entities.Validations
 		public void Name(ref string value)
 		{
 			var propertyName = nameof(Name);
+			ClearErrors(nameof(Name));
 
 			if (IsNull(value, propertyName))
 				return;

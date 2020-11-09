@@ -7,10 +7,12 @@ using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Presentation.Shared;
-using Velvetech.Presentation.Shared.Dtos;
-using Velvetech.Presentation.Shared.Requests;
 using Velvetech.Web.Services.Results;
+
+using IncludedStudentsRequest = Velvetech.Web.Requests.IncludedStudentsRequest;
+using SexDto = Velvetech.Web.Dtos.SexDto;
+using StudentDto = Velvetech.Web.Dtos.StudentDto;
+using StudentFilterPagedRequest = Velvetech.Web.Requests.StudentFilterPagedRequest;
 
 namespace Velvetech.Web.Services
 {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Velvetech.Domain.Entities;
-using Velvetech.Presentation.Shared.Dtos;
+using Velvetech.Web.Dtos;
 
 namespace Velvetech.Web
 {

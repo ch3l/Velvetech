@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Velvetech.Data.csproj" />
-    <ProjectReference Include="..\Presentation\Shared\Velvetech.Presentation.Shared.csproj" />
+    <ProjectReference Include="..\Web\Velvetech.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

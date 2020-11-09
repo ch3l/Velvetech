@@ -53,9 +53,12 @@ namespace Velvetech.Domain.Common.Validation
 
 		protected void ClearErrors(string key)
 		{
-			if (_errors != null && 
+			if (_errors != null &&
 			    _errors.TryGetValue(key, out var errors))
+			{
 				errors?.Clear();
+				_errors.Remove(key);
+			}
 		}
 
 		public bool IsNull<TValue>(TValue value, string propertyName)
