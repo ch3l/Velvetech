@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Velvetech.Web.Dtos
+namespace Velvetech.Shared.Dtos
 {
 	public class GroupDto
 	{

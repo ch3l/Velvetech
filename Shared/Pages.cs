@@ -1,4 +1,4 @@
-﻿namespace Velvetech.Web
+﻿namespace Velvetech.Shared
 {
 	public class Page<T>
 	{

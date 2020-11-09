@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Velvetech.Web.Dtos
+namespace Velvetech.Shared.Dtos
 {
 	public class StudentDto
 	{

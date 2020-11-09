@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Entities.Validations;
@@ -25,15 +25,15 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static async Task<Student> BuildAsync(StudentValidator validator, 
-			int sexId, 
-			string firstname, 
+		public static async Task<Student> BuildAsync(StudentValidator validator,
+			int sexId,
+			string firstname,
 			string middlename,
 			string lastname,
 			string callsign)
 		{
 			var instance = new Student();
-			
+
 			instance.SelectValidator(validator);
 			instance.SetSexId(sexId);
 			instance.SetFirstname(firstname);
@@ -58,7 +58,7 @@ namespace Velvetech.Domain.Entities
 		public void SetFirstname(string firstName)
 		{
 			Validate.Firstname(ref firstName);
-			
+
 			if (HasErrorsInProperty(nameof(Firstname)))
 				return;
 
@@ -88,7 +88,7 @@ namespace Velvetech.Domain.Entities
 		public async Task SetCallsignAsync(string callsign)
 		{
 			Validate.Callsign(ref callsign);
-			
+
 			if (Callsign == callsign)
 				return;
 

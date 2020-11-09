@@ -1,4 +1,4 @@
-﻿namespace Velvetech.Web.Dtos
+﻿namespace Velvetech.Shared.Dtos
 {
 	public class SexDto
 	{

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 using Velvetech.Domain.Entities;
@@ -7,8 +9,9 @@ using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Web.Dtos;
-using Velvetech.Web.Requests;
+using Velvetech.Shared;
+using Velvetech.Shared.Dtos;
+using Velvetech.Shared.Requests;
 using Velvetech.Web.Services.Results;
 															   
 namespace Velvetech.Web.Services
@@ -27,9 +30,18 @@ namespace Velvetech.Web.Services
 			_studentValidationService = studentValidationService;
 		}
 
-		public async Task<SexDto[]> SexListAsync() => await _sexList.ListAsync()
-				.Select(Extensions.ToDto)
+		public async Task<SexDto[]> SexListAsync()
+		{
+			var result1 = await _sexList.ListAsync()
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
+
+			//var x = new HttpClient();
+			//x.BaseAddress = new Uri("http://localhost:5000");
+			//var sexes = await x.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
+
+			return result1;
+		}
 
 		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request)
 		{
@@ -66,7 +78,7 @@ namespace Velvetech.Web.Services
 				@group: request.Group);
 
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return new Page<StudentDto>
@@ -82,7 +94,7 @@ namespace Velvetech.Web.Services
 		{
 			var filter = new IncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return students;
@@ -92,7 +104,7 @@ namespace Velvetech.Web.Services
 		{
 			var filter = new NotIncludedStudentsSpecification(request.GroupId);
 			var students = await _studentCrudService.ListAsync(filter)
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 			return students;

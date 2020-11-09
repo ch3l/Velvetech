@@ -1,4 +1,4 @@
-﻿namespace Velvetech.Web.Requests
+﻿namespace Velvetech.Shared.Requests
 {
 	public class StudentFilterPagedRequest
 	{

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Api", "Api\Velvet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Web", "Web\Velvetech.Web.csproj", "{F4E67392-DFBB-4DC7-A58B-1EAD64FC92C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velvetech.Shared", "Shared\Velvetech.Shared.csproj", "{D6B6D383-069B-4C75-9BF2-A93B7F71C002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F4E67392-DFBB-4DC7-A58B-1EAD64FC92C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E67392-DFBB-4DC7-A58B-1EAD64FC92C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E67392-DFBB-4DC7-A58B-1EAD64FC92C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6B6D383-069B-4C75-9BF2-A93B7F71C002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B6D383-069B-4C75-9BF2-A93B7F71C002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B6D383-069B-4C75-9BF2-A93B7F71C002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B6D383-069B-4C75-9BF2-A93B7F71C002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

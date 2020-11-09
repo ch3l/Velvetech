@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 
 using Velvetech.Domain.Entities;
-using Velvetech.Web.Dtos;
+using Velvetech.Shared.Dtos;
 
 namespace Velvetech.Api
 {

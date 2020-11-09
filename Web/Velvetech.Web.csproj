@@ -8,10 +8,12 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Velvetech.Data.csproj" />
+    <ProjectReference Include="..\Shared\Velvetech.Shared.csproj" />
   </ItemGroup>
 
 </Project>

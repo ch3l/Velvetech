@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Velvetech.Web.Requests
+namespace Velvetech.Shared.Requests
 {
 	public class IncludedStudentsRequest
 	{

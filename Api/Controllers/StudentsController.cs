@@ -9,9 +9,9 @@ using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
-using Velvetech.Web;
-using Velvetech.Web.Dtos;
-using Velvetech.Web.Requests;
+using Velvetech.Shared;
+using Velvetech.Shared.Dtos;
+using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {

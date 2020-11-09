@@ -6,9 +6,10 @@ using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validations;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Specifications;
+using Velvetech.Shared;
 using Velvetech.Web.Services.Results;
-using GroupDto = Velvetech.Web.Dtos.GroupDto;
-using StudentGroupRequest = Velvetech.Web.Requests.StudentGroupRequest;
+using GroupDto = Velvetech.Shared.Dtos.GroupDto;
+using StudentGroupRequest = Velvetech.Shared.Requests.StudentGroupRequest;
 
 namespace Velvetech.Web.Services
 {
@@ -24,7 +25,7 @@ namespace Velvetech.Web.Services
 		}
 
 		public async Task<GroupDto[]> ListAsync(string group) => await _groupCrudService.ListAsync(new GroupSpecification(group))
-				.Select(Extensions.ToDto)
+				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
 
 		public async Task<EntityActionResult> AddAsync(GroupDto dto)
