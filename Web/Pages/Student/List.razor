@@ -163,13 +163,24 @@ else
 		page = await StudentService.ListAsync(
 			new StudentFilterPagedRequest
 			{
-				Sex = null,
-				Callsign = null,
-				Fullname = fullname,
-				Group = null,
-				PageIndex = null,
-				PageSize = null
+				Sex = CleanString(sex),
+				Callsign = CleanString(callsign),
+				Fullname = CleanString(fullname),
+				Group = CleanString(group),
+				PageIndex = index,
+				PageSize = size
 			});
+	}
+
+	string CleanString(string value)
+	{
+		if (value is null)
+			return null;
+
+		if (value.Trim() == string.Empty)
+			return null;
+
+		return value.Trim();
 	}
 
 	protected override async Task OnInitializedAsync()

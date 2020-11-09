@@ -108,7 +108,7 @@ else
 
 	async Task LoadList()
 	{
-		groups = await GroupService.ListAsync(null);
+		groups = await GroupService.ListAsync(group.Trim());
 	}
 
 	protected override async Task OnInitializedAsync()
