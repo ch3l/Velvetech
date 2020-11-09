@@ -1,11 +1,12 @@
 ﻿@page "/pages/students"
 
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
+@inject StudentService StudentService
+
 @using Velvetech.Presentation.Shared
 @using Velvetech.Presentation.Shared.Dtos
 @using System.Timers
-@using System.Net.Http.Json
+@using Velvetech.Presentation.Shared.Requests
+@using Velvetech.Web.Services
 
 @namespace Velvetech.Web.Pages.Student
 
@@ -135,7 +136,7 @@ else
 	async Task DeleteAsync(int index)
 	{
 		var guid = page.Items[index].Id;
-		await Http.DeleteAsync($"api/Students/Delete/{guid}");
+		await StudentService.DeleteAsync(guid);//  Http.DeleteAsync($"api/Students/Delete/{guid}");
 		await Update();
 	}
 
@@ -160,37 +161,49 @@ else
 
 	async Task LoadPage(int size = 0, int index = 0)
 	{
-		page = await Http.GetFromJsonAsync<Page<StudentDto>>(
+		@*page = await Http.GetFromJsonAsync<Page<StudentDto>>(
 			"api/Students/List" +
 			$"?pageSize={size}" +
 			(index == 0 ? string.Empty : $"&pageindex={index}") +
 			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
 			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
 			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
-			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}"));
+			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}"));*@
+
+		page = await StudentService.ListAsync(
+			new StudentFilterPagedRequest
+			{
+				Sex = null,
+				Callsign = null,
+				Fullname = null,
+				Group = null,
+				PageIndex = null,
+				PageSize = null
+			});
 	}
 
-	protected override async Task OnInitializedAsync()
+protected override async Task OnInitializedAsync()
+{
+	//SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
+	SexList = await StudentService.SexListAsync();
+	await LoadPage();
+
+	_searchDelayTimer.Elapsed += async (sender, args) =>
 	{
-		SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
+		if (previousSex == sex &&
+			previousFullname == fullname &&
+			previousCallsign == callsign &&
+			previousGroup == group)
+			return;
+
 		await LoadPage();
 
-		_searchDelayTimer.Elapsed += async (sender, args) =>
-		{
-			if (previousSex == sex &&
-				previousFullname == fullname &&
-				previousCallsign == callsign &&
-				previousGroup == group)
-				return;
+		previousSex = sex;
+		previousFullname = fullname;
+		previousCallsign = callsign;
+		previousGroup = group;
 
-			await LoadPage();
-
-			previousSex = sex;
-			previousFullname = fullname;
-			previousCallsign = callsign;
-			previousGroup = group;
-
-			StateHasChanged();
-		};
-	}
+		StateHasChanged();
+	};
+}
 }

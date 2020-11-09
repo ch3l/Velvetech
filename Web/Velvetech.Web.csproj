@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Presentation\Shared\Velvetech.Presentation.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Student\" />
+  </ItemGroup>
+
 </Project>

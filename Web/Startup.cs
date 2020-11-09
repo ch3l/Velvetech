@@ -11,6 +11,7 @@ using Velvetech.Domain.Services.External;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Services.Internal;
 using Velvetech.Domain.Services.Internal.Interfaces;
+using Velvetech.Web.Services;
 
 namespace Velvetech.Web
 {
@@ -29,8 +30,6 @@ namespace Velvetech.Web
 		{
 			services.AddMvc();
 			services.AddHttpClient();
-			//.AddNewtonsoftJson(options => 
-			//	options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 			services.AddDbContext<AppDbContext>();
 
@@ -40,6 +39,8 @@ namespace Velvetech.Web
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
+
+			services.AddScoped<StudentService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
