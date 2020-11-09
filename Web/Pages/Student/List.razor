@@ -160,49 +160,40 @@ else
 
 	async Task LoadPage(int size = 0, int index = 0)
 	{
-		@*page = await Http.GetFromJsonAsync<Page<StudentDto>>(
-			"api/Students/List" +
-			$"?pageSize={size}" +
-			(index == 0 ? string.Empty : $"&pageindex={index}") +
-			(string.IsNullOrEmpty(sex) ? string.Empty : $"&sex={sex}") +
-			(string.IsNullOrEmpty(fullname) ? string.Empty : $"&fullname={fullname}") +
-			(string.IsNullOrEmpty(callsign) ? string.Empty : $"&callsign={callsign}") +
-			(string.IsNullOrEmpty(group) ? string.Empty : $"&group={group}"));*@
-
 		page = await StudentService.ListAsync(
 			new StudentFilterPagedRequest
 			{
 				Sex = null,
 				Callsign = null,
-				Fullname = null,
+				Fullname = fullname,
 				Group = null,
 				PageIndex = null,
 				PageSize = null
 			});
 	}
 
-protected override async Task OnInitializedAsync()
-{
-	//SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
-	SexList = await StudentService.SexListAsync();
-	await LoadPage();
-
-	_searchDelayTimer.Elapsed += async (sender, args) =>
+	protected override async Task OnInitializedAsync()
 	{
-		if (previousSex == sex &&
-			previousFullname == fullname &&
-			previousCallsign == callsign &&
-			previousGroup == group)
-			return;
-
+		//SexList = await Http.GetFromJsonAsync<SexDto[]>($"api/Students/sexList");
+		SexList = await StudentService.SexListAsync();
 		await LoadPage();
 
-		previousSex = sex;
-		previousFullname = fullname;
-		previousCallsign = callsign;
-		previousGroup = group;
+		_searchDelayTimer.Elapsed += async (sender, args) =>
+		{
+			if (previousSex == sex &&
+				previousFullname == fullname &&
+				previousCallsign == callsign &&
+				previousGroup == group)
+				return;
 
-		StateHasChanged();
-	};
-}
+			await LoadPage();
+
+			previousSex = sex;
+			previousFullname = fullname;
+			previousCallsign = callsign;
+			previousGroup = group;
+
+			await InvokeAsync(StateHasChanged);
+		};
+	}
 }
