@@ -28,11 +28,11 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
-		<OutputPath>..\_bin\Debug</OutputPath>
+		<OutputPath>..\_bin\Data\$(Configuration)</OutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputPath>..\_bin\Release</OutputPath>
+		<OutputPath>..\_bin\Data\$(Configuration)</OutputPath>
 	</PropertyGroup>
 
 </Project>
