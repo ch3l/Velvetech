@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,7 +32,11 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
-			services.AddDbContext<AppDbContext>();
+			var connection = "Server=sqldata;Database=Velvetech;User=sa;Password=Qwerty1!;";
+			//var connection = "Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;";
+
+			services.AddDbContext<AppDbContext>(
+				options => options.UseSqlServer(connection));
 
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));

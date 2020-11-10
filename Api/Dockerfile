@@ -13,10 +13,10 @@ COPY ["Domain/Velvetech.Domain.csproj", "Domain/"]
 RUN dotnet restore "Api/Velvetech.Api.csproj"
 COPY . .
 WORKDIR "/src/Api"
-RUN dotnet build "Velvetech.Api.csproj" -c Release -o /app/build
+RUN dotnet build "Velvetech.Api.csproj" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Velvetech.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Velvetech.Api.csproj" -c Debug -o /app/publish
 
 FROM base AS final
 WORKDIR /app
