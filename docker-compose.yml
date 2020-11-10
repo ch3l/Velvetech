@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - SA_PASSWORD=Qwerty1!
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+    container_name: sql_data
+  velvetech.api:
+    image: ${DOCKER_REGISTRY-}velvetechapi
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    ports:
+      - "5000:5000"
