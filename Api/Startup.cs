@@ -41,18 +41,18 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
-			//var connection = "Server=localhost;Database=Velvetech;User=sa;Password=Qwerty1!;";
-			////var connection = "Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;";
+			var connection = @"Server=sqldata;Database=Velvetech;User=SA;Password=Qwerty12;";
+			//var connection = "Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;";
 
-			//services.AddDbContext<AppDbContext>(
-			//	options => options.UseSqlServer(connection));
+			services.AddDbContext<AppDbContext>(
+				options => options.UseSqlServer(connection));
 
-			//services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
-			//services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
-			//services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
-			//services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
-			//services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
-			//services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
+			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
+			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
+			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
+			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
+			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
+			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 
 			var baseUrlConfig = new BaseUrlConfiguration();
 			Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
