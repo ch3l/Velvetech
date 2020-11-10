@@ -31,7 +31,14 @@ namespace Velvetech.Api.Controllers
 			_studentValidationService = studentValidationService;
 		}
 
-		// GET: api/Test/Students
+		// GET: api/Test/Students/Blabla
+		[HttpGet]
+		public async Task<ActionResult<string>> BlablaAsync()
+		{
+			return await Task.FromResult("Bla bla bla");
+		}
+
+		// GET: api/Test/Students/List
 		[HttpGet]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
