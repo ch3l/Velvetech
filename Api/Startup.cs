@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,7 @@ namespace Velvetech.Api
 									  
 			services.AddDbContext<AppDbContext>(
 				options => options.UseSqlServer(Configuration.GetConnectionString("InDockerMsSql")));
+				//options => options.UseSqlServer(Configuration.GetConnectionString("OutOfDockerMsSql")));
 
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
@@ -64,7 +66,7 @@ namespace Velvetech.Api
 			{
 				app.UseDeveloperExceptionPage();
 			}
-							 
+
 			//app.UseHttpsRedirection();
 			//app.UseStaticFiles();
 			app.UseCors(CORS_POLICY);
@@ -76,6 +78,20 @@ namespace Velvetech.Api
 			{
 				endpoints.MapControllers();
 			});
+
+			Thread.Sleep(15000);
+
+			UpdateDatabase(app);
+		}
+
+		private static void UpdateDatabase(IApplicationBuilder app)
+		{
+			using var serviceScope = app.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope();
+			
+			using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
+			context.Database.Migrate();
 		}
 	}
 }
