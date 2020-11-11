@@ -1,5 +1,5 @@
 using System;
-
+using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +23,8 @@ namespace Velvetech.Web
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
+			Thread.Sleep(30000);
+
 			services.AddMvc();
 			services.AddServerSideBlazor();
 

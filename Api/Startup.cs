@@ -73,7 +73,7 @@ namespace Velvetech.Api
 
 			//app.UseHttpsRedirection();
 			//app.UseStaticFiles();
-			//app.UseCors(CORS_POLICY);
+			app.UseCors(CORS_POLICY);
 
 			app.UseRouting();
 			//app.UseAuthentication();
@@ -115,7 +115,7 @@ namespace Velvetech.Api
 				}
 				catch (Exception)
 				{
-					Thread.Sleep(5000);
+					Thread.Sleep(1000);
 				}
 			}
 		}

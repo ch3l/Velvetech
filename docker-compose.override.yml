@@ -8,3 +8,10 @@ services:
       - "80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  velvetech.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      #- SERVICE1=http://services1:80
+    ports:
+      - "80"
+

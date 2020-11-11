@@ -20,7 +20,7 @@ namespace Velvetech.Web.Services
 		{
 			HttpClient = new HttpClient
 			{
-				BaseAddress = new Uri("http://localhost:5000")
+				BaseAddress = new Uri("http://velvetech.api:5000")
 			};
 		}
 

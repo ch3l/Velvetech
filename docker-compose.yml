@@ -15,7 +15,15 @@ services:
       context: .
       dockerfile: Api/Dockerfile
     ports:
-      - "5050:5000"
-      - "5051:5001"
+      - "5000:5000"
+      - "5001:5001"
     depends_on:
       - sqldata
+  velvetech.web:
+    image: ${DOCKER_REGISTRY-}velvetechweb
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    depends_on:
+      - velvetech.api
+
