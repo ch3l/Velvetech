@@ -17,13 +17,15 @@ namespace Velvetech.Api.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class BlablaController : ControllerBase
+	public class StateController : ControllerBase
 	{
-	// GET: api/Test/Blabla/Blabla
+		public static bool State = false;
+
+	// GET: api/Test/State/IsActive
 		[HttpGet]
-		public async Task<ActionResult<string>> BlablaAsync()
+		public async Task<ActionResult<bool>> IsActiveAsync()
 		{
-			return await Task.FromResult("Bla bla bla");
+			return await Task.FromResult(State);
 		}
 	}
 }

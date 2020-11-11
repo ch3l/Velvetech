@@ -23,13 +23,13 @@ namespace Velvetech.Web
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			Thread.Sleep(30000);
+			//Thread.Sleep(10000);
 
 			services.AddMvc();
 			services.AddServerSideBlazor();
 
-			services.AddTransient<StudentService>();
-			services.AddTransient<GroupService>();
+			services.AddScoped<StudentService>();
+			services.AddScoped<GroupService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

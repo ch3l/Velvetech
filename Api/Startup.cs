@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -19,6 +20,7 @@ using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Api
 {
+	// Copyright (c) .NET Foundation. Licensed under the Apache License, Version 2.0.
 
 	public class Startup
 	{
@@ -37,18 +39,8 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
-			
 			services.AddDbContext<AppDbContext>(
 				options => options.UseSqlServer(Configuration.GetConnectionString("InDockerMsSql")));
-				//options => options.UseSqlServer(Configuration.GetConnectionString("OutOfDockerMsSql")));
-
-			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
-			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
-			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
-			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
-			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
-			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
-		
 
 			services.AddCors(options =>
 			{
@@ -56,11 +48,20 @@ namespace Velvetech.Api
 					builder =>
 					{
 						builder.AllowAnyOrigin();
-						//builder.WithOrigins(baseUrlConfig.WebBase.Replace("host.docker.internal", "localhost").TrimEnd('/'));
 						builder.AllowAnyMethod();
 						builder.AllowAnyHeader();
 					});
 			});
+
+			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
+			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
+			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
+			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
+			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
+			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
+
+			services.AddScoped<AppDbContext>();
+			services.AddHostedService<MsSqlAwaitingService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,9 +84,9 @@ namespace Velvetech.Api
 				endpoints.MapControllers();
 			});
 
-			//Thread.Sleep(15000);
-
-			UpdateDatabase(app);
+			//services.AddHostedService<GracePeriodManagerService>();
+			//UpdateDatabase(app);
+			//StateController.State = true;
 		}
 
 		private static void UpdateDatabase(IApplicationBuilder app)
