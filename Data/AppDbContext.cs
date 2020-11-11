@@ -22,6 +22,10 @@ namespace Velvetech.Data
 		{
 			base.OnModelCreating(builder);
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+			builder.Entity<Sex>().HasData(
+				new Sex("Female"), 
+				new Sex("Male"));
 		}
 
 		/*

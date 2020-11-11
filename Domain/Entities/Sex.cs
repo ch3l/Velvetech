@@ -15,6 +15,11 @@ namespace Velvetech.Domain.Entities
 
 		}
 
+		public Sex(string name)
+		{
+			Name = name;
+		}
+
 		public IReadOnlyList<Student> Student => _student.AsReadOnly();
 
 		public string Name { get; private set; }
