@@ -16,13 +16,6 @@ using Velvetech.Domain.Services.Internal.Interfaces;
 
 namespace Velvetech.Api
 {
-	public class BaseUrlConfiguration
-	{
-		public const string CONFIG_NAME = "baseUrls";
-
-		public string ApiBase { get; set; }
-		public string WebBase { get; set; }
-	}
 
 	public class Startup
 	{
@@ -40,13 +33,9 @@ namespace Velvetech.Api
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-
-			//var connection = @"Server=localhost;Database=Velvetech;User=SA;Password=Qwerty12;";
-			var connection = @"Server=sqldata;Database=Velvetech;User=SA;Password=Qwerty12;";
-			//var connection = "Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;";
-
+									  
 			services.AddDbContext<AppDbContext>(
-				options => options.UseSqlServer(connection));
+				options => options.UseSqlServer(Configuration.GetConnectionString("InDockerMsSql")));
 
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
@@ -54,11 +43,7 @@ namespace Velvetech.Api
 			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
-
-			var baseUrlConfig = new BaseUrlConfiguration();
-			Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
-
-			
+		
 			services.AddCors(options =>
 			{
 				options.AddPolicy(name: CORS_POLICY,
@@ -79,9 +64,7 @@ namespace Velvetech.Api
 			{
 				app.UseDeveloperExceptionPage();
 			}
-
-			
-
+							 
 			//app.UseHttpsRedirection();
 			//app.UseStaticFiles();
 			app.UseCors(CORS_POLICY);
