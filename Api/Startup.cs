@@ -41,6 +41,7 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
+			//var connection = @"Server=localhost;Database=Velvetech;User=SA;Password=Qwerty12;";
 			var connection = @"Server=sqldata;Database=Velvetech;User=SA;Password=Qwerty12;";
 			//var connection = "Server=.\\sqlexpress;Database=Velvetech;Trusted_Connection=True;";
 
