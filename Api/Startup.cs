@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,6 +49,7 @@ namespace Velvetech.Api
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 		
+
 			services.AddCors(options =>
 			{
 				options.AddPolicy(name: CORS_POLICY,
@@ -71,7 +73,7 @@ namespace Velvetech.Api
 
 			//app.UseHttpsRedirection();
 			//app.UseStaticFiles();
-			app.UseCors(CORS_POLICY);
+			//app.UseCors(CORS_POLICY);
 
 			app.UseRouting();
 			//app.UseAuthentication();
@@ -99,6 +101,16 @@ namespace Velvetech.Api
 					using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
 
 					context.Database.Migrate();
+
+					if (!context.Sex.Any())
+					{
+						context.Sex.AddRange(
+							new Sex("Female"),
+							new Sex("Male"));
+
+						context.SaveChanges();
+					}
+
 					break;
 				}
 				catch (Exception)
