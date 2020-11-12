@@ -12,6 +12,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Api", "Api\Velvetech.Api.csproj", "{72E9FB55-AB39-4B87-A79E-A309A65A9E41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Web", "Web\Velvetech.Web.csproj", "{F4E67392-DFBB-4DC7-A58B-1EAD64FC92C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72E9FB55-AB39-4B87-A79E-A309A65A9E41} = {72E9FB55-AB39-4B87-A79E-A309A65A9E41}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Velvetech.Shared", "Shared\Velvetech.Shared.csproj", "{D6B6D383-069B-4C75-9BF2-A93B7F71C002}"
 EndProject
