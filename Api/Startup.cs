@@ -1,6 +1,8 @@
 using System;
+using System.Configuration;
+using System.Text;
 using System.Threading;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.IdentityModel.Tokens;
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -16,6 +18,7 @@ using Velvetech.Domain.Services.External;
 using Velvetech.Domain.Services.External.Interfaces;
 using Velvetech.Domain.Services.Internal;
 using Velvetech.Domain.Services.Internal.Interfaces;
+using Velvetech.Shared;
 
 namespace Velvetech.Api
 {
@@ -38,8 +41,10 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
+			var connectionStringTag = Environment.GetEnvironmentVariable("MSSQL");
+
 			services.AddDbContext<AppDbContext>(
-				options => options.UseSqlServer(Configuration.GetConnectionString("InDockerMsSql")));
+				options => options.UseSqlServer(Configuration.GetConnectionString(connectionStringTag)));
 			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
@@ -50,6 +55,24 @@ namespace Velvetech.Api
 
 			services.AddScoped<AppDbContext>();
 			services.AddHostedService<MigrationAndSeedService>();
+
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					options.RequireHttpsMetadata = false;
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidIssuer = JwtShared.Issuer,
+
+						ValidateAudience = true,
+						ValidAudience = JwtShared.Audience,
+						ValidateLifetime = true,
+
+						IssuerSigningKey = JwtShared.SecurityKey,
+						ValidateIssuerSigningKey = true,
+					};
+				});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,8 +83,10 @@ namespace Velvetech.Api
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 			app.UseRouting();
+
+			app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>
 			{

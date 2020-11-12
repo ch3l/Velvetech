@@ -41,8 +41,11 @@ namespace Velvetech.Web
 				.AddPolicyHandler(GetRetryPolicy());
 		}
 
-		private void ConfigureApiHttpClient(HttpClient client) =>
-			client.BaseAddress = new Uri(Configuration["HttpApiUrl"]);
+		private void ConfigureApiHttpClient(HttpClient client)
+		{
+			var targetApiUrl = Environment.GetEnvironmentVariable("APIURL");
+			client.BaseAddress = new Uri(Configuration[targetApiUrl]);
+		}
 
 		static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 		{
@@ -66,7 +69,7 @@ namespace Velvetech.Web
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
 			app.UseRouting();

@@ -19,9 +19,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "APIURL": "WindowsApiUrl",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:6001;http://localhost:6000"
+      "applicationUrl": "http://localhost:80"
     },
     "Docker": {
       "commandName": "Docker",

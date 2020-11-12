@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Api/Dockerfile
     ports:
-      - "5050:5000"
+      - "5050:4000"
     depends_on:
       - sqldata
   

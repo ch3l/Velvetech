@@ -2,8 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
-EXPOSE 5000
-ENV ASPNETCORE_URLS http://+:5000
+EXPOSE 4000
+ENV ASPNETCORE_URLS http://+:4000
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
@@ -14,10 +14,10 @@ COPY ["Domain/Velvetech.Domain.csproj", "Domain/"]
 RUN dotnet restore "Api/Velvetech.Api.csproj"
 COPY . .
 WORKDIR "/src/Api"
-RUN dotnet build "Velvetech.Api.csproj" -c Debug -o /app/build
+RUN dotnet build "Velvetech.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Velvetech.Api.csproj" -c Debug -o /app/publish
+RUN dotnet publish "Velvetech.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
