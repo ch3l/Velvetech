@@ -14,19 +14,18 @@ namespace Velvetech.Web.Services
 {
 	public class StudentService
 	{
-		private readonly HttpClient HttpClient;
+		private readonly HttpClient _httpClient;
 
-		public StudentService()
+		public StudentService(HttpClient httpClient)
 		{
-			HttpClient = new HttpClient
-			{
-				BaseAddress = new Uri("http://velvetech.api:5000")
-			};
+			_httpClient = httpClient;
 		}
 
-		public async Task<SexDto[]> SexListAsync() => await HttpClient.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
+		public async Task<SexDto[]> SexListAsync() => 
+			await _httpClient.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
 
-		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => await HttpClient.GetFromJsonAsync<Page<StudentDto>>(
+		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => 
+			await _httpClient.GetFromJsonAsync<Page<StudentDto>>(
 				$"api/Students/List" +
 				$"?pageSize={request.PageSize}" +
 				$"&pageIndex={request.PageIndex}" +
@@ -35,18 +34,21 @@ namespace Velvetech.Web.Services
 				$"&callsign={request.Callsign}" +
 				$"&group={request.Group}");
 
-		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request) => await HttpClient.GetFromJsonAsync<StudentDto[]>(
+		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request) => 
+			await _httpClient.GetFromJsonAsync<StudentDto[]>(
 				$"api/Students/ListIncluded?GroupId={request.GroupId}");
 
-		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request) => await HttpClient.GetFromJsonAsync<StudentDto[]>(
+		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request) => 
+			await _httpClient.GetFromJsonAsync<StudentDto[]>(
 				$"api/Students/ListNotIncluded?GroupId={request.GroupId}");
 
-		public async Task<StudentDto> GetAsync(Guid id) => await HttpClient.GetFromJsonAsync<StudentDto>(
+		public async Task<StudentDto> GetAsync(Guid id) => 
+			await _httpClient.GetFromJsonAsync<StudentDto>(
 				$"api/Students/Get?Id={id}");
 
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
-			var result = await HttpClient.PostAsJsonAsync("api/Students/Add", dto);
+			var result = await _httpClient.PostAsJsonAsync("api/Students/Add", dto);
 			switch (result.StatusCode)
 			{
 				case HttpStatusCode.OK:
@@ -62,7 +64,7 @@ namespace Velvetech.Web.Services
 
 		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
-			var result = await HttpClient.PutAsJsonAsync("api/Students/Update", dto);
+			var result = await _httpClient.PutAsJsonAsync("api/Students/Update", dto);
 			switch (result.StatusCode)
 			{
 				case HttpStatusCode.OK:
@@ -76,6 +78,7 @@ namespace Velvetech.Web.Services
 			}
 		}
 
-		public async Task DeleteAsync(Guid id) => await HttpClient.DeleteAsync($"api/Students/Delete/{id}");
+		public async Task DeleteAsync(Guid id) => 
+			await _httpClient.DeleteAsync($"api/Students/Delete/{id}");
 	}
 }

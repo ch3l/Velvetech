@@ -1,15 +1,14 @@
 using System;
-using System.Data.Common;
 using System.Threading;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -41,18 +40,7 @@ namespace Velvetech.Api
 
 			services.AddDbContext<AppDbContext>(
 				options => options.UseSqlServer(Configuration.GetConnectionString("InDockerMsSql")));
-
-			services.AddCors(options =>
-			{
-				options.AddPolicy(name: CORS_POLICY,
-					builder =>
-					{
-						builder.AllowAnyOrigin();
-						builder.AllowAnyMethod();
-						builder.AllowAnyHeader();
-					});
-			});
-
+			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
 			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
@@ -61,7 +49,7 @@ namespace Velvetech.Api
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 
 			services.AddScoped<AppDbContext>();
-			services.AddHostedService<MsSqlAwaitingService>();
+			services.AddHostedService<MigrationAndSeedService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,20 +61,13 @@ namespace Velvetech.Api
 			}
 
 			//app.UseHttpsRedirection();
-			//app.UseStaticFiles();
-			app.UseCors(CORS_POLICY);
 
 			app.UseRouting();
-			//app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 			});
-
-			//services.AddHostedService<GracePeriodManagerService>();
-			//UpdateDatabase(app);
-			//StateController.State = true;
 		}
 
 		private static void UpdateDatabase(IApplicationBuilder app)

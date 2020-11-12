@@ -1,17 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
-using Velvetech.Domain.Entities;
-using Velvetech.Domain.Entities.Validations;
-using Velvetech.Domain.Services.External.Interfaces;
-using Velvetech.Domain.Services.Internal.Interfaces;
-using Velvetech.Domain.Specifications;
-using Velvetech.Shared;
-using Velvetech.Shared.Dtos;
-using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {
@@ -21,9 +10,9 @@ namespace Velvetech.Api.Controllers
 	{
 		public static bool State = false;
 
-	// GET: api/Test/State/IsActive
+		// GET: api/Test/State/IsReady
 		[HttpGet]
-		public async Task<ActionResult<bool>> IsActiveAsync()
+		public async Task<ActionResult<bool>> IsReadyAsync()
 		{
 			return await Task.FromResult(State);
 		}
