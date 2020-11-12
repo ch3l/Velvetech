@@ -68,37 +68,5 @@ namespace Velvetech.Api
 				endpoints.MapControllers();
 			});
 		}
-
-		private static void UpdateDatabase(IApplicationBuilder app)
-		{
-			while (true)
-			{
-				try
-				{
-					using var serviceScope = app.ApplicationServices
-						.GetRequiredService<IServiceScopeFactory>()
-						.CreateScope();
-
-					using var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
-
-					context.Database.Migrate();
-
-					if (!context.Sex.Any())
-					{
-						context.Sex.AddRange(
-							new Sex("Female"),
-							new Sex("Male"));
-
-						context.SaveChanges();
-					}
-
-					break;
-				}
-				catch (Exception)
-				{
-					Thread.Sleep(1000);
-				}
-			}
-		}
 	}
-}
+}  
