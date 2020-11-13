@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Velvetech.Api.Controllers;
 using Velvetech.Data;
 
-namespace Velvetech.Api
+namespace Velvetech.Api.Services.Background
 {
 	public class MigrationAndSeedService : BackgroundService
 	{

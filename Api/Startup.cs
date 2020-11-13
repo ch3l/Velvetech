@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Velvetech.Api.Services;
+using Velvetech.Api.Services.Background;
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;

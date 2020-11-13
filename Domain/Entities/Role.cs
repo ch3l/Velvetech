@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Entities.Validators;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Role : ValidatableEntity<Guid, GroupValidator>, IAggregateRoot
+	public class Role : ValidatableEntity<Guid, RoleValidator>, IAggregateRoot
 	{
 		public string Name { get; private set; }
 
@@ -17,7 +18,7 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static Role Build(GroupValidator validator, string name)
+		public static Role Build(RoleValidator validator, string name)
 		{
 			var instance = new Role();
 

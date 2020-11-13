@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
@@ -7,7 +8,7 @@ using Velvetech.Domain.Entities.Validators;
 
 namespace Velvetech.Domain.Entities
 {
-	public class User : ValidatableEntity<Guid, GroupValidator>, IAggregateRoot
+	public class User : ValidatableEntity<Guid, UserValidator>, IAggregateRoot
 	{
 		public string Name { get; private set; }
 
@@ -18,7 +19,7 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static User Build(GroupValidator validator, string name)
+		public static User Build(UserValidator validator, string name)
 		{
 			var instance = new User();
 
@@ -37,5 +38,18 @@ namespace Velvetech.Domain.Entities
 
 			Name = name;
 		}
+					 
+
+		public bool AddRole(Role role) => 
+			_userRole.Add(new UserRole(this, role));
+
+		public Role[] GetRoles() => 
+			_userRole.Select(ur => ur.Role).ToArray();
+
+		public bool RemoveRole(Role role) =>
+			_userRole.Remove(new UserRole(this, role));
+
+		public void RemoveAllRoles() =>
+			_userRole.Clear();
 	}
 }
