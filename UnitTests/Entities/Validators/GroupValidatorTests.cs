@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Velvetech.Domain.Common.Validation.Errors;
-using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Entities.Validators;
 using Velvetech.UnitTests.Helpers;
 
 namespace Velvetech.UnitTests.Entities.Validators

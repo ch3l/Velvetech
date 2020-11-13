@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Entities.Validators;
 using Velvetech.Domain.Services.Internal;
 
 namespace Velvetech.UnitTests.Entities.Builders

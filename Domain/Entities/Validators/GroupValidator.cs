@@ -1,6 +1,6 @@
 ﻿using Velvetech.Domain.Common.Validation;
 
-namespace Velvetech.Domain.Entities.Validations
+namespace Velvetech.Domain.Entities.Validators
 {
 	public class GroupValidator: EntityValidator
 	{

@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Services.Internal.Interfaces;
 
-namespace Velvetech.Domain.Entities.Validations
+namespace Velvetech.Domain.Entities.Validators
 {
 	public class StudentValidator : EntityValidator
 	{

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Entities.Validators;
 using Velvetech.Domain.Services.Internal;
 using Velvetech.UnitTests.Entities.Builders;
 using Velvetech.UnitTests.Repository;

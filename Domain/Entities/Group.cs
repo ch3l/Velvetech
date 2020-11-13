@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
-using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Entities.Validators;
 
 namespace Velvetech.Domain.Entities
 {

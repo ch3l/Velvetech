@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Velvetech.Domain.Common.Validation.Errors;
 using Velvetech.Domain.Common.Validation.Errors.Base;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Entities.Validations;
+using Velvetech.Domain.Entities.Validators;
 using Velvetech.UnitTests.Entities.Builders;
 using Velvetech.UnitTests.Helpers;
 using Velvetech.UnitTests.Repository;
