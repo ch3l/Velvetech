@@ -53,7 +53,6 @@ namespace Velvetech.Api
 			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
 			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
 
-			services.AddScoped<AppDbContext>();
 			services.AddHostedService<MigrationAndSeedService>();
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

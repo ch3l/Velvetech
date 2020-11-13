@@ -23,15 +23,5 @@ namespace Velvetech.Data
 			base.OnModelCreating(builder);
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
-
-		/*
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)
-			{
-				var connection = @"Server=localhost;Database=Velvetech;User=SA;Password=Qwerty12;";
-			}
-		}	
-		*/
 	}
 }
