@@ -10,6 +10,12 @@ namespace Velvetech.Domain.Entities
 {
 	public class Grouping : BaseEntity, IAggregateRoot
 	{
+		public Guid StudentId { get; private set; }
+		public Guid GroupId { get; private set; }
+
+		public Student Student { get; private set; }
+		public Group Group { get; private set; }
+
 		public Grouping(Guid studentId, Guid groupId)
 		{
 			StudentId = studentId;
@@ -22,12 +28,6 @@ namespace Velvetech.Domain.Entities
 			Student = student;
 			Group = group;
 		}
-
-		public Guid StudentId { get; private set; }
-		public Guid GroupId { get; private set; }
-
-		public Student Student { get; private set; }
-		public Group Group { get; private set; }
 
 		public override bool Equals(object obj) =>
 			obj is Grouping grouping 

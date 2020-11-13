@@ -5,6 +5,7 @@ using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data
 {
+	/*
     public partial class VelvetechContext : DbContext
     {
         public VelvetechContext()
@@ -70,5 +71,5 @@ namespace Velvetech.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-    }
+    }  */
 }

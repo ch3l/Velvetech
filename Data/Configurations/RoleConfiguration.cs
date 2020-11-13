@@ -1,23 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data.Configurations
 {
-	internal class UserConfiguration : IEntityTypeConfiguration<User>
+	internal class RoleConfiguration : IEntityTypeConfiguration<Role>
 	{
-		public void Configure(EntityTypeBuilder<User> entity)
+		public void Configure(EntityTypeBuilder<Role> entity)
 		{
 			entity.Metadata
-				.FindNavigation(nameof(User.UserRole))
+				.FindNavigation(nameof(Role.UserRole))
 				.SetPropertyAccessMode(PropertyAccessMode.Field);
 
 			entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
 			entity.Property(e => e.Name)
 				.IsRequired()
-				.HasMaxLength(30);
+				.HasMaxLength(40);
 		}
 	}
 }

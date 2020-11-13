@@ -12,7 +12,6 @@ namespace Velvetech.Data
 		{
 		}
 
-
 		public DbSet<Student> Student { get; set; }
 		public DbSet<Sex> Sex { get; set; }			
 		public DbSet<Group> Group { get; set; }
