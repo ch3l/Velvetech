@@ -17,74 +17,22 @@ namespace Velvetech.Domain.Entities.Validations
 
 		public void Firstname(ref string value)
 		{
-			const string propertyName = nameof(Firstname);
-			ClearErrors(propertyName);
-
-			if (IsNull(value, propertyName))
-				return;
-
-			if (IsEmpty(value, propertyName))
-				return;
-
-			if (IsWhitespaces(value, propertyName))
-				return;
-
-			value = value.Trim();
-			IsLongerThan(value, 40, propertyName);
+			DefaultValidations.DenyNullOrEmptyString(nameof(Firstname), ref value, 40);
 		}
 
 		public void Middlename(ref string value)
 		{
-			const string propertyName = nameof(Middlename);
-			ClearErrors(propertyName);
-
-			if (value is null)
-				return;
-
-			if (EmptyAsNull(ref value))
-				return;
-
-			if (IsWhitespaces(value, propertyName))
-				return;
-
-			value = value.Trim();
-			IsLongerThan(value, 60, propertyName);
+			DefaultValidations.AllowNullOrEmptyString(nameof(Middlename), ref value, 60);
 		}
 
 		public void Lastname(ref string value)
 		{
-			const string propertyName = nameof(Lastname);
-			ClearErrors(propertyName);
-
-			if (IsNull(value, propertyName))
-				return;
-
-			if (IsEmpty(value, propertyName))
-				return;
-
-			if (IsWhitespaces(value, propertyName))
-				return;
-
-			value = value.Trim();
-			IsLongerThan(value, 40, propertyName);
+			DefaultValidations.DenyNullOrEmptyString(nameof(Lastname), ref value, 40);
 		}
 
 		public void Callsign(ref string value)
 		{
-			const string propertyName = nameof(Callsign);
-			ClearErrors(propertyName);
-
-			if (value is null)
-				return;
-
-			if (EmptyAsNull(ref value))
-				return;
-
-			if (IsWhitespaces(value, propertyName))
-				return;
-			
-			value = value.Trim();
-			IsLengthOutOfRange(value, 6, 16, propertyName);
+			DefaultValidations.AllowNullOrEmptyString(nameof(Callsign), ref value, 6, 16);
 		}
 
 		public async Task CallsignUniqueness(string value)
@@ -97,7 +45,7 @@ namespace Velvetech.Domain.Entities.Validations
 		{
 			const string propertyName = nameof(SexId);
 			ClearErrors(propertyName);
-			IsOutOfRange(sexId, 1, 2, propertyName);
+			BaseValidations.IsOutOfRange(sexId, 1, 2, propertyName);
 		}
 	}
 }
