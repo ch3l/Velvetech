@@ -41,10 +41,9 @@ namespace Velvetech.Api
 		{
 			services.AddControllers();
 
-			var connectionStringTag = Environment.GetEnvironmentVariable("MSSQL");
-
-			services.AddDbContext<AppDbContext>(
-				options => options.UseSqlServer(Configuration.GetConnectionString(connectionStringTag)));
+			var connectionStringTag = Environment.GetEnvironmentVariable("MSSQL") ?? "WindowsMsSql";
+			var connectionString = Configuration.GetConnectionString(connectionStringTag);
+			services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
