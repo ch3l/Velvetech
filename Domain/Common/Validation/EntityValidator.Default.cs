@@ -2,7 +2,7 @@
 
 namespace Velvetech.Domain.Common.Validation
 {
-	public partial class EntityValidator
+	partial class EntityValidator
 	{
 		protected class DefaultValidation
 		{

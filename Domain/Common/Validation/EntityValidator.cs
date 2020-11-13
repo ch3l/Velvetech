@@ -68,7 +68,5 @@ namespace Velvetech.Domain.Common.Validation
 				_errors.Remove(key);
 			}
 		}
-
-		
 	}
 }
