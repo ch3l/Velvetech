@@ -1,14 +1,15 @@
 ﻿using System;
+using Velvetech.Domain.Common;
 
 namespace Velvetech.Domain.Entities
 {
-    public class UserRole
+    public class UserRole : BaseEntity
     {
-        public Guid UserId { get; set; }
-        public Guid RoleId { get; set; }
+        public Guid UserId { get; }
+        public Guid RoleId { get; }
 
-        public Role Role { get; set; }
-        public User User { get; set; }
+        public Role Role { get; }
+        public User User { get; }
 
         public UserRole(Guid userId, Guid roleId)
         {

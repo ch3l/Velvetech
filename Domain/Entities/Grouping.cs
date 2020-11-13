@@ -8,13 +8,13 @@ using System.Data;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Grouping : BaseEntity, IAggregateRoot
+	public class Grouping : BaseEntity
 	{
-		public Guid StudentId { get; private set; }
-		public Guid GroupId { get; private set; }
+		public Guid StudentId { get; }
+		public Guid GroupId { get; }
 
-		public Student Student { get; private set; }
-		public Group Group { get; private set; }
+		public Student Student { get; }
+		public Group Group { get; }
 
 		public Grouping(Guid studentId, Guid groupId)
 		{
