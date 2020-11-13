@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Velvetech.Api.Services;
+using Velvetech.Api.Services.Background;
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
@@ -47,10 +49,12 @@ namespace Velvetech.Api
 			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
-			services.AddScoped(typeof(ICrudService<Student, Guid>), typeof(StudentCrudService));
-			services.AddScoped(typeof(ICrudService<Group, Guid>), typeof(GroupCrudService));
-			services.AddScoped(typeof(IGroupingService), typeof(GroupingService));
-			services.AddScoped(typeof(IStudentValidationService), typeof(StudentValidationService));
+
+			services.AddScoped<ICrudService<Student, Guid>, StudentCrudService>();
+			services.AddScoped<ICrudService<Group, Guid>, GroupCrudService>();
+			services.AddScoped<IGroupingService, GroupingService>();
+			services.AddScoped<IStudentValidationService, StudentValidationService>();
+			services.AddScoped<IUsersRolesService, UsersRolesService>();
 
 			services.AddHostedService<MigrationAndSeedService>();
 
@@ -71,6 +75,8 @@ namespace Velvetech.Api
 						ValidateIssuerSigningKey = true,
 					};
 				});
+
+			services.AddMemoryCache();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
