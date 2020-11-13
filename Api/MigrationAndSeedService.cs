@@ -35,8 +35,9 @@ namespace Velvetech.Api
 					using var scope = _serviceProvider.CreateScope();
 					await using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 					await context.MigrateAndSeed();
-					await Task.Delay(1000, cancellationToken);
+					
 					StateController.State = true;
+					await StopAsync(cancellationToken);
 				}
 				catch (Exception)
 				{

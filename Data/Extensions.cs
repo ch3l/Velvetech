@@ -15,8 +15,8 @@ namespace Velvetech.Data
 			if (!await context.Sex.AnyAsync())
 			{
 				await context.Sex.AddRangeAsync(
-					new Sex("Female"),
-					new Sex("Male"));
+					new Sex(1, "Female"),
+					new Sex(2, "Male"));
 
 				await context.SaveChangesAsync();
 			}

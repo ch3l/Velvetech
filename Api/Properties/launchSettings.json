@@ -19,7 +19,7 @@
     },
     "Api": {
       "commandName": "Project",
-      "launchUrl": "",
+      //"launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MSSQL": "WindowsMsSql"
