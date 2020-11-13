@@ -13,11 +13,7 @@ namespace Velvetech.Data.Configurations
 				.FindNavigation(nameof(User.UserRole))
 				.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-			entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-
-			entity.Property(e => e.Name)
-				.IsRequired()
-				.HasMaxLength(30);
+			entity.Property(e => e.Id);
 		}
 	}
 }

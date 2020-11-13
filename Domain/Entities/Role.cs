@@ -6,10 +6,8 @@ using Velvetech.Domain.Entities.Validators;
 
 namespace Velvetech.Domain.Entities
 {
-	public class Role : ValidatableEntity<Guid, GroupValidator>, IAggregateRoot
+	public class Role : Entity<string>, IAggregateRoot
 	{
-		public string Name { get; private set; }
-
 		private readonly HashSet<UserRole> _userRole = new HashSet<UserRole>();
 		public IReadOnlyCollection<UserRole> UserRole => _userRole;
 
@@ -17,24 +15,12 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static Role Build(GroupValidator validator, string name)
+		public static Role Build(string id)
 		{
-			var instance = new Role();
-
-			instance.SelectValidator(validator);
-			instance.SetName(name);
-
-			return instance;
-		}
-
-		public void SetName(string name)
-		{
-			Validate.Name(ref name);
-
-			if (HasErrorsInProperty(nameof(Name)))
-				return;
-
-			Name = name;
+			return new Role()
+			{
+				Id = id
+			};
 		}
 	}
 }

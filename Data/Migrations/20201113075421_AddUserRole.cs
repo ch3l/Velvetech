@@ -11,8 +11,7 @@ namespace Velvetech.Data.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
-                    Name = table.Column<string>(maxLength: 40, nullable: false)
+                    Id = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -23,8 +22,7 @@ namespace Velvetech.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
-                    Name = table.Column<string>(maxLength: 30, nullable: false)
+                    Id = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -35,8 +33,8 @@ namespace Velvetech.Data.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

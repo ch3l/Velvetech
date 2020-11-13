@@ -5,13 +5,13 @@ namespace Velvetech.Domain.Entities
 {
     public class UserRole : BaseEntity
     {
-        public Guid UserId { get; }
-        public Guid RoleId { get; }
+        public string UserId { get; }
+        public string RoleId { get; }
 
         public Role Role { get; }
         public User User { get; }
 
-        public UserRole(Guid userId, Guid roleId)
+        public UserRole(string userId, string roleId)
         {
 	        UserId = userId;
 	        RoleId = roleId;
