@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ardalis.Specification;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Services.External.Common.Interfaces;
 
@@ -17,16 +20,16 @@ namespace Velvetech.Data.Seeds.Base
 			CrudService = crudService;
 		}
 
-		protected abstract IEnumerable<TEntity> Enumerate();
+		protected abstract Task AddEntities();
 
 		public async Task<bool> SeedAsync()
 		{
-			if (await CrudService.CountAsync() > 0)
+			var count = await CrudService.CountAsync();
+			if (count > 0)
 				return false;
 
-			foreach (var entity in Enumerate())
-				await CrudService.AddAsync(entity);
-
+			await AddEntities();
+		
 			return true;
 		}
 	}

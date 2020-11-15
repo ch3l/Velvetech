@@ -22,13 +22,13 @@ namespace Velvetech.Domain.Services.External.Particular
 
 		public async Task AddUserAsync(string userName)
 		{
-			var user = User.Build(userName);
+			var user = new User(userName);
 			await _userRepository.AddAsync(user);
 		}
 
 		public async Task AddRoleAsync(string roleName)
 		{
-			var user = User.Build(roleName);
+			var user = new User(roleName);
 			await _userRepository.AddAsync(user);
 		}
 

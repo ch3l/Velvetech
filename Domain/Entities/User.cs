@@ -17,12 +17,9 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static User Build(string id)
+		public User(string id)
 		{
-			return new User()
-			{
-				Id = id
-			};
+			Id = id;
 		}
 
 		public bool AddRole(Role role) => 

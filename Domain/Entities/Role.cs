@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Common.Validation;
 using Velvetech.Domain.Entities.Validators;
@@ -15,12 +16,9 @@ namespace Velvetech.Domain.Entities
 		{
 		}
 
-		public static Role Build(string id)
+		public Role(string id)
 		{
-			return new Role()
-			{
-				Id = id
-			};
+			Id = id;
 		}
 	}
 }

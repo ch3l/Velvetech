@@ -16,7 +16,14 @@ namespace Velvetech.Data
 			await context.Database.MigrateAsync();
 
 			var sexSeed = serviceProvider.GetRequiredService<SexSeed>();
-			await sexSeed.SeedAsync();
+			var sexSeedIsDone = await sexSeed.SeedAsync();
+
+			var roleSeed = serviceProvider.GetRequiredService<RoleSeed>();
+			var roleSeedIsDone = await roleSeed.SeedAsync();
+
+			var userSeed = serviceProvider.GetRequiredService<UserSeed>();
+			var userSeedIsDone = await userSeed.SeedAsync();
+			var w = userSeedIsDone;
 		}
 	}
 }
