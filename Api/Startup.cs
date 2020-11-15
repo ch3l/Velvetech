@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using Velvetech.Api.Services.Background;
 using Velvetech.Data;
+using Velvetech.Data.Seeds;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.External.Common;
@@ -55,6 +56,8 @@ namespace Velvetech.Api
 			services.AddScoped<IStudentValidationService, StudentValidationService>();
 			services.AddScoped<IUsersRolesService, UsersRolesService>();
 
+			services.AddTransient(typeof(ICrudService<,>), typeof(CrudService<,>));
+			services.AddTransient<SexSeed>();
 			services.AddHostedService<MigrationAndSeedService>();
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -34,8 +34,7 @@ namespace Velvetech.Api.Services.Background
 				try
 				{
 					using var scope = _serviceProvider.CreateScope();
-					await using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-					await context.MigrateAndSeed();
+					await scope.ServiceProvider.MigrateAndSeed();
 					
 					StateController.State = true;
 					await StopAsync(cancellationToken);
