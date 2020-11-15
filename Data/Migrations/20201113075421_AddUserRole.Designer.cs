@@ -53,15 +53,8 @@ namespace Velvetech.Data.Migrations
 
             modelBuilder.Entity("Velvetech.Domain.Entities.Role", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(40)")
-                        .HasMaxLength(40);
+                    b.Property<string>("Id")
+	                    .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -127,16 +120,9 @@ namespace Velvetech.Data.Migrations
                 });
 
             modelBuilder.Entity("Velvetech.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+            {
+					b.Property<string>("Id")
+						.HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -145,13 +131,13 @@ namespace Velvetech.Data.Migrations
 
             modelBuilder.Entity("Velvetech.Domain.Entities.UserRole", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+	                    .HasColumnType("nvarchar(40)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+					b.Property<string>("RoleId")
+						.HasColumnType("nvarchar(40)");
 
-                    b.HasKey("UserId", "RoleId");
+					b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
