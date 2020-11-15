@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Core;
 using System.Threading.Tasks;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;

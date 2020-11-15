@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -123,7 +122,7 @@ namespace Velvetech.UnitTests.Repository.Base
 			CheckIfValidatable(entity);
 
 			if (!_items.TryGetValue(entity.Id, out var savedEntity))
-				throw new ObjectNotFoundException(nameof(Entity<TKey>.Id));
+				throw new KeyNotFoundException(nameof(Entity<TKey>.Id));
 
 			if (entity == null)
 				throw new ArgumentNullException(nameof(entity));
