@@ -4,19 +4,17 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Velvetech.Shared.Dtos;
+using Velvetech.Shared.Requests;
+using Velvetech.Web.HttpClients.Results;
 
-using Velvetech.Web.Services.Results;
-
-using GroupDto = Velvetech.Shared.Dtos.GroupDto;
-using StudentGroupRequest = Velvetech.Shared.Requests.StudentGroupRequest;
-
-namespace Velvetech.Web.Services
+namespace Velvetech.Web.HttpClients
 {
-	public class GroupService
+	public class GroupClient
 	{
 		private readonly HttpClient _httpClient;
 
-		public GroupService(HttpClient httpClient)
+		public GroupClient(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}

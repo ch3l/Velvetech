@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
-using Velvetech.Domain.Services.External.Interfaces;
+using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.External.Particular.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;

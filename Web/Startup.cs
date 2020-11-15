@@ -1,14 +1,16 @@
 using System;
 using System.Net.Http;
-using System.Threading;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Polly;
 using Polly.Extensions.Http;
-using Velvetech.Web.Services;
+
+using Velvetech.Web.HttpClients;
 
 namespace Velvetech.Web
 {
@@ -28,15 +30,19 @@ namespace Velvetech.Web
 			services.AddMvc();
 			services.AddServerSideBlazor();
 
-			services.AddHttpClient<StateService>(ConfigureApiHttpClient)
+			services.AddHttpClient<StateClient>(ConfigureApiHttpClient)
 				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
 				.AddPolicyHandler(GetRetryPolicy());
 
-			services.AddHttpClient<StudentService>(ConfigureApiHttpClient)
+			services.AddHttpClient<SexClient>(ConfigureApiHttpClient)
 				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
 				.AddPolicyHandler(GetRetryPolicy());
 
-			services.AddHttpClient<GroupService>(ConfigureApiHttpClient)
+			services.AddHttpClient<StudentClient>(ConfigureApiHttpClient)
+				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
+				.AddPolicyHandler(GetRetryPolicy());
+
+			services.AddHttpClient<GroupClient>(ConfigureApiHttpClient)
 				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
 				.AddPolicyHandler(GetRetryPolicy());
 		}
@@ -47,13 +53,10 @@ namespace Velvetech.Web
 			client.BaseAddress = new Uri(Configuration[targetApiUrl]);
 		}
 
-		static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-		{
-			return HttpPolicyExtensions
+		private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy() => HttpPolicyExtensions
 				.HandleTransientHttpError()
 				.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
 				.WaitAndRetryAsync(100, _ => TimeSpan.FromSeconds(2));
-		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

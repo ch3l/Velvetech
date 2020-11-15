@@ -1,23 +1,22 @@
 using System;
-using System.Configuration;
-using System.Text;
-using System.Threading;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Velvetech.Api.Services;
+
 using Velvetech.Api.Services.Background;
 using Velvetech.Data;
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External;
-using Velvetech.Domain.Services.External.Interfaces;
+using Velvetech.Domain.Services.External.Common;
+using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.External.Particular;
+using Velvetech.Domain.Services.External.Particular.Interfaces;
 using Velvetech.Domain.Services.Internal;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Shared;
@@ -48,7 +47,7 @@ namespace Velvetech.Api
 			services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
-			services.AddScoped(typeof(IListService<,>), typeof(ListService<,>));
+			services.AddScoped(typeof(IReadService<,>), typeof(ReadService<,>));
 
 			services.AddScoped<ICrudService<Student, Guid>, StudentCrudService>();
 			services.AddScoped<ICrudService<Group, Guid>, GroupCrudService>();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
-using Velvetech.Domain.Services.External.Interfaces;
+using Velvetech.Domain.Services.External.Common.Interfaces;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared;
@@ -21,13 +21,12 @@ namespace Velvetech.Api.Controllers
 	{
 		private readonly ICrudService<Student, Guid> _studentCrudService;
 		private readonly IStudentValidationService _studentValidationService;
-		private readonly IListService<Sex, int> _sexList;
 
-		public StudentsController(ICrudService<Student, Guid> studentCrudService,
-			IListService<Sex, int> sexList, IStudentValidationService studentValidationService)
+		public StudentsController(
+			ICrudService<Student, Guid> studentCrudService,
+			IStudentValidationService studentValidationService)
 		{
 			_studentCrudService = studentCrudService;
-			_sexList = sexList;
 			_studentValidationService = studentValidationService;
 		}
 
@@ -104,12 +103,7 @@ namespace Velvetech.Api.Controllers
 			return students;
 		}
 
-		// GET: api/Test/Students
-		[HttpGet]
-		public async Task<ActionResult<SexDto[]>> SexListAsync() => 
-			await _sexList.ListAsync()
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
+		
 
 		// GET: api/Test/Get
 		[HttpGet("{id}")]

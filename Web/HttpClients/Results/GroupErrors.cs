@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
-namespace Velvetech.Web.Services.Results
+namespace Velvetech.Web.HttpClients.Results
 {
 	public class GroupErrors : EntityActionResult
 	{

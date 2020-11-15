@@ -1,7 +1,8 @@
-﻿@inject StudentService StudentService
-@using Velvetech.Web.Services
-@using Velvetech.Web.Services.Results
+﻿@inject StudentClient StudentService
+
+@using Velvetech.Web.HttpClients.Results
 @using Velvetech.Shared.Dtos
+@using Velvetech.Web.HttpClients
 
 @namespace Velvetech.Web.Pages.Student
 
@@ -156,13 +157,13 @@
 				if (errors.Firstname != null)
 					_firstnameErrorsString = string.Join(", ", errors.Firstname);
 
-				if (errors.Middlename!= null)
+				if (errors.Middlename != null)
 					_middlenameErrorsString = string.Join(", ", errors.Middlename);
 
-				if (errors.Lastname!= null)
+				if (errors.Lastname != null)
 					_lastnameErrorsString = string.Join(", ", errors.Lastname);
 
-				if (errors.Callsign!= null)
+				if (errors.Callsign != null)
 					_callsignErrorsString = string.Join(", ", errors.Callsign);
 			}
 		}

@@ -4,25 +4,21 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-
 using Velvetech.Shared;
 using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;
-using Velvetech.Web.Services.Results;
+using Velvetech.Web.HttpClients.Results;
 
-namespace Velvetech.Web.Services
+namespace Velvetech.Web.HttpClients
 {
-	public class StudentService
+	public class StudentClient
 	{
 		private readonly HttpClient _httpClient;
 
-		public StudentService(HttpClient httpClient)
+		public StudentClient(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}
-
-		public async Task<SexDto[]> SexListAsync() => 
-			await _httpClient.GetFromJsonAsync<SexDto[]>("api/Students/SexList");
 
 		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => 
 			await _httpClient.GetFromJsonAsync<Page<StudentDto>>(
@@ -49,33 +45,35 @@ namespace Velvetech.Web.Services
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
 			var result = await _httpClient.PostAsJsonAsync("api/Students/Add", dto);
-			switch (result.StatusCode)
+			
+			return result.StatusCode switch
 			{
-				case HttpStatusCode.OK:
-					return new SuccessfulEntityAction<StudentDto>(await result.Content.ReadFromJsonAsync<StudentDto>());
-
-				case HttpStatusCode.BadRequest:
-					return new StudentErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
-
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
-			}
+				HttpStatusCode.OK => new SuccessfulEntityAction<StudentDto>(
+					await result.Content.ReadFromJsonAsync<StudentDto>()),
+			
+				HttpStatusCode.BadRequest => new StudentErrors(
+					await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>()),
+				
+				_ => throw new IndexOutOfRangeException(
+					$"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}")
+			};
 		}
 
 		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
 			var result = await _httpClient.PutAsJsonAsync("api/Students/Update", dto);
-			switch (result.StatusCode)
+			
+			return result.StatusCode switch
 			{
-				case HttpStatusCode.OK:
-					return new SuccessfulEntityAction<StudentDto>(await result.Content.ReadFromJsonAsync<StudentDto>());
-
-				case HttpStatusCode.BadRequest:
-					return new StudentErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
-
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
-			}
+				HttpStatusCode.OK => new SuccessfulEntityAction<StudentDto>(
+					await result.Content.ReadFromJsonAsync<StudentDto>()),
+				
+				HttpStatusCode.BadRequest => new StudentErrors(
+					await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>()),
+				
+				_ => throw new IndexOutOfRangeException(
+					$"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}")
+			};
 		}
 
 		public async Task DeleteAsync(Guid id) => 

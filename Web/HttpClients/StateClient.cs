@@ -2,13 +2,13 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Velvetech.Web.Services
+namespace Velvetech.Web.HttpClients
 {
-	public class StateService
+	public class StateClient
 	{
 		private readonly HttpClient _httpClient;
 
-		public StateService(HttpClient httpClient)
+		public StateClient(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}

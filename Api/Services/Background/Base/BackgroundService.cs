@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace Velvetech.Api
+namespace Velvetech.Api.Services.Background.Base
 {
 	// Copyright (c) .NET Foundation. Licensed under the Apache License, Version 2.0.
 	/// <summary>

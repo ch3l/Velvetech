@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Velvetech.Domain.Entities;
 
-namespace Velvetech.Domain.Services.External.Interfaces
+namespace Velvetech.Domain.Services.External.Particular.Interfaces
 {
 	public interface IUsersRolesService
 	{
