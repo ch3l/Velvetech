@@ -8,7 +8,6 @@
 @namespace Velvetech.Web.Pages.Group
 
 <h1>Groups</h1>
-<h1>@_errorMessage</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add group</button>
 <br />
@@ -68,7 +67,6 @@ else
 	int counter;
 	GroupDto[] groups;
 
-	string _errorMessage;
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 

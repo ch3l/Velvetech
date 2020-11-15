@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using Velvetech.Data.Seeds;
-using Velvetech.Domain.Entities;
 
 namespace Velvetech.Data
 {
@@ -16,14 +16,13 @@ namespace Velvetech.Data
 			await context.Database.MigrateAsync();
 
 			var sexSeed = serviceProvider.GetRequiredService<SexSeed>();
-			var sexSeedIsDone = await sexSeed.SeedAsync();
+			await sexSeed.SeedAsync();
 
 			var roleSeed = serviceProvider.GetRequiredService<RoleSeed>();
-			var roleSeedIsDone = await roleSeed.SeedAsync();
+			await roleSeed.SeedAsync();
 
 			var userSeed = serviceProvider.GetRequiredService<UserSeed>();
-			var userSeedIsDone = await userSeed.SeedAsync();
-			var w = userSeedIsDone;
+			await userSeed.SeedAsync();
 		}
 	}
 }
