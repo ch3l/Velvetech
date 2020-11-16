@@ -11,10 +11,8 @@ namespace Velvetech.Shared
 
 		public const string Audience = "Audience";
 
-		public const string Key = "BlablaKey";
+		public const string Key = "VeryLongLongLongLongLongLongLongBlablaKey";
 		
-		public const string Password = "Pass@word1";
-
 		public static SymmetricSecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Key));
 	}
 }

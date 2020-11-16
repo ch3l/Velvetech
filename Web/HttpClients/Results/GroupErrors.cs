@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class GroupErrors : EntityActionResult
+	public class GroupErrors : ApiActionResult
 	{
 		public string[] Name { get; }
 

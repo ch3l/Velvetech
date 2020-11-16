@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
@@ -15,7 +16,7 @@ using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {
-	//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class StudentController : ControllerBase
@@ -32,7 +33,9 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/Student/Students/List
-		//[Authorize(Roles = "StudentUser")]
+		[Authorize(Roles = 
+			Shared.Authentication.Constants.Roles.StudentRead + "," +
+			Shared.Authentication.Constants.Roles.GroupRead)]
 		[HttpGet]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
@@ -51,8 +54,8 @@ namespace Velvetech.Api.Controllers
 
 			var lastPageIndex = totalItems / pageSize;
 
-			if (totalItems == pageSize * lastPageIndex)
-				lastPageIndex--;
+			//if (totalItems == pageSize * lastPageIndex)
+			//	lastPageIndex--;
 
 			if (pageIndex > lastPageIndex)
 				pageIndex = lastPageIndex;
@@ -80,8 +83,9 @@ namespace Velvetech.Api.Controllers
 				Items = students,
 			};
 		}
-		   
+
 		// GET: api/Student/Get
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentRead)]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<StudentDto>> GetAsync(Guid? id)
 		{
@@ -92,6 +96,7 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/Student/Count
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentRead)]
 		[HttpGet]
 		public async Task<ActionResult<int>> CountAsync() => 
 			await _studentCrudService.CountAsync();
@@ -99,6 +104,7 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/Students/Add
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentCrud)]
 		[HttpPost]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
@@ -115,6 +121,7 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/Student/Update
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentCrud)]
 		[HttpPut]
 		public async Task<ActionResult<Student>> UpdateAsync(StudentDto dto)
 		{
@@ -139,6 +146,9 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// DELETE: api/Students/Delete/{GUID}
+		[Authorize(Roles = 
+			Shared.Authentication.Constants.Roles.StudentCrud + "," +
+			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{

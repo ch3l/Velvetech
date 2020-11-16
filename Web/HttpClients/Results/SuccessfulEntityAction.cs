@@ -1,6 +1,8 @@
-﻿namespace Velvetech.Web.HttpClients.Results
+﻿using Velvetech.Web.HttpClients.Results.Base;
+
+namespace Velvetech.Web.HttpClients.Results
 {
-	public class SuccessfulEntityAction<TEntity> : EntityActionResult
+	public class SuccessfulEntityAction<TEntity> : ApiActionResult
 	{
 		public TEntity Entity { get; }
 

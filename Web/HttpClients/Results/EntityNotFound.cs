@@ -1,6 +1,8 @@
-﻿namespace Velvetech.Web.HttpClients.Results
+﻿using Velvetech.Web.HttpClients.Results.Base;
+
+namespace Velvetech.Web.HttpClients.Results
 {
-	public class EntityNotFound : EntityActionResult
+	public class NotFound : ApiActionResult
 	{
 
 	}

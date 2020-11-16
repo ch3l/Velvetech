@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Velvetech.Domain.Entities;
@@ -10,10 +11,10 @@ using Velvetech.Domain.Services.External.Common.Interfaces;
 using Velvetech.Domain.Services.External.Particular.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared.Dtos;
-using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class GroupController : ControllerBase
@@ -28,8 +29,9 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/Group/List
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupRead)]
 		[HttpGet]
-		public async Task<GroupDto[]> ListAsync(string group) =>
+		public async Task<ActionResult<GroupDto[]>> ListAsync(string group) =>
 			await _groupCrudService.ListAsync(new GroupSpecification(group))
 				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
@@ -37,6 +39,7 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/Groups/Add
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPost]
 		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
 		{
@@ -54,6 +57,7 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/Groups/Update
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPut]
 		public async Task<ActionResult<Group>> UpdateAsync(GroupDto dto)
 		{
@@ -73,6 +77,7 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// DELETE: api/Groups/5
+		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{

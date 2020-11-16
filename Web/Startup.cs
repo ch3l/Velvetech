@@ -45,6 +45,7 @@ namespace Velvetech.Web
 			services.AddServerSideBlazor();
 
 			services.AddHttpClient<StateClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
+			services.AddHttpClient<AuthorizationClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
 			services.AddHttpClient<SexClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
 			services.AddHttpClient<StudentClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
 			services.AddHttpClient<GroupClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
@@ -75,6 +76,9 @@ namespace Velvetech.Web
 			app.UseStaticFiles();
 
 			app.UseRouting();
+
+			app.UseAuthorization();
+			app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>
 			{

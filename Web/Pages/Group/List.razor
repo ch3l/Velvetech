@@ -1,8 +1,12 @@
 ﻿@page "/pages/groups"
 
-@inject GroupClient GroupService
+@inject GroupClient GroupClient
+@inject AuthorizationClient AuthorizationClient
+
 @using System.Timers
 @using Velvetech.Shared.Dtos
+@using Velvetech.Shared.Requests
+@using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
 
 @namespace Velvetech.Web.Pages.Group
@@ -28,11 +32,13 @@ else
 			</tr>
 
 			<tr>
-				<th><input type="text"
-				           class="form-control"
-				           @bind-value="_group"
-				           @bind-value:event="oninput"
-				           @onkeyup="@StartSearchTimer" /></th>
+				<th>
+					<input type="text"
+						   class="form-control"
+						   @bind-value="_group"
+						   @bind-value:event="oninput"
+						   @onkeyup="@StartSearchTimer" />
+				</th>
 				<th>
 				</th>
 				<th></th>
@@ -100,17 +106,23 @@ else
 	async Task RemoveAsync(int index)
 	{
 		var guid = _groups[index].Id;
-		await GroupService.DeleteAsync(guid);
+		await GroupClient.DeleteAsync(guid);
 		await LoadList();
 	}
 
 	async Task LoadList()
 	{
-		_groups = await GroupService.ListAsync(_group.Trim());
+		_groups = await GroupClient.ListAsync(_group.Trim());
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
+		if (!await AuthorizeAsync())
+		{
+			//_error = "Unauthorized";
+			return;
+		}
+
 		await LoadList();
 
 		_searchDelayTimer.Elapsed += async (sender, args) =>
@@ -123,5 +135,22 @@ else
 			_previousGroup = _group;
 			await InvokeAsync(StateHasChanged);
 		};
+	}
+	
+	async Task<bool> AuthorizeAsync()
+	{
+		var authorizationResult = await AuthorizationClient.AuthorizeAsync(
+			new AuthorizationRequest("User", "Pewpew"));
+
+		if (authorizationResult is AuthorizationSuccess authorizationSuccess)
+		{
+			var token = authorizationSuccess.Token;
+
+			GroupClient.UseToken(token);
+
+			return true;
+		}
+
+		return false;
 	}
 }

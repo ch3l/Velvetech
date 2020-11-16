@@ -1,18 +1,22 @@
 ﻿@page "/pages/students"
 
-@inject StudentClient StudentService
-@inject SexClient SexService
+@inject StudentClient StudentClient
+@inject SexClient SexClient
+@inject AuthorizationClient AuthorizationClient
 
 @using System.Timers
 @using Velvetech.Shared
 @using Velvetech.Shared.Dtos
 @using Velvetech.Shared.Requests
+@using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
+@using Velvetech.Web.HttpClients.Results
 
 @namespace Velvetech.Web.Pages.Student
 
 <h1>Students</h1>
 <h1>@_title</h1>
+<h1>@_error</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add student</button>
 <br />
@@ -98,19 +102,21 @@ else
 
 @code
 {
-	int _counter;
-	Page<StudentDto> _page;
-	string _title = string.Empty;
-
-	SexDto[] _sexList;
-
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
-	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
+	string _title = string.Empty;
+	string _error = string.Empty;
 
+	// students list
+	int _counter;
+	Page<StudentDto> _page;
+	SexDto[] _sexList;
+
+	// search parameters
 	string _sex = "", _fullname = "", _callsign = "", _group = "";
 	string _previousSex, _previousFullname, _previousCallsign, _previousGroup;
+	readonly Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
 
 	void StartSearchTimer()
 	{
@@ -137,7 +143,7 @@ else
 	async Task DeleteAsync(int index)
 	{
 		var guid = _page.Items[index].Id;
-		await StudentService.DeleteAsync(guid);
+		await StudentClient.DeleteAsync(guid);
 		await Update();
 	}
 
@@ -162,7 +168,7 @@ else
 
 	async Task LoadPage(int size = 0, int index = 0)
 	{
-		_page = await StudentService.ListAsync(
+		_page = await StudentClient.ListAsync(
 			new StudentFilterPagedRequest
 			{
 				Sex = CleanString(_sex),
@@ -187,15 +193,21 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_sexList = await SexService.ListAsync();
+		if (!await AuthorizeAsync())
+		{
+			_error = "Unauthorized";
+			return;
+		}
+
+		_sexList = await SexClient.ListAsync();
 		await LoadPage();
 
 		_searchDelayTimer.Elapsed += async (sender, args) =>
 		{
 			if (_previousSex == _sex &&
-				_previousFullname == _fullname &&
-				_previousCallsign == _callsign &&
-				_previousGroup == _group)
+			    _previousFullname == _fullname &&
+			    _previousCallsign == _callsign &&
+			    _previousGroup == _group)
 				return;
 
 			await LoadPage();
@@ -207,5 +219,23 @@ else
 
 			await InvokeAsync(StateHasChanged);
 		};
+	}
+
+	async Task<bool> AuthorizeAsync()
+	{
+		var authorizationResult = await AuthorizationClient.AuthorizeAsync(
+			new AuthorizationRequest("User", "Pewpew"));
+
+		if (authorizationResult is AuthorizationSuccess authorizationSuccess)
+		{
+			var token = authorizationSuccess.Token;
+			
+			SexClient.UseToken(token);
+			StudentClient.UseToken(token);
+			
+			return true;
+		}
+
+		return false;
 	}
 }

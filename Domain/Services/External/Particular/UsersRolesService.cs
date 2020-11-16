@@ -41,12 +41,9 @@ namespace Velvetech.Domain.Services.External.Particular
 			await _userRepository.UpdateAsync(user);
 		}
 
-		public async Task<User> GetUser(string userName) => await _userRepository.FirstOrDefault(userName, new UserSpecification());
-
-		public async Task<string[]> GetUserRolesAsync(string userName)
+		public async Task<User> GetUser(string userName)
 		{
-			var user = await _userRepository.FirstOrDefault(userName, new UserSpecification());
-			return user.GetRoles().Select(role => role.Id).ToArray();
+			return await _userRepository.FirstOrDefault(userName, new UserSpecification());
 		}
 	}
 }

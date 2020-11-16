@@ -9,6 +9,7 @@ using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;
 using Velvetech.Web.HttpClients.Base;
 using Velvetech.Web.HttpClients.Results;
+using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients
 {
@@ -33,7 +34,7 @@ namespace Velvetech.Web.HttpClients
 				$"&callsign={request.Callsign}" +
 				$"&group={request.Group}");
 
-		public async Task<EntityActionResult> AddAsync(StudentDto dto)
+		public async Task<ApiActionResult> AddAsync(StudentDto dto)
 		{
 			var result = await HttpClient.PostAsJsonAsync("api/Student/Add", dto);
 			
@@ -50,7 +51,7 @@ namespace Velvetech.Web.HttpClients
 			};
 		}
 
-		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
+		public async Task<ApiActionResult> UpdateAsync(StudentDto dto)
 		{
 			var result = await HttpClient.PutAsJsonAsync("api/Student/Update", dto);
 			

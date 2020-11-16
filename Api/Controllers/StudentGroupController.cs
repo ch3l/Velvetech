@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.External.Common.Interfaces;
@@ -11,6 +13,7 @@ using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class StudentGroupController : ControllerBase
@@ -27,6 +30,10 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/StudentGroup/ListIncluded 
+		[Authorize(Roles = 
+			Shared.Authentication.Constants.Roles.StudentRead + "," + 
+			Shared.Authentication.Constants.Roles.GroupRead + "," +
+			Shared.Authentication.Constants.Roles.StudentGroupRead)]
 		[HttpGet]
 		public async Task<ActionResult<StudentDto[]>> ListIncludedAsync([FromQuery] IncludedStudentsRequest request)
 		{
@@ -39,6 +46,11 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/StudentGroup/ListNotIncluded
+		// GET: api/StudentGroup/ListIncluded 
+		[Authorize(Roles =
+			Shared.Authentication.Constants.Roles.StudentRead + "," +
+			Shared.Authentication.Constants.Roles.GroupRead + "," +
+			Shared.Authentication.Constants.Roles.StudentGroupRead)]
 		[HttpGet]
 		public async Task<ActionResult<StudentDto[]>> ListNotIncludedAsync([FromQuery] IncludedStudentsRequest request)
 		{
@@ -53,8 +65,13 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/StudentGroup/IncludeStudentAsync
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		// GET: api/StudentGroup/ListIncluded 
+		[Authorize(Roles =
+			Shared.Authentication.Constants.Roles.StudentRead + "," +
+			Shared.Authentication.Constants.Roles.GroupRead + "," +
+			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpPost]
-		public async Task<IActionResult> IncludeStudentAsync(StudentGroupRequest request)
+		public async Task<ActionResult> IncludeStudentAsync(StudentGroupRequest request)
 		{
 			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
 
@@ -67,8 +84,12 @@ namespace Velvetech.Api.Controllers
 		// PUT: api/StudentGroup/ExcludeStudentAsync
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[Authorize(Roles =
+			Shared.Authentication.Constants.Roles.StudentRead + "," +
+			Shared.Authentication.Constants.Roles.GroupRead + "," +
+			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpPost]
-		public async Task<IActionResult> ExcludeStudentAsync(StudentGroupRequest request)
+		public async Task<ActionResult> ExcludeStudentAsync(StudentGroupRequest request)
 		{
 			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
 				return Ok();

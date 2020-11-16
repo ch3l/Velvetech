@@ -1,7 +1,10 @@
-﻿@inject StudentClient StudentService
+﻿@inject StudentClient StudentClient
+@inject AuthorizationClient AuthorizationClient
 
 @using Velvetech.Web.HttpClients.Results
 @using Velvetech.Shared.Dtos
+@using Velvetech.Shared.Requests
+@using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
 
 @namespace Velvetech.Web.Pages.Student
@@ -142,7 +145,7 @@
 			return;
 		}
 
-		var result = await StudentService.UpdateAsync(Student);
+		var result = await StudentClient.UpdateAsync(Student);
 		if (result is SuccessfulEntityAction<StudentDto> student)
 		{
 			await OnSave.InvokeAsync(null);
@@ -184,5 +187,32 @@
 		_modalDisplay = "none";
 		_modalClass = "";
 		StateHasChanged();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!await AuthorizeAsync())
+		{
+			//_error = "Unauthorized";
+			return;
+		}
+	}
+
+	async Task<bool> AuthorizeAsync()
+	{
+		var authorizationResult = await AuthorizationClient.AuthorizeAsync(
+			new AuthorizationRequest("User", "Pewpew"));
+
+		if (authorizationResult is AuthorizationSuccess authorizationSuccess)
+		{
+			var token = authorizationSuccess.Token;
+
+			//SexClient.UseToken(token);
+			StudentClient.UseToken(token);
+
+			return true;
+		}
+
+		return false;
 	}
 }

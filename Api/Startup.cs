@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-
+using Velvetech.Api.Services;
 using Velvetech.Api.Services.Background;
 using Velvetech.Data;
 using Velvetech.Data.Seeds;
@@ -56,6 +56,7 @@ namespace Velvetech.Api
 			services.AddScoped<IGroupingService, GroupingService>();
 			services.AddScoped<IStudentValidationService, StudentValidationService>();
 			services.AddScoped<IUsersRolesService, UsersRolesService>();
+			services.AddScoped<AuthorizationService>();
 
 			//services.AddTransient(typeof(IReadService<,>), typeof(ReadService<,>));
 			services.AddTransient<SexSeed>();
@@ -95,6 +96,7 @@ namespace Velvetech.Api
 			//app.UseHttpsRedirection();
 			app.UseRouting();
 
+			app.UseAuthorization();
 			app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>

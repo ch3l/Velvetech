@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class StudentErrors : EntityActionResult
+	public class StudentErrors : ApiActionResult
 	{
 		public string[] SexId { get; }
 		public string[] Firstname { get; }

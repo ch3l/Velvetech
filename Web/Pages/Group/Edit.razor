@@ -1,9 +1,11 @@
-﻿@inject GroupClient GroupService
-@inject StudentClient StudentService
-@inject StudentGroupClient StudentGroup
+﻿@inject AuthorizationClient AuthorizationClient
+@inject GroupClient GroupClient
+@inject StudentClient StudentClient
+@inject StudentGroupClient StudentGroupClient
 
 @using Velvetech.Shared.Dtos
 @using Velvetech.Shared.Requests
+@using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
 @using Velvetech.Web.HttpClients.Results
 
@@ -170,7 +172,7 @@
 			return;
 		}
 
-		var result = await GroupService.UpdateAsync(Group);
+		var result = await GroupClient.UpdateAsync(Group);
 		if (result is SuccessfulEntityAction<GroupDto> group)
 		{
 			await OnSave.InvokeAsync(null);
@@ -209,13 +211,13 @@
 	async Task LoadIncludedStudents()
 	{
 		if (Group != null)
-			_includedStudents = await StudentGroup.ListIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
+			_includedStudents = await StudentGroupClient.ListIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
 	}
 
 	async Task LoadNotIncludedStudents()
 	{
 		if (Group != null)
-			_notIncludedStudents = await StudentGroup.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
+			_notIncludedStudents = await StudentGroupClient.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
 	}
 
 	async Task ExcludeAsync(int i)
@@ -223,7 +225,7 @@
 		var studentId = _includedStudents[i].Id;
 		var groupId = Group.Id;
 
-		await StudentGroup.ExcludeStudentAsync(
+		await StudentGroupClient.ExcludeStudentAsync(
 			new StudentGroupRequest
 			{
 				StudentId = studentId,
@@ -239,7 +241,7 @@
 		var studentId = _notIncludedStudents[i].Id;
 		var groupId = Group.Id;
 
-		await StudentGroup.IncludeStudentAsync(
+		await StudentGroupClient.IncludeStudentAsync(
 			new StudentGroupRequest
 			{
 				StudentId = studentId,
@@ -248,5 +250,33 @@
 
 		await LoadIncludedStudents();
 		await LoadNotIncludedStudents();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!await AuthorizeAsync())
+		{
+			//_error = "Unauthorized";
+			return;
+		}
+	}
+
+	async Task<bool> AuthorizeAsync()
+	{
+		var authorizationResult = await AuthorizationClient.AuthorizeAsync(
+			new AuthorizationRequest("User", "Pewpew"));
+
+		if (authorizationResult is AuthorizationSuccess authorizationSuccess)
+		{
+			var token = authorizationSuccess.Token;
+
+			GroupClient.UseToken(token);
+			StudentClient.UseToken(token);
+			StudentGroupClient.UseToken(token);
+
+			return true;
+		}
+
+		return false;
 	}
 }

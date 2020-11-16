@@ -1,5 +1,9 @@
-﻿@inject GroupClient GroupService
+﻿@inject AuthorizationClient AuthorizationClient
+@inject GroupClient GroupClient
+
 @using Velvetech.Shared.Dtos
+@using Velvetech.Shared.Requests
+@using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
 @using Velvetech.Web.HttpClients.Results
 
@@ -76,7 +80,7 @@
 			return;
 		}
 
-		var result = await GroupService.AddAsync(Group);
+		var result = await GroupClient.AddAsync(Group);
 		if (result is SuccessfulEntityAction<GroupDto> group)
 		{
 			await OnSave.InvokeAsync(null);
@@ -106,5 +110,31 @@
 		_modalDisplay = "none";
 		_modalClass = "";
 		StateHasChanged();
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!await AuthorizeAsync())
+		{
+			//_error = "Unauthorized";
+			return;
+		}
+	}
+
+	async Task<bool> AuthorizeAsync()
+	{
+		var authorizationResult = await AuthorizationClient.AuthorizeAsync(
+			new AuthorizationRequest("User", "Pewpew"));
+
+		if (authorizationResult is AuthorizationSuccess authorizationSuccess)
+		{
+			var token = authorizationSuccess.Token;
+
+			GroupClient.UseToken(token);
+
+			return true;
+		}
+
+		return false;
 	}
 }

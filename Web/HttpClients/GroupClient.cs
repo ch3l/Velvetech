@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Velvetech.Shared.Dtos;
 using Velvetech.Web.HttpClients.Base;
 using Velvetech.Web.HttpClients.Results;
+using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients
 {
@@ -22,7 +23,7 @@ namespace Velvetech.Web.HttpClients
 			await HttpClient.GetFromJsonAsync<GroupDto[]>(
 				$"api/Group/List?group={group}");
 
-		public async Task<EntityActionResult> AddAsync(GroupDto dto)
+		public async Task<ApiActionResult> AddAsync(GroupDto dto)
 		{
 			var result = await HttpClient.PostAsJsonAsync("api/Group/Add", dto);
 			return result.StatusCode switch
@@ -38,7 +39,7 @@ namespace Velvetech.Web.HttpClients
 			};
 		}
 
-		public async Task<EntityActionResult> UpdateAsync(GroupDto dto)
+		public async Task<ApiActionResult> UpdateAsync(GroupDto dto)
 		{
 			var result = await HttpClient.PutAsJsonAsync("api/Group/Update", dto);
 			return result.StatusCode switch
