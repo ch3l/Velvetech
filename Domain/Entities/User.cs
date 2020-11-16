@@ -13,13 +13,16 @@ namespace Velvetech.Domain.Entities
 		private readonly HashSet<UserRole> _userRole = new HashSet<UserRole>();
 		public IReadOnlyCollection<UserRole> UserRole => _userRole;
 
+		public string Password { get; set; }
+
 		private User()
 		{
 		}
 
-		public User(string id)
+		public User(string id, string password)
 		{
 			Id = id;
+			Password = password;
 		}
 
 		public bool AddRole(Role role) => 

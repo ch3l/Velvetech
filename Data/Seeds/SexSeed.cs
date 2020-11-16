@@ -37,7 +37,7 @@ namespace Velvetech.Data.Seeds
 
 		protected override async Task AddEntities()
 		{
-			var user = new User("User");
+			var user = new User("User", "Pewpew");
 
 			var studentUserRole = await _roleReadService.GetByIdAsync("StudentUser");
 			var studentAdminRole = await _roleReadService.GetByIdAsync("StudentAdmin");

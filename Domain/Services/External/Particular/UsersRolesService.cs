@@ -20,16 +20,16 @@ namespace Velvetech.Domain.Services.External.Particular
 			_roleRepository = roleRepository;
 		}
 
-		public async Task AddUserAsync(string userName)
+		public async Task AddUserAsync(string userName, string password)
 		{
-			var user = new User(userName);
+			var user = new User(userName, password);
 			await _userRepository.AddAsync(user);
 		}
 
 		public async Task AddRoleAsync(string roleName)
 		{
-			var user = new User(roleName);
-			await _userRepository.AddAsync(user);
+			var role = new Role(roleName);
+			await _roleRepository.AddAsync(role);
 		}
 
 		public async Task AddRoleToUserAsync(string userName, string roleName)
