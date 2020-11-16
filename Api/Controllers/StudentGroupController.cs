@@ -46,7 +46,6 @@ namespace Velvetech.Api.Controllers
 		}
 
 		// GET: api/StudentGroup/ListNotIncluded
-		// GET: api/StudentGroup/ListIncluded 
 		[Authorize(Roles =
 			Shared.Authentication.Constants.Roles.StudentRead + "," +
 			Shared.Authentication.Constants.Roles.GroupRead + "," +

@@ -19,6 +19,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "EXTERNALAPIURL": "WindowsApiUrl",
         "APIURL": "WindowsApiUrl",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

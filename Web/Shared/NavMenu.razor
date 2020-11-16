@@ -1,13 +1,20 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Velvetech</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<div class="top-row pl-4 navbar navbar-dark">
+	<a class="navbar-brand" href="">Velvetech</a>
+	<button class="navbar-toggler" @onclick="ToggleNavMenu">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
+	<ul class="nav flex-column">
 		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="@SwaggerUrl" Match="NavLinkMatch.All">
+				<span class="oi oi-globe" aria-hidden="true"></span>Swagger
+			</NavLink>
+			<br />
 			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
 				<span class="oi oi-home" aria-hidden="true"></span>Students
 			</NavLink>
@@ -15,16 +22,17 @@
 				<span class="oi oi-home" aria-hidden="true"></span>Groups
 			</NavLink>
 		</li>
-    </ul>
+	</ul>
 </div>
 
 @code {
-    private bool _collapseNavMenu = true;
+	private bool _collapseNavMenu = true;
+	string SwaggerUrl => Configuration[Environment.GetEnvironmentVariable("EXTERNALAPIURL")] + "/swagger/index.html";
 
-    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+	private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        _collapseNavMenu = !_collapseNavMenu;
-    }
+	private void ToggleNavMenu()
+	{
+		_collapseNavMenu = !_collapseNavMenu;
+	}
 }

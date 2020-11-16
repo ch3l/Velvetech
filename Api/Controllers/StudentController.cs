@@ -123,7 +123,7 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentCrud)]
 		[HttpPut]
-		public async Task<ActionResult<Student>> UpdateAsync(StudentDto dto)
+		public async Task<ActionResult<StudentDto>> UpdateAsync(StudentDto dto)
 		{
 			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
@@ -142,7 +142,7 @@ namespace Velvetech.Api.Controllers
 				return BadRequest(entry.ErrorsStrings);
 
 			await _studentCrudService.UpdateAsync(entry);
-			return Ok(entry);
+			return Ok(entry.ToDto());
 		}
 
 		// DELETE: api/Students/Delete/{GUID}

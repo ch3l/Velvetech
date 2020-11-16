@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
 using Velvetech.Domain.Services.External.Common.Interfaces;
-using Velvetech.Domain.Services.External.Particular.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared.Dtos;
 
@@ -20,12 +20,10 @@ namespace Velvetech.Api.Controllers
 	public class GroupController : ControllerBase
 	{
 		private readonly ICrudService<Group, Guid> _groupCrudService;
-		private readonly IGroupingService _groupingService;
 
-		public GroupController(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
+		public GroupController(ICrudService<Group, Guid> groupCrudService)
 		{
 			_groupCrudService = groupCrudService;
-			_groupingService = groupingService;
 		}
 
 		// GET: api/Group/List
@@ -41,7 +39,7 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPost]
-		public async Task<ActionResult<Group>> AddAsync(GroupDto dto)
+		public async Task<ActionResult<GroupDto>> AddAsync(GroupDto dto)
 		{
 			var validator = new GroupValidator();
 			var entry = Group.Build(validator, dto.Name);
@@ -50,7 +48,8 @@ namespace Velvetech.Api.Controllers
 				return BadRequest(entry.ErrorsStrings);
 
 			entry = await _groupCrudService.AddAsync(entry);
-			return Ok(entry);
+			
+			return Ok(entry.ToDto());
 		}
 
 
@@ -59,7 +58,7 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPut]
-		public async Task<ActionResult<Group>> UpdateAsync(GroupDto dto)
+		public async Task<ActionResult<GroupDto>> UpdateAsync(GroupDto dto)
 		{
 			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
 			if (entry is null)
@@ -73,7 +72,8 @@ namespace Velvetech.Api.Controllers
 				return BadRequest(entry.ErrorsStrings);
 
 			await _groupCrudService.UpdateAsync(entry);
-			return Ok(entry);
+
+			return Ok(entry.ToDto());
 		}
 
 		// DELETE: api/Groups/5
@@ -84,7 +84,5 @@ namespace Velvetech.Api.Controllers
 			await _groupCrudService.DeleteAsync(id);
 			return Ok();
 		}
-
-		
 	}
 }

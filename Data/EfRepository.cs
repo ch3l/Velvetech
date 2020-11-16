@@ -189,7 +189,6 @@ namespace Velvetech.Data
 			try
 			{
 				return await GetEntity().AsQueryable().CountAsync();
-
 			}
 			catch (Exception e)
 			{
@@ -203,7 +202,6 @@ namespace Velvetech.Data
 			try
 			{
 				return await FromSpecification(specification).CountAsync();
-
 			}
 			catch (Exception e)
 			{

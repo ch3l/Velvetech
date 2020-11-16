@@ -12,6 +12,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - APIURL=DockerApiUrl
+      - EXTERNALAPIURL=ExternalDockerApiUrl
     ports:
       - "80"
 
