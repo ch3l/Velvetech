@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Swashbuckle.AspNetCore.Annotations;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
 using Velvetech.Domain.Services.External.Common.Interfaces;
@@ -29,6 +29,15 @@ namespace Velvetech.Api.Controllers
 		// GET: api/Group/List
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupRead)]
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "Returns Groups list",
+			Description = @"Returns Groups list, support partial search by 'Group' query tag",
+			OperationId = "GroupController.ListAsync",
+			Tags = new[]
+			{
+				"Controller: Group", 
+				//"Action: List"
+			})]
 		public async Task<ActionResult<GroupDto[]>> ListAsync(string group) =>
 			await _groupCrudService.ListAsync(new GroupSpecification(group))
 				.Select(DtoExtensions.ToDto)
@@ -39,6 +48,15 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPost]
+		[SwaggerOperation(
+			Summary = "Adds Group",
+			Description = "Adds Group",
+			OperationId = "GroupController.AddAsync",
+			Tags = new[]
+			{
+				"Controller: Group", 
+				//"Action: Add"
+			})]
 		public async Task<ActionResult<GroupDto>> AddAsync(GroupDto dto)
 		{
 			var validator = new GroupValidator();
@@ -58,6 +76,15 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpPut]
+		[SwaggerOperation(
+			Summary = "Updates Group",
+			Description = "Updates Group",
+			OperationId = "GroupController.UpdateAsync",
+			Tags = new[]
+			{
+				"Controller: Group", 
+				//"Action: Update"
+			})]
 		public async Task<ActionResult<GroupDto>> UpdateAsync(GroupDto dto)
 		{
 			var entry = await _groupCrudService.GetByIdAsync(dto.Id);
@@ -79,6 +106,16 @@ namespace Velvetech.Api.Controllers
 		// DELETE: api/Groups/5
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.GroupCrud)]
 		[HttpDelete("{id}")]
+		[SwaggerOperation(
+			Summary = "Deletes Group",
+			Description = "Deletes Group by Id. Before deletion all Students excluded from Group if Group contains any",
+			OperationId = "GroupController.DeleteAsync",
+			Tags = new[]
+			{
+				"Controller: Group", 
+				//"Action: Delete", 
+				//"Includes\\Excludes Student(s) to\\from group"
+			})]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{
 			await _groupCrudService.DeleteAsync(id);

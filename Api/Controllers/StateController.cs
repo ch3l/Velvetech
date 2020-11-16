@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Velvetech.Api.Controllers
 {
@@ -13,6 +14,14 @@ namespace Velvetech.Api.Controllers
 
 		// GET: api/Test/State/IsReady
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "Checks MSSQL Server active state",
+			Description = "Checks MSSQL Server active state",
+			OperationId = "AuthorizationController.AuthorizeAsync",
+			Tags = new[]
+			{
+				"Controller: Authorization"
+			})]
 		public async Task<ActionResult<bool>> IsReadyAsync()
 		{
 			return await Task.FromResult(State);

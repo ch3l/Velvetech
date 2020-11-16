@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
-
+using Swashbuckle.AspNetCore.Annotations;
 using Velvetech.Api.Services;
 using Velvetech.Shared.Requests;
 using Velvetech.Shared.Results.Authorization;
@@ -22,6 +22,14 @@ namespace Velvetech.Api.Controllers
 
 		// Post: api/Authorization/Authorize
 		[HttpPost]
+		[SwaggerOperation(
+			Summary = "Authorizes a user",
+			Description = @"Authorizes a user<br/>Login: <b>User</b><br/>Password: <b>Pewpew</b>",
+			OperationId = "AuthorizationController.AuthorizeAsync",
+			Tags = new[]
+			{
+				"Controller: Authorization"
+			})]
 		public async Task<ActionResult<string>> AuthorizeAsync(AuthorizationRequest request)
 		{
 			var authorizationResult = await _authorizationService.Authorize(request.User, request.Password);

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
@@ -37,6 +40,20 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.StudentRead + "," +
 			Shared.Authentication.Constants.Roles.GroupRead)]
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "Returns Students list",
+			Description = "Returns Students list, supports:<br/><br/>" +
+						  "complete match search by 'Sex' query tag;<br/>" +
+						  "partial match search by 'Fullname' query tag;<br/>" +
+						  "partial match search by 'Callsign' query tag;<br/>" +
+						  "partial match search by 'Group' query tag;<br><br>"+
+						  "Pagination by 'PageIndex' and 'PageSize' query tags.<br>",
+			OperationId = "StudentController.ListAsync",
+			Tags = new[]
+			{
+				"Controller: Student",
+				//"Action: List"
+			})]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
 			var pageSize = request.PageSize ?? 10;
@@ -87,6 +104,15 @@ namespace Velvetech.Api.Controllers
 		// GET: api/Student/Get
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentRead)]
 		[HttpGet("{id}")]
+		[SwaggerOperation(
+			Summary = "Returns Students by Id",
+			Description = "Returns Students by Id",
+			OperationId = "StudentController.GetAsync",
+			Tags = new[]
+			{
+				"Controller: Student", 
+				//"Action: List"
+			})]
 		public async Task<ActionResult<StudentDto>> GetAsync(Guid? id)
 		{
 			if (id is null)
@@ -98,6 +124,15 @@ namespace Velvetech.Api.Controllers
 		// GET: api/Student/Count
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentRead)]
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "Counts Students",
+			Description = "Counts Students",
+			OperationId = "StudentController.CountAsync",
+			Tags = new[]
+			{
+				"Controller: Student", 
+				//"Action: Count"
+			})]
 		public async Task<ActionResult<int>> CountAsync() => 
 			await _studentCrudService.CountAsync();
 
@@ -106,6 +141,15 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentCrud)]
 		[HttpPost]
+		[SwaggerOperation(
+			Summary = "Adds Student",
+			Description = "Adds Student",
+			OperationId = "StudentController.AddAsync",
+			Tags = new[]
+			{
+				"Controller: Student", 
+				//"Action: Add"
+			})]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
 			var validator = new StudentValidator(_studentValidationService);
@@ -123,6 +167,15 @@ namespace Velvetech.Api.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[Authorize(Roles = Shared.Authentication.Constants.Roles.StudentCrud)]
 		[HttpPut]
+		[SwaggerOperation(
+			Summary = "Updates Student",
+			Description = "Updates Student",
+			OperationId = "StudentController.UpdateAsync",
+			Tags = new[]
+			{
+				"Controller: Student", 
+				//"Action: Update"
+			})]
 		public async Task<ActionResult<StudentDto>> UpdateAsync(StudentDto dto)
 		{
 			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
@@ -150,6 +203,16 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.StudentCrud + "," +
 			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpDelete("{id}")]
+		[SwaggerOperation(
+			Summary = "Deletes Student",
+			Description = "Deletes Student by Id",
+			OperationId = "StudentController.DeleteAsync",
+			Tags = new[]
+			{
+				"Controller: Student", 
+				//"Action: Delete", 
+				//"Includes\\Excludes Student(s) to\\from group"
+			})]
 		public async Task<ActionResult> DeleteAsync(Guid id)
 		{
 			await _studentCrudService.DeleteAsync(id);

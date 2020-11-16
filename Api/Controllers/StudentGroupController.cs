@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Services.External.Common.Interfaces;
 using Velvetech.Domain.Services.External.Particular.Interfaces;
@@ -35,6 +36,15 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.GroupRead + "," +
 			Shared.Authentication.Constants.Roles.StudentGroupRead)]
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "List included into Group Students",
+			Description = "List included into Group Students",
+			OperationId = "StudentGroupController.ListIncludedAsync",
+			Tags = new[]
+			{
+				"Controller: StudentGroup",
+				//"Action: ListIncludedAsync",
+			})]
 		public async Task<ActionResult<StudentDto[]>> ListIncludedAsync([FromQuery] IncludedStudentsRequest request)
 		{
 			var filter = new IncludedStudentsSpecification(request.GroupId);
@@ -51,6 +61,15 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.GroupRead + "," +
 			Shared.Authentication.Constants.Roles.StudentGroupRead)]
 		[HttpGet]
+		[SwaggerOperation(
+			Summary = "List not included into Group Students",
+			Description = "List not included into Group Students",
+			OperationId = "StudentGroupController.ListNotIncludedAsync",
+			Tags = new[]
+			{
+				"Controller: StudentGroup",
+				//"Action: ListNotIncludedAsync",
+			})]
 		public async Task<ActionResult<StudentDto[]>> ListNotIncludedAsync([FromQuery] IncludedStudentsRequest request)
 		{
 			var filter = new NotIncludedStudentsSpecification(request.GroupId);
@@ -70,6 +89,16 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.GroupRead + "," +
 			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpPost]
+		[SwaggerOperation(
+			Summary = "Includes Student to group",
+			Description = "Includes Student to group by UserId and GroupId",
+			OperationId = "StudentGroupController.IncludeStudentAsync",
+			Tags = new[]
+			{
+				"Controller: StudentGroup",
+				//"Action: IncludeStudent",
+				//"Includes\\Excludes Student(s) to\\from group"
+			})]
 		public async Task<ActionResult> IncludeStudentAsync(StudentGroupRequest request)
 		{
 			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
@@ -88,6 +117,16 @@ namespace Velvetech.Api.Controllers
 			Shared.Authentication.Constants.Roles.GroupRead + "," +
 			Shared.Authentication.Constants.Roles.StudentGroupCrud)]
 		[HttpPost]
+		[SwaggerOperation(
+			Summary = "Excludes Student from group",
+			Description = "Excludes Student from group by UserId and GroupId",
+			OperationId = "StudentGroupController.ExcludeStudentAsync",
+			Tags = new[]
+			{
+				"Controller: StudentGroup", 
+				//"Action: ExcludeStudent", 
+				//"Includes\\Excludes Student(s) to\\from group"
+			})]
 		public async Task<ActionResult> ExcludeStudentAsync(StudentGroupRequest request)
 		{
 			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
