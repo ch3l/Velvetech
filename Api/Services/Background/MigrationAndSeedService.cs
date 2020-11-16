@@ -23,14 +23,14 @@ namespace Velvetech.Api.Services.Background
 
 		protected override async Task ExecuteAsync(CancellationToken cancellationToken)
 		{
-			_logger.LogDebug($"MSSQL migrate and seed task is starting.");
+			_logger.LogDebug("MSSQL migrate and seed task is starting.");
 
 			cancellationToken.Register(() =>
-				_logger.LogDebug($"MSSQL migrate and seed task is stopping."));
+				_logger.LogDebug("MSSQL migrate and seed task is stopping."));
 
 			while (!cancellationToken.IsCancellationRequested)
 			{
-				_logger.LogDebug($"Trying to connect to MSSQL server.");
+				_logger.LogDebug("Trying to connect to MSSQL server.");
 				try
 				{
 					using var scope = _serviceProvider.CreateScope();
@@ -38,6 +38,7 @@ namespace Velvetech.Api.Services.Background
 					
 					StateController.State = true;
 					await StopAsync(cancellationToken);
+					return;
 				}
 				catch (Exception)
 				{
@@ -45,7 +46,7 @@ namespace Velvetech.Api.Services.Background
 				}
 			}
 
-			_logger.LogDebug($"MSSQL migrate and seed task finished successfully");
+			_logger.LogDebug("MSSQL migrate and seed task finished successfully");
 		}
 	}
 }

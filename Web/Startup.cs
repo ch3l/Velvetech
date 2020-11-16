@@ -14,6 +14,20 @@ using Velvetech.Web.HttpClients;
 
 namespace Velvetech.Web
 {
+	static class StartupExtensions
+	{
+		public static IHttpClientBuilder ConfigureDefaultPolicyHandler(this IHttpClientBuilder clientBuilder) =>
+			clientBuilder
+				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
+				.AddPolicyHandler(GetRetryPolicy());
+
+		private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy() =>
+			HttpPolicyExtensions
+				.HandleTransientHttpError()
+				.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+				.WaitAndRetryAsync(100, _ => TimeSpan.FromSeconds(2));
+	}
+
 	public class Startup
 	{
 		public Startup(IConfiguration configuration)
@@ -30,25 +44,11 @@ namespace Velvetech.Web
 			services.AddMvc();
 			services.AddServerSideBlazor();
 
-			services.AddHttpClient<StateClient>(ConfigureApiHttpClient)
-				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
-				.AddPolicyHandler(GetRetryPolicy());
-
-			services.AddHttpClient<SexClient>(ConfigureApiHttpClient)
-				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
-				.AddPolicyHandler(GetRetryPolicy());
-
-			services.AddHttpClient<StudentClient>(ConfigureApiHttpClient)
-				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
-				.AddPolicyHandler(GetRetryPolicy());
-
-			services.AddHttpClient<GroupClient>(ConfigureApiHttpClient)
-				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
-				.AddPolicyHandler(GetRetryPolicy());
-
-			services.AddHttpClient<StudentGroupClient>(ConfigureApiHttpClient)
-				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
-				.AddPolicyHandler(GetRetryPolicy());
+			services.AddHttpClient<StateClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
+			services.AddHttpClient<SexClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
+			services.AddHttpClient<StudentClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
+			services.AddHttpClient<GroupClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
+			services.AddHttpClient<StudentGroupClient>(ConfigureApiHttpClient).ConfigureDefaultPolicyHandler();
 		}
 
 		private void ConfigureApiHttpClient(HttpClient client)
@@ -56,11 +56,6 @@ namespace Velvetech.Web
 			var targetApiUrl = Environment.GetEnvironmentVariable("APIURL");
 			client.BaseAddress = new Uri(Configuration[targetApiUrl]);
 		}
-
-		private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy() => HttpPolicyExtensions
-				.HandleTransientHttpError()
-				.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-				.WaitAndRetryAsync(100, _ => TimeSpan.FromSeconds(2));
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

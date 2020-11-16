@@ -4,28 +4,27 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+
 using Velvetech.Shared.Dtos;
-using Velvetech.Shared.Requests;
+using Velvetech.Web.HttpClients.Base;
 using Velvetech.Web.HttpClients.Results;
 
 namespace Velvetech.Web.HttpClients
 {
-	public class GroupClient
+	public class GroupClient : BaseHttpClient
 	{
-		private readonly HttpClient _httpClient;
-
 		public GroupClient(HttpClient httpClient)
+			: base(httpClient)
 		{
-			_httpClient = httpClient;
 		}
 
 		public async Task<GroupDto[]> ListAsync(string group) => 
-			await _httpClient.GetFromJsonAsync<GroupDto[]>(
+			await HttpClient.GetFromJsonAsync<GroupDto[]>(
 				$"api/Group/List?group={group}");
 
 		public async Task<EntityActionResult> AddAsync(GroupDto dto)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/Group/Add", dto);
+			var result = await HttpClient.PostAsJsonAsync("api/Group/Add", dto);
 			return result.StatusCode switch
 			{
 				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
@@ -41,7 +40,7 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<EntityActionResult> UpdateAsync(GroupDto dto)
 		{
-			var result = await _httpClient.PutAsJsonAsync("api/Group/Update", dto);
+			var result = await HttpClient.PutAsJsonAsync("api/Group/Update", dto);
 			return result.StatusCode switch
 			{
 				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
@@ -56,7 +55,7 @@ namespace Velvetech.Web.HttpClients
 		}
 
 		public async Task DeleteAsync(Guid id) => 
-			await _httpClient.DeleteAsync($"api/Group/Delete/{id}");
+			await HttpClient.DeleteAsync($"api/Group/Delete/{id}");
 
 	}
 }

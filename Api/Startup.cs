@@ -49,6 +49,7 @@ namespace Velvetech.Api
 			
 			services.AddScoped(typeof(IAsyncRepository<,>), typeof(EfRepository<,>));
 			services.AddScoped(typeof(IReadService<,>), typeof(ReadService<,>));
+			services.AddScoped(typeof(ICrudService<,>), typeof(CrudService<,>));
 
 			services.AddScoped<ICrudService<Student, Guid>, StudentCrudService>();
 			services.AddScoped<ICrudService<Group, Guid>, GroupCrudService>();
@@ -56,8 +57,7 @@ namespace Velvetech.Api
 			services.AddScoped<IStudentValidationService, StudentValidationService>();
 			services.AddScoped<IUsersRolesService, UsersRolesService>();
 
-			services.AddTransient(typeof(ICrudService<,>), typeof(CrudService<,>));
-			services.AddTransient(typeof(IReadService<,>), typeof(ReadService<,>));
+			//services.AddTransient(typeof(IReadService<,>), typeof(ReadService<,>));
 			services.AddTransient<SexSeed>();
 			services.AddTransient<RoleSeed>();
 			services.AddTransient<UserSeed>();

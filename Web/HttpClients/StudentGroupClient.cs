@@ -5,29 +5,28 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;
+using Velvetech.Web.HttpClients.Base;
 
 namespace Velvetech.Web.HttpClients
 {
-	public class StudentGroupClient
+	public class StudentGroupClient : BaseHttpClient
 	{
-		private readonly HttpClient _httpClient;
-
 		public StudentGroupClient(HttpClient httpClient)
+			:base(httpClient)
 		{
-			_httpClient = httpClient;
 		}
 
 		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request) =>
-			await _httpClient.GetFromJsonAsync<StudentDto[]>(
+			await HttpClient.GetFromJsonAsync<StudentDto[]>(
 				$"api/StudentGroup/ListIncluded?GroupId={request.GroupId}");
 
 		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request) =>
-			await _httpClient.GetFromJsonAsync<StudentDto[]>(
+			await HttpClient.GetFromJsonAsync<StudentDto[]>(
 				$"api/StudentGroup/ListNotIncluded?GroupId={request.GroupId}");
 
 		public async Task<bool> IncludeStudentAsync(StudentGroupRequest request)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/StudentGroup/IncludeStudent", request);
+			var result = await HttpClient.PostAsJsonAsync("api/StudentGroup/IncludeStudent", request);
 			return result.StatusCode switch
 			{
 				HttpStatusCode.OK => true,
@@ -41,7 +40,7 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<bool> ExcludeStudentAsync(StudentGroupRequest request)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/StudentGroup/ExcludeStudent", request);
+			var result = await HttpClient.PostAsJsonAsync("api/StudentGroup/ExcludeStudent", request);
 			return result.StatusCode switch
 			{
 				HttpStatusCode.OK => true,

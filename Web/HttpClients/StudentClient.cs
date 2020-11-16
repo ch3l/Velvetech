@@ -7,25 +7,24 @@ using System.Threading.Tasks;
 using Velvetech.Shared;
 using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;
+using Velvetech.Web.HttpClients.Base;
 using Velvetech.Web.HttpClients.Results;
 
 namespace Velvetech.Web.HttpClients
 {
-	public class StudentClient
+	public class StudentClient : BaseHttpClient
 	{
-		private readonly HttpClient _httpClient;
-
 		public StudentClient(HttpClient httpClient)
+		:base(httpClient)
 		{
-			_httpClient = httpClient;
 		}
 
 		public async Task<StudentDto> GetAsync(Guid id) =>
-			await _httpClient.GetFromJsonAsync<StudentDto>(
+			await HttpClient.GetFromJsonAsync<StudentDto>(
 				$"api/Student/Get?Id={id}");
 
 		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => 
-			await _httpClient.GetFromJsonAsync<Page<StudentDto>>(
+			await HttpClient.GetFromJsonAsync<Page<StudentDto>>(
 				$"api/Student/List" +
 				$"?pageSize={request.PageSize}" +
 				$"&pageIndex={request.PageIndex}" +
@@ -36,7 +35,7 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/Student/Add", dto);
+			var result = await HttpClient.PostAsJsonAsync("api/Student/Add", dto);
 			
 			return result.StatusCode switch
 			{
@@ -53,7 +52,7 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
-			var result = await _httpClient.PutAsJsonAsync("api/Student/Update", dto);
+			var result = await HttpClient.PutAsJsonAsync("api/Student/Update", dto);
 			
 			return result.StatusCode switch
 			{
@@ -69,6 +68,6 @@ namespace Velvetech.Web.HttpClients
 		}
 
 		public async Task DeleteAsync(Guid id) => 
-			await _httpClient.DeleteAsync($"api/Student/Delete/{id}");
+			await HttpClient.DeleteAsync($"api/Student/Delete/{id}");
 	}
 }
