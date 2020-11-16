@@ -36,9 +36,14 @@ namespace Velvetech.Domain.Specifications
 
 		private void FilterStudents(string sex, string fullname, string callsign, string group)
 		{
+			//sex = FilterInputString(sex);
+			//fullname = FilterInputString(fullname);
+			//callsign = FilterInputString(callsign);
+			//group = FilterInputString(group);			
+
 			Query.Where(student =>
-				(sex == null || student.Sex.Name.Equals(sex))
-				&& (fullname == null || (student.Firstname + " " + student.Middlename + " " + student.Lastname).Contains(fullname))
+				(sex == null || sex == string.Empty || student.Sex.Name.Equals(sex))
+				&& (fullname == null || (student.Firstname + " " + (student.Middlename ?? string.Empty) + " " + student.Lastname).Contains(fullname))
 				&& (callsign == null || student.Callsign.Contains(callsign))
 				&& (group == null || student.Grouping.Any(g => g.Group.Name.Contains(group))));
 		}

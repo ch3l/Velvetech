@@ -2,7 +2,7 @@
 
 using Velvetech.Data.Seeds.Base;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.Base.Interfaces;
 
 namespace Velvetech.Data.Seeds
 {

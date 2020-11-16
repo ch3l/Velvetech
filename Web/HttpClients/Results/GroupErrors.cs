@@ -3,7 +3,7 @@ using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class GroupErrors : ApiActionResult
+	public class GroupErrors : ClientActionResult
 	{
 		public string[] Name { get; }
 

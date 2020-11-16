@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ardalis.Specification;
+﻿using System.Threading.Tasks;
+
 using Velvetech.Domain.Common;
-using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.Base.Interfaces;
 
 namespace Velvetech.Data.Seeds.Base
 {

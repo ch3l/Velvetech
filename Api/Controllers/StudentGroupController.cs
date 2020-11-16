@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Swashbuckle.AspNetCore.Annotations;
+
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Common.Interfaces;
-using Velvetech.Domain.Services.External.Particular.Interfaces;
+using Velvetech.Domain.Services.Base.Interfaces;
+using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared.Dtos;
 using Velvetech.Shared.Requests;

@@ -24,17 +24,21 @@ namespace Velvetech.Web.HttpClients
 			await HttpClient.GetFromJsonAsync<StudentDto>(
 				$"api/Student/Get?Id={id}");
 
-		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => 
-			await HttpClient.GetFromJsonAsync<Page<StudentDto>>(
+		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request)
+		{
+			var result = await HttpClient.GetFromJsonAsync<Page<StudentDto>>(
 				$"api/Student/List" +
 				$"?pageSize={request.PageSize}" +
 				$"&pageIndex={request.PageIndex}" +
-				$"&sex={request.Sex}" +
-				$"&fullname={request.Fullname}" +
-				$"&callsign={request.Callsign}" +
-				$"&group={request.Group}");
+				$"&sex={request.Sex?.Trim()}" +
+				$"&fullname={request.Fullname?.Trim()}" +
+				$"&callsign={request.Callsign?.Trim()}" +
+				$"&group={request.Group?.Trim()}");
 
-		public async Task<ApiActionResult> AddAsync(StudentDto dto)
+			return result;
+		}
+
+		public async Task<ClientActionResult> AddAsync(StudentDto dto)
 		{
 			var result = await HttpClient.PostAsJsonAsync("api/Student/Add", dto);
 			
@@ -51,7 +55,7 @@ namespace Velvetech.Web.HttpClients
 			};
 		}
 
-		public async Task<ApiActionResult> UpdateAsync(StudentDto dto)
+		public async Task<ClientActionResult> UpdateAsync(StudentDto dto)
 		{
 			var result = await HttpClient.PutAsJsonAsync("api/Student/Update", dto);
 			

@@ -35,10 +35,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
     <Compile Remove="Specification\**" />
+    <Content Remove="Authentication\**" />
     <Content Remove="Specification\**" />
+    <EmbeddedResource Remove="Authentication\**" />
     <EmbeddedResource Remove="Specification\**" />
     <EntityDeploy Remove="Specification\**" />
+    <None Remove="Authentication\**" />
     <None Remove="Specification\**" />
   </ItemGroup>
 
@@ -57,10 +61,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Authentication\" />
   </ItemGroup>	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UserSecretsId>df4e4be4-0903-4ea6-b2b6-9e8741cc72ee</UserSecretsId>

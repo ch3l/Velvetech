@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Swashbuckle.AspNetCore.Annotations;
+
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.Base.Interfaces;
 using Velvetech.Shared.Dtos;
 
 namespace Velvetech.Api.Controllers

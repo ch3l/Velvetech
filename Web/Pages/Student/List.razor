@@ -10,7 +10,6 @@
 @using Velvetech.Shared.Requests
 @using Velvetech.Shared.Results.Authorization
 @using Velvetech.Web.HttpClients
-@using Velvetech.Web.HttpClients.Results
 
 @namespace Velvetech.Web.Pages.Student
 
@@ -128,6 +127,7 @@ else
 	{
 		if (AddComponent is null)
 			return;
+
 		AddComponent.Student = new StudentDto() { SexId = 1 };
 		AddComponent.Open();
 	}
@@ -136,6 +136,7 @@ else
 	{
 		if (EditComponent is null)
 			return;
+
 		EditComponent.Student = _page.Items[index];
 		EditComponent.Open();
 	}
@@ -171,10 +172,10 @@ else
 		_page = await StudentClient.ListAsync(
 			new StudentFilterPagedRequest
 			{
-				Sex = CleanString(_sex),
-				Callsign = CleanString(_callsign),
-				Fullname = CleanString(_fullname),
-				Group = CleanString(_group),
+				Sex = _sex,
+				Callsign = _callsign,
+				Fullname = _fullname,
+				Group = _group,
 				PageIndex = index,
 				PageSize = size
 			});
@@ -183,10 +184,10 @@ else
 	string CleanString(string value)
 	{
 		if (value is null)
-			return null;
+			return string.Empty;
 
 		if (value.Trim() == string.Empty)
-			return null;
+			return string.Empty;
 
 		return value.Trim();
 	}

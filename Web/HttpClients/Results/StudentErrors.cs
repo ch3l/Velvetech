@@ -3,7 +3,7 @@ using Velvetech.Web.HttpClients.Results.Base;
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class StudentErrors : ApiActionResult
+	public class StudentErrors : ClientActionResult
 	{
 		public string[] SexId { get; }
 		public string[] Firstname { get; }

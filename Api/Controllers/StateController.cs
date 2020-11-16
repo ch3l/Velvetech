@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Velvetech.Api.Controllers
@@ -20,11 +20,8 @@ namespace Velvetech.Api.Controllers
 			OperationId = "AuthorizationController.AuthorizeAsync",
 			Tags = new[]
 			{
-				"Controller: Authorization"
+				"Controller: State"
 			})]
-		public async Task<ActionResult<bool>> IsReadyAsync()
-		{
-			return await Task.FromResult(State);
-		}
+		public async Task<ActionResult<bool>> IsReadyAsync() => await Task.FromResult(State);
 	}
 }

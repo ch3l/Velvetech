@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Common;
+using Velvetech.Domain.Services.Base;
 using Velvetech.Domain.Specifications;
 
-namespace Velvetech.Domain.Services.External.Particular
+namespace Velvetech.Domain.Services
 {
 	public class GroupCrudService : CrudService<Group, Guid>
 	{

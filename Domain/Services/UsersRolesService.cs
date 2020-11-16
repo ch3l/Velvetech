@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Particular.Interfaces;
+using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Domain.Specifications;
 
-namespace Velvetech.Domain.Services.External.Particular
+namespace Velvetech.Domain.Services
 {
 	public class UsersRolesService : IUsersRolesService
 	{
@@ -41,9 +41,6 @@ namespace Velvetech.Domain.Services.External.Particular
 			await _userRepository.UpdateAsync(user);
 		}
 
-		public async Task<User> GetUser(string userName)
-		{
-			return await _userRepository.FirstOrDefault(userName, new UserSpecification());
-		}
+		public async Task<User> GetUser(string userName) => await _userRepository.FirstOrDefault(userName, new UserSpecification());
 	}
 }

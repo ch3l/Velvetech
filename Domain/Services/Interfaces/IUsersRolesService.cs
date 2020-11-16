@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
+
 using Velvetech.Domain.Entities;
 
-namespace Velvetech.Domain.Services.External.Particular.Interfaces
+namespace Velvetech.Domain.Services.Interfaces
 {
 	public interface IUsersRolesService
 	{

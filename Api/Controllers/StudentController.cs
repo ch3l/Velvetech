@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using Velvetech.Domain.Entities;
 using Velvetech.Domain.Entities.Validators;
-using Velvetech.Domain.Services.External.Common.Interfaces;
+using Velvetech.Domain.Services.Base.Interfaces;
 using Velvetech.Domain.Services.Internal.Interfaces;
 using Velvetech.Domain.Specifications;
 using Velvetech.Shared;
@@ -54,6 +54,7 @@ namespace Velvetech.Api.Controllers
 				"Controller: Student",
 				//"Action: List"
 			})]
+
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
 			var pageSize = request.PageSize ?? 10;
@@ -64,10 +65,10 @@ namespace Velvetech.Api.Controllers
 
 			var totalItems = await _studentCrudService.CountAsync(
 				new StudentSpecification(
-					request.Sex,
-					request.Fullname,
-					request.Callsign,
-					request.Group));
+					sex: request.Sex,
+					fullname: request.Fullname,
+					callsign: request.Callsign,
+					group: request.Group));
 
 			var lastPageIndex = totalItems / pageSize;
 
@@ -178,24 +179,24 @@ namespace Velvetech.Api.Controllers
 			})]
 		public async Task<ActionResult<StudentDto>> UpdateAsync(StudentDto dto)
 		{
-			var entry = await _studentCrudService.GetByIdAsync(dto.Id);
-			if (entry is null)
+			var student = await _studentCrudService.GetByIdAsync(dto.Id);
+			if (student is null)
 				return NotFound();
 
 			var validator = new StudentValidator(_studentValidationService);
-			entry.SelectValidator(validator);
+			student.SelectValidator(validator);
 
-			entry.SetFirstname(dto.Firstname);
-			entry.SetMiddlename(dto.Middlename);
-			entry.SetLastname(dto.Lastname);
-			await entry.SetCallsignAsync(dto.Callsign);
-			entry.SetSexId(dto.SexId);
+			student.SetFirstname(dto.Firstname);
+			student.SetMiddlename(dto.Middlename);
+			student.SetLastname(dto.Lastname);
+			await student.SetCallsignAsync(dto.Callsign);
+			student.SetSexId(dto.SexId);
 
-			if (entry.HasErrors)
-				return BadRequest(entry.ErrorsStrings);
+			if (student.HasErrors)
+				return BadRequest(student.ErrorsStrings);
 
-			await _studentCrudService.UpdateAsync(entry);
-			return Ok(entry.ToDto());
+			await _studentCrudService.UpdateAsync(student);
+			return Ok(student.ToDto());
 		}
 
 		// DELETE: api/Students/Delete/{GUID}

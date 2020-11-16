@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Ardalis.Specification;
+
 using Velvetech.Domain.Common;
 
-namespace Velvetech.Domain.Services.External.Common.Interfaces
+namespace Velvetech.Domain.Services.Base.Interfaces
 {
 	public interface IReadService<TEntity, in TKey> 
 		where TEntity : Entity<TKey>, IAggregateRoot

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Velvetech.Domain.Common;
 using Velvetech.Domain.Entities;
-using Velvetech.Domain.Services.External.Particular.Interfaces;
+using Velvetech.Domain.Services.Interfaces;
 using Velvetech.Domain.Specifications;
 
-namespace Velvetech.Domain.Services.External.Particular
+namespace Velvetech.Domain.Services
 {
 	public class GroupingService : IGroupingService
 	{
-		readonly IAsyncRepository<Group, Guid> _groupRepository;
-		readonly IAsyncRepository<Student, Guid> _studentRepository;
+		private readonly IAsyncRepository<Group, Guid> _groupRepository;
+		private readonly IAsyncRepository<Student, Guid> _studentRepository;
 
 		public GroupingService(IAsyncRepository<Group, Guid> groupRepository, 
 			IAsyncRepository<Student, Guid> studentRepository)

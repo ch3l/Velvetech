@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Velvetech.Domain.Common;
-using Velvetech.Domain.Services.External.Common.Interfaces;
 
-namespace Velvetech.Domain.Services.External.Common
+using Velvetech.Domain.Common;
+using Velvetech.Domain.Services.Base.Interfaces;
+
+namespace Velvetech.Domain.Services.Base
 {
 	public class CrudService<TEntity, TKey> : ReadService<TEntity, TKey>, ICrudService<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot

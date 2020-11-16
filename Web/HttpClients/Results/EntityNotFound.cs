@@ -2,7 +2,7 @@
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class NotFound : ApiActionResult
+	public class NotFound : ClientActionResult
 	{
 
 	}

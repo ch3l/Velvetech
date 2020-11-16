@@ -2,7 +2,7 @@
 
 using Velvetech.Domain.Common;
 
-namespace Velvetech.Domain.Services.External.Common.Interfaces
+namespace Velvetech.Domain.Services.Base.Interfaces
 {
 	public interface ICrudService<TEntity, in TKey> : IReadService<TEntity, TKey>
 		where TEntity : Entity<TKey>, IAggregateRoot
