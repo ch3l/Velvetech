@@ -21,74 +21,43 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<GroupDto[]> ListAsync(string group) => 
 			await _httpClient.GetFromJsonAsync<GroupDto[]>(
-				$"api/Groups/List?group={group}");
+				$"api/Group/List?group={group}");
 
 		public async Task<EntityActionResult> AddAsync(GroupDto dto)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/Groups/Add", dto);
-			switch (result.StatusCode)
+			var result = await _httpClient.PostAsJsonAsync("api/Group/Add", dto);
+			return result.StatusCode switch
 			{
-				case HttpStatusCode.OK:
-					return new SuccessfulEntityAction<GroupDto>(await result.Content.ReadFromJsonAsync<GroupDto>());
-
-				case HttpStatusCode.BadRequest:
-					return new GroupErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
-
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
-			}
+				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
+					await result.Content.ReadFromJsonAsync<GroupDto>()),
+			
+				HttpStatusCode.BadRequest => new GroupErrors(
+					await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>()),
+				
+				_ => throw new IndexOutOfRangeException(
+					$"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}")
+			};
 		}
 
 		public async Task<EntityActionResult> UpdateAsync(GroupDto dto)
 		{
-			var result = await _httpClient.PutAsJsonAsync("api/Groups/Update", dto);
-			switch (result.StatusCode)
+			var result = await _httpClient.PutAsJsonAsync("api/Group/Update", dto);
+			return result.StatusCode switch
 			{
-				case HttpStatusCode.OK:
-					return new SuccessfulEntityAction<GroupDto>(await result.Content.ReadFromJsonAsync<GroupDto>());
-
-				case HttpStatusCode.BadRequest:
-					return new GroupErrors(await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>());
-
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}");
-			}
+				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
+					await result.Content.ReadFromJsonAsync<GroupDto>()),
+			
+				HttpStatusCode.BadRequest => new GroupErrors(
+					await result.Content.ReadFromJsonAsync<Dictionary<string, string[]>>()),
+				
+				_ => throw new IndexOutOfRangeException(
+					$"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(AddAsync)}")
+			};
 		}
 
 		public async Task DeleteAsync(Guid id) => 
-			await _httpClient.DeleteAsync($"api/Groups/Delete/{id}");
+			await _httpClient.DeleteAsync($"api/Group/Delete/{id}");
 
-		public async Task<bool> IncludeStudentAsync(StudentGroupRequest request)
-		{
-			var result = await _httpClient.PostAsJsonAsync("api/Groups/IncludeStudent", request);
-			switch (result.StatusCode)
-			{
-				case HttpStatusCode.OK:
-					return true;
-
-				case HttpStatusCode.NotFound:
-					return false;
-				
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(IncludeStudentAsync)}");
-			}
-		}
-
-		public async Task<bool> ExcludeStudentAsync(StudentGroupRequest request)
-		{
-			var result = await _httpClient.PostAsJsonAsync("api/Groups/ExcludeStudent", request);
-			switch (result.StatusCode)
-			{
-				case HttpStatusCode.OK:
-					return true;
-
-				case HttpStatusCode.NotFound:
-					return false;
-
-				default:
-					throw new IndexOutOfRangeException($"{nameof(result.StatusCode)} in {GetType().Name}.{nameof(IncludeStudentAsync)}");
-			}
-		}
 	}
 }
 

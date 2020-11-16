@@ -45,6 +45,10 @@ namespace Velvetech.Web
 			services.AddHttpClient<GroupClient>(ConfigureApiHttpClient)
 				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
 				.AddPolicyHandler(GetRetryPolicy());
+
+			services.AddHttpClient<StudentGroupClient>(ConfigureApiHttpClient)
+				.SetHandlerLifetime(TimeSpan.FromMinutes(5))
+				.AddPolicyHandler(GetRetryPolicy());
 		}
 
 		private void ConfigureApiHttpClient(HttpClient client)

@@ -12,13 +12,13 @@
 @namespace Velvetech.Web.Pages.Student
 
 <h1>Students</h1>
-<h1>@title</h1>
+<h1>@_title</h1>
 
 <button class="btn btn-primary" @onclick="Add">Add student</button>
 <br />
 <br />
 
-@if (page == null)
+@if (_page == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -37,21 +37,21 @@ else
 				<th>
 					<input type="text"
 						   class="form-control"
-						   @bind-value="fullname"
+						   @bind-value="_fullname"
 						   @bind-value:event="oninput"
 						   @onkeyup="@StartSearchTimer" />
 				</th>
 				<th>
 					<input type="text"
 						   class="form-control"
-						   @bind-value="sex"
+						   @bind-value="_sex"
 						   @bind-value:event="oninput"
 						   @onkeyup="@StartSearchTimer" />
 				</th>
 				<th>
 					<input type="text"
 						   class="form-control"
-						   @bind-value="callsign"
+						   @bind-value="_callsign"
 						   @bind-value:event="oninput"
 						   @onkeyup="@StartSearchTimer" />
 				</th>
@@ -59,7 +59,7 @@ else
 
 					<input type="text"
 						   class="form-control"
-						   @bind-value="group"
+						   @bind-value="_group"
 						   @bind-value:event="oninput"
 						   @onkeyup="@StartSearchTimer" />
 				</th>
@@ -68,11 +68,11 @@ else
 		</thead>
 		<tbody>
 			@{
-				counter = 0;
+				_counter = 0;
 			}
-			@foreach (var student in page.Items)
+			@foreach (var student in _page.Items)
 			{
-				var i = counter++;
+				var i = _counter++;
 
 				<tr class="">
 					<td>@student.FullName</td>
@@ -89,28 +89,28 @@ else
 		</tbody>
 	</table>
 
-	<button class="btn btn-primary" disabled="@(page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
-	<button class="btn btn-primary" disabled="@(page.IsLastPage)" @onclick="NextPage">Next page</button>
+	<button class="btn btn-primary" disabled="@(_page.PageIndex == 0)" @onclick="PreviousPage">Previous page</button>
+	<button class="btn btn-primary" disabled="@(_page.IsLastPage)" @onclick="NextPage">Next page</button>
 }
 
-<Velvetech.Web.Pages.Student.Add SexList="@SexList" @ref="AddComponent" OnSave="Update" />
-<Velvetech.Web.Pages.Student.Edit SexList="@SexList" @ref="EditComponent" OnSave="Update" />
+<Velvetech.Web.Pages.Student.Add SexList="@_sexList" @ref="AddComponent" OnSave="Update" />
+<Velvetech.Web.Pages.Student.Edit SexList="@_sexList" @ref="EditComponent" OnSave="Update" />
 
 @code
 {
-	int counter;
-	Page<StudentDto> page;
-	string title = string.Empty;
+	int _counter;
+	Page<StudentDto> _page;
+	string _title = string.Empty;
 
-	SexDto[] SexList;
+	SexDto[] _sexList;
 
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
 	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
 
-	string sex = "", fullname = "", callsign = "", group = "";
-	string previousSex, previousFullname, previousCallsign, previousGroup;
+	string _sex = "", _fullname = "", _callsign = "", _group = "";
+	string _previousSex, _previousFullname, _previousCallsign, _previousGroup;
 
 	void StartSearchTimer()
 	{
@@ -130,45 +130,45 @@ else
 	{
 		if (EditComponent is null)
 			return;
-		EditComponent.Student = page.Items[index];
+		EditComponent.Student = _page.Items[index];
 		EditComponent.Open();
 	}
 
 	async Task DeleteAsync(int index)
 	{
-		var guid = page.Items[index].Id;
+		var guid = _page.Items[index].Id;
 		await StudentService.DeleteAsync(guid);
 		await Update();
 	}
 
 	async Task Update()
 	{
-		await LoadPage(page.PageSize, page.PageIndex); ;
+		await LoadPage(_page.PageSize, _page.PageIndex); ;
 	}
 
 	async Task NextPage()
 	{
-		if (page != null &&
-			!page.IsLastPage)
-			await LoadPage(10, page.PageIndex + 1);
+		if (_page != null &&
+			!_page.IsLastPage)
+			await LoadPage(10, _page.PageIndex + 1);
 	}
 
 	async Task PreviousPage()
 	{
-		if (page != null &&
-			page.PageIndex > 0)
-			await LoadPage(10, page.PageIndex - 1);
+		if (_page != null &&
+			_page.PageIndex > 0)
+			await LoadPage(10, _page.PageIndex - 1);
 	}
 
 	async Task LoadPage(int size = 0, int index = 0)
 	{
-		page = await StudentService.ListAsync(
+		_page = await StudentService.ListAsync(
 			new StudentFilterPagedRequest
 			{
-				Sex = CleanString(sex),
-				Callsign = CleanString(callsign),
-				Fullname = CleanString(fullname),
-				Group = CleanString(group),
+				Sex = CleanString(_sex),
+				Callsign = CleanString(_callsign),
+				Fullname = CleanString(_fullname),
+				Group = CleanString(_group),
 				PageIndex = index,
 				PageSize = size
 			});
@@ -187,23 +187,23 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		SexList = await SexService.ListAsync();
+		_sexList = await SexService.ListAsync();
 		await LoadPage();
 
 		_searchDelayTimer.Elapsed += async (sender, args) =>
 		{
-			if (previousSex == sex &&
-				previousFullname == fullname &&
-				previousCallsign == callsign &&
-				previousGroup == group)
+			if (_previousSex == _sex &&
+				_previousFullname == _fullname &&
+				_previousCallsign == _callsign &&
+				_previousGroup == _group)
 				return;
 
 			await LoadPage();
 
-			previousSex = sex;
-			previousFullname = fullname;
-			previousCallsign = callsign;
-			previousGroup = group;
+			_previousSex = _sex;
+			_previousFullname = _fullname;
+			_previousCallsign = _callsign;
+			_previousGroup = _group;
 
 			await InvokeAsync(StateHasChanged);
 		};

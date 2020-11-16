@@ -16,20 +16,20 @@ namespace Velvetech.Api.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class GroupsController : ControllerBase
+	public class GroupController : ControllerBase
 	{
 		private readonly ICrudService<Group, Guid> _groupCrudService;
 		private readonly IGroupingService _groupingService;
 
-		public GroupsController(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
+		public GroupController(ICrudService<Group, Guid> groupCrudService, IGroupingService groupingService)
 		{
 			_groupCrudService = groupCrudService;
 			_groupingService = groupingService;
 		}
 
-		// GET: api/Groups/List
+		// GET: api/Group/List
 		[HttpGet]
-		public async Task<GroupDto[]> ListAsync(string group) => 
+		public async Task<GroupDto[]> ListAsync(string group) =>
 			await _groupCrudService.ListAsync(new GroupSpecification(group))
 				.Select(DtoExtensions.ToDto)
 				.ToArrayAsync();
@@ -72,32 +72,6 @@ namespace Velvetech.Api.Controllers
 			return Ok(entry);
 		}
 
-		// PUT: api/Groups/AddStudent
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPost]
-		public async Task<IActionResult> IncludeStudentAsync(StudentGroupRequest request)
-		{
-			var includeResult = await _groupingService.IncludeStudentAsync(request.StudentId, request.GroupId);
-
-			if (includeResult)
-				return Ok();
-			else
-				return Ok("Already included");
-		}
-
-		// PUT: api/Groups/AddStudent
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPost]
-		public async Task<IActionResult> ExcludeStudentAsync(StudentGroupRequest request)
-		{
-			if (await _groupingService.ExcludeStudentAsync(request.StudentId, request.GroupId))
-				return Ok();
-
-			return NotFound();
-		}
-
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult> DeleteAsync(Guid id)
@@ -105,5 +79,7 @@ namespace Velvetech.Api.Controllers
 			await _groupCrudService.DeleteAsync(id);
 			return Ok();
 		}
+
+		
 	}
 }

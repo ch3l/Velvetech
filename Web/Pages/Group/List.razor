@@ -13,7 +13,7 @@
 <br />
 @*<button class="btn btn-primary" @onclick="Add">Add student to all groups</button>*@
 
-@if (groups == null)
+@if (_groups == null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -30,7 +30,7 @@ else
 			<tr>
 				<th><input type="text"
 				           class="form-control"
-				           @bind-value="group"
+				           @bind-value="_group"
 				           @bind-value:event="oninput"
 				           @onkeyup="@StartSearchTimer" /></th>
 				<th>
@@ -40,11 +40,11 @@ else
 		</thead>
 		<tbody>
 			@{
-				counter = 0;
+				_counter = 0;
 			}
-			@foreach (var group in groups)
+			@foreach (var group in _groups)
 			{
-				var i = counter++;
+				var i = _counter++;
 
 				<tr class="">
 					<td>@group.Name</td>
@@ -64,14 +64,14 @@ else
 
 @code
 {
-	int counter;
-	GroupDto[] groups;
+	int _counter;
+	GroupDto[] _groups;
 
 	private Add AddComponent { get; set; }
 	private Edit EditComponent { get; set; }
 
-	string group = "";
-	string previousGroup;
+	string _group = "";
+	string _previousGroup;
 
 	Timer _searchDelayTimer = new Timer(300) { Enabled = false, AutoReset = false };
 
@@ -93,20 +93,20 @@ else
 	{
 		if (EditComponent is null)
 			return;
-		EditComponent.Group = groups[index];
+		EditComponent.Group = _groups[index];
 		await EditComponent.OpenAsync();
 	}
 
 	async Task RemoveAsync(int index)
 	{
-		var guid = groups[index].Id;
+		var guid = _groups[index].Id;
 		await GroupService.DeleteAsync(guid);
 		await LoadList();
 	}
 
 	async Task LoadList()
 	{
-		groups = await GroupService.ListAsync(group.Trim());
+		_groups = await GroupService.ListAsync(_group.Trim());
 	}
 
 	protected override async Task OnInitializedAsync()
@@ -115,12 +115,12 @@ else
 
 		_searchDelayTimer.Elapsed += async (sender, args) =>
 		{
-			if (previousGroup == group)
+			if (_previousGroup == _group)
 				return;
 
 			await LoadList();
 
-			previousGroup = group;
+			_previousGroup = _group;
 			await InvokeAsync(StateHasChanged);
 		};
 	}

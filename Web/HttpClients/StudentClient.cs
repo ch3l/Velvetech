@@ -20,9 +20,13 @@ namespace Velvetech.Web.HttpClients
 			_httpClient = httpClient;
 		}
 
+		public async Task<StudentDto> GetAsync(Guid id) =>
+			await _httpClient.GetFromJsonAsync<StudentDto>(
+				$"api/Student/Get?Id={id}");
+
 		public async Task<Page<StudentDto>> ListAsync(StudentFilterPagedRequest request) => 
 			await _httpClient.GetFromJsonAsync<Page<StudentDto>>(
-				$"api/Students/List" +
+				$"api/Student/List" +
 				$"?pageSize={request.PageSize}" +
 				$"&pageIndex={request.PageIndex}" +
 				$"&sex={request.Sex}" +
@@ -30,21 +34,9 @@ namespace Velvetech.Web.HttpClients
 				$"&callsign={request.Callsign}" +
 				$"&group={request.Group}");
 
-		public async Task<StudentDto[]> ListIncludedAsync(IncludedStudentsRequest request) => 
-			await _httpClient.GetFromJsonAsync<StudentDto[]>(
-				$"api/Students/ListIncluded?GroupId={request.GroupId}");
-
-		public async Task<StudentDto[]> ListNotIncludedAsync(IncludedStudentsRequest request) => 
-			await _httpClient.GetFromJsonAsync<StudentDto[]>(
-				$"api/Students/ListNotIncluded?GroupId={request.GroupId}");
-
-		public async Task<StudentDto> GetAsync(Guid id) => 
-			await _httpClient.GetFromJsonAsync<StudentDto>(
-				$"api/Students/Get?Id={id}");
-
 		public async Task<EntityActionResult> AddAsync(StudentDto dto)
 		{
-			var result = await _httpClient.PostAsJsonAsync("api/Students/Add", dto);
+			var result = await _httpClient.PostAsJsonAsync("api/Student/Add", dto);
 			
 			return result.StatusCode switch
 			{
@@ -61,7 +53,7 @@ namespace Velvetech.Web.HttpClients
 
 		public async Task<EntityActionResult> UpdateAsync(StudentDto dto)
 		{
-			var result = await _httpClient.PutAsJsonAsync("api/Students/Update", dto);
+			var result = await _httpClient.PutAsJsonAsync("api/Student/Update", dto);
 			
 			return result.StatusCode switch
 			{
@@ -77,6 +69,6 @@ namespace Velvetech.Web.HttpClients
 		}
 
 		public async Task DeleteAsync(Guid id) => 
-			await _httpClient.DeleteAsync($"api/Students/Delete/{id}");
+			await _httpClient.DeleteAsync($"api/Student/Delete/{id}");
 	}
 }

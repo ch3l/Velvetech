@@ -15,14 +15,15 @@ using Velvetech.Shared.Requests;
 
 namespace Velvetech.Api.Controllers
 {
+	//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class StudentsController : ControllerBase
+	public class StudentController : ControllerBase
 	{
 		private readonly ICrudService<Student, Guid> _studentCrudService;
 		private readonly IStudentValidationService _studentValidationService;
 
-		public StudentsController(
+		public StudentController(
 			ICrudService<Student, Guid> studentCrudService,
 			IStudentValidationService studentValidationService)
 		{
@@ -30,7 +31,8 @@ namespace Velvetech.Api.Controllers
 			_studentValidationService = studentValidationService;
 		}
 
-		// GET: api/Test/Students/List
+		// GET: api/Student/Students/List
+		//[Authorize(Roles = "StudentUser")]
 		[HttpGet]
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
@@ -78,34 +80,8 @@ namespace Velvetech.Api.Controllers
 				Items = students,
 			};
 		}
-
-		// GET: api/Test/ListIncluded
-		[HttpGet]
-		public async Task<ActionResult<StudentDto[]>> ListIncludedAsync([FromQuery] IncludedStudentsRequest request)
-		{
-			var filter = new IncludedStudentsSpecification(request.GroupId);
-			var students = await _studentCrudService.ListAsync(filter)
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			return students;
-		}
-
-		// GET: api/Test/ListIncluded
-		[HttpGet]
-		public async Task<ActionResult<StudentDto[]>> ListNotIncludedAsync([FromQuery] IncludedStudentsRequest request)
-		{
-			var filter = new NotIncludedStudentsSpecification(request.GroupId);
-			var students = await _studentCrudService.ListAsync(filter)
-				.Select(DtoExtensions.ToDto)
-				.ToArrayAsync();
-
-			return students;
-		}
-
-		
-
-		// GET: api/Test/Get
+		   
+		// GET: api/Student/Get
 		[HttpGet("{id}")]
 		public async Task<ActionResult<StudentDto>> GetAsync(Guid? id)
 		{
@@ -115,9 +91,10 @@ namespace Velvetech.Api.Controllers
 			return (await _studentCrudService.GetByIdAsync(id.Value)).ToDto();
 		}
 
-		// GET: api/Test/StudentsCount
+		// GET: api/Student/Count
 		[HttpGet]
-		public async Task<ActionResult<int>> StudentsCountAsync() => await _studentCrudService.CountAsync();
+		public async Task<ActionResult<int>> CountAsync() => 
+			await _studentCrudService.CountAsync();
 
 		// PUT: api/Students/Add
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -135,7 +112,7 @@ namespace Velvetech.Api.Controllers
 			return Ok(entry);
 		}
 
-		// PUT: api/Students
+		// PUT: api/Student/Update
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut]

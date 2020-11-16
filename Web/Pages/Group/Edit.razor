@@ -1,5 +1,6 @@
 ﻿@inject GroupClient GroupService
 @inject StudentClient StudentService
+@inject StudentGroupClient StudentGroup
 
 @using Velvetech.Shared.Dtos
 @using Velvetech.Shared.Requests
@@ -60,13 +61,13 @@
 														</tr>
 													</thead>
 													<tbody>
-														@if (includedStudents != null)
+														@if (_includedStudents != null)
 														{
-															counter = 0;
+															_counter = 0;
 
-															foreach (var student in includedStudents)
+															foreach (var student in _includedStudents)
 															{
-																var i = counter++;
+																var i = _counter++;
 																<tr class="">
 																	<td>@student.FullName</td>
 																	<td>@student.Callsign</td>
@@ -101,13 +102,13 @@
 														</tr>
 													</thead>
 													<tbody>
-														@if (notIncludedStudents != null)
+														@if (_notIncludedStudents != null)
 														{
-															counter = 0;
+															_counter = 0;
 
-															foreach (var student in notIncludedStudents)
+															foreach (var student in _notIncludedStudents)
 															{
-																var i = counter++;
+																var i = _counter++;
 																<tr class="">
 																	<td>@student.FullName</td>
 																	<td>@student.Callsign</td>
@@ -157,9 +158,9 @@
 	string _errorMessage;
 	string _groupNameErrorsString;
 
-	int counter;
-	StudentDto[] includedStudents;
-	StudentDto[] notIncludedStudents;
+	int _counter;
+	StudentDto[] _includedStudents;
+	StudentDto[] _notIncludedStudents;
 
 	private async Task SaveClickAsync()
 	{
@@ -200,7 +201,7 @@
 	{
 		_modalDisplay = "none";
 		_modalClass = "";
-		includedStudents = null;
+		_includedStudents = null;
 		Group = null;
 		StateHasChanged();
 	}
@@ -208,21 +209,21 @@
 	async Task LoadIncludedStudents()
 	{
 		if (Group != null)
-			includedStudents = await StudentService.ListIncludedAsync(new IncludedStudentsRequest() {GroupId = Group.Id});
+			_includedStudents = await StudentGroup.ListIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
 	}
 
 	async Task LoadNotIncludedStudents()
 	{
 		if (Group != null)
-			notIncludedStudents = await StudentService.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
+			_notIncludedStudents = await StudentGroup.ListNotIncludedAsync(new IncludedStudentsRequest() { GroupId = Group.Id });
 	}
 
 	async Task ExcludeAsync(int i)
 	{
-		var studentId = includedStudents[i].Id;
+		var studentId = _includedStudents[i].Id;
 		var groupId = Group.Id;
 
-		await GroupService.ExcludeStudentAsync(
+		await StudentGroup.ExcludeStudentAsync(
 			new StudentGroupRequest
 			{
 				StudentId = studentId,
@@ -235,10 +236,10 @@
 
 	async Task IncludeAsync(int i)
 	{
-		var studentId = notIncludedStudents[i].Id;
+		var studentId = _notIncludedStudents[i].Id;
 		var groupId = Group.Id;
 
-		await GroupService.IncludeStudentAsync(
+		await StudentGroup.IncludeStudentAsync(
 			new StudentGroupRequest
 			{
 				StudentId = studentId,
