@@ -107,11 +107,13 @@ namespace Velvetech.UnitTests.Repository.Base
 				.Where(property => property.CanWrite && property.CanRead);
 
 			var newEntity = NewEntity();
-			foreach (var property in properties)
+			var newKey = NewKey();
+
+			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, newKey);
+
+			foreach (var property in properties.Where(property => property.Name != "Id"))
 				property.SetValue(newEntity, property.GetValue(entity));
 
-			var newKey = NewKey();
-			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, newKey);
 			_items.Add(newKey, newEntity);
 
 			return await Task.FromResult(newEntity);
