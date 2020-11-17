@@ -104,14 +104,17 @@ namespace Velvetech.UnitTests.Repository.Base
 				throw new ArgumentNullException(nameof(entity));
 
 			var properties = entity.GetType().GetProperties()
-				.Where(property => property.CanWrite && property.CanRead);
+				.Where(property => 
+					property.CanWrite && 
+					property.CanRead &&
+					property.Name != nameof(Entity<TKey>.Id));
 
 			var newEntity = NewEntity();
 			var newKey = NewKey();
 
-			typeof(Entity<TKey>).GetProperty("Id").SetValue(newEntity, newKey);
+			typeof(Entity<TKey>).GetProperty(nameof(Entity<TKey>.Id)).SetValue(newEntity, newKey);
 
-			foreach (var property in properties.Where(property => property.Name != "Id"))
+			foreach (var property in properties)
 				property.SetValue(newEntity, property.GetValue(entity));
 
 			_items.Add(newKey, newEntity);
