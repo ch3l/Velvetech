@@ -2,9 +2,14 @@
 
 namespace Velvetech.Domain.Entities.Validators
 {
-	public class GroupValidator: EntityValidator
+	public abstract class GroupValidator : EntityValidator
 	{
-		public void Name(ref string value)
+		internal abstract void Name(ref string value);
+	}
+
+	public class DefaultGroupValidator: GroupValidator
+	{
+		internal override void Name(ref string value)
 		{
 			DefaultValidations.DenyNullOrEmptyString(nameof(Name), ref value, 25);
 		}

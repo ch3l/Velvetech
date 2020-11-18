@@ -51,7 +51,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					NotValidSexId,
 					ValidFirstname,
@@ -65,7 +65,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -83,7 +83,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					NotValidFirstname,
@@ -97,7 +97,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -115,7 +115,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -129,7 +129,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -143,7 +143,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid null value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -157,7 +157,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid empty value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -175,7 +175,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					NotValidFirstname,
@@ -189,7 +189,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -207,7 +207,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -221,7 +221,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -235,7 +235,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid null value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,
@@ -249,7 +249,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid empty value 
 			{
 				var repository = new FakeStudentRepository();
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var student = await Student.BuildAsync(validator,
 					ValidSexId,
 					ValidFirstname,

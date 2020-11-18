@@ -30,7 +30,7 @@ namespace Velvetech.UnitTests.Entities
 			// No valid value 
 			{
 				var value = new string(Enumerable.Range(1, NameLengthUpperBoundary + 1).Select(x => 'x').ToArray());
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var group = Group.Build(validator, value);
 				Assert.AreEqual(null, group.Name);
 			}
@@ -38,7 +38,7 @@ namespace Velvetech.UnitTests.Entities
 			// Valid value 
 			{
 				var value = "ValidGroupName";
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var group = Group.Build(validator, value);
 				Assert.AreEqual(value, group.Name);
 			}

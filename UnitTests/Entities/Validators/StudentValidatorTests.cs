@@ -39,7 +39,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check less than min
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = min - 1;
 				validator.SexId(value);
 
@@ -51,7 +51,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is min
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = min;
 				validator.SexId(value);
 
@@ -60,7 +60,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is max
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = max;
 				validator.SexId(value);
 
@@ -69,7 +69,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check bigger than max
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = max + 1;
 				validator.SexId(value);
 
@@ -90,7 +90,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				string value = null;
 				validator.Firstname(ref value);
 
@@ -100,7 +100,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is empty
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = "";
 				validator.Firstname(ref value);
 
@@ -110,7 +110,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check without boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Firstname(ref value);
 
@@ -120,7 +120,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check with boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Firstname(ref value);
 
@@ -130,7 +130,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check without crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Firstname(ref value);
 
@@ -139,7 +139,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check with crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Firstname(ref value);
 
@@ -161,7 +161,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				string value = null;
 				validator.Middlename(ref value);
 
@@ -170,7 +170,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is empty
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = "";
 				validator.Middlename(ref value);
 
@@ -179,7 +179,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check without boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Middlename(ref value);
 
@@ -189,7 +189,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check with boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Middlename(ref value);
 
@@ -199,7 +199,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check without crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Middlename(ref value);
 
@@ -208,7 +208,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check with crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Middlename(ref value);
 
@@ -230,7 +230,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				string value = null;
 				validator.Lastname(ref value);
 
@@ -240,7 +240,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = "";
 				validator.Lastname(ref value);
 
@@ -250,7 +250,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check without boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Lastname(ref value);
 
@@ -260,7 +260,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check with boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Lastname(ref value);
 
@@ -270,7 +270,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check without crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Lastname(ref value);
 
@@ -279,7 +279,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check with crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Lastname(ref value);
 
@@ -302,7 +302,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				string value = null;
 				validator.Callsign(ref value);
 
@@ -311,7 +311,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is empty
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = "";
 				validator.Callsign(ref value);
 
@@ -320,7 +320,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check without boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Callsign(ref value);
 
@@ -330,7 +330,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check with boundary crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Callsign(ref value);
 
@@ -340,7 +340,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Lower boundary check without crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, lowerBoundary).Select(x => 'x').ToArray());
 				validator.Callsign(ref value);
 
@@ -349,7 +349,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Lower boundary check with crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, lowerBoundary - 1).Select(x => 'x').ToArray());
 				validator.Callsign(ref value);
 
@@ -362,7 +362,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check without crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Callsign(ref value);
 
@@ -371,7 +371,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check with crossing
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Callsign(ref value);
 
@@ -384,7 +384,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for uniqueness
 			{
-				var validator = new StudentValidator(new StudentValidationService(repository));
+				var validator = new DefaultStudentValidator(new StudentValidationService(repository));
 
 				string value = null;
 				await validator.CallsignUniqueness(value);

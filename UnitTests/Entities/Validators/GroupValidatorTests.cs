@@ -20,7 +20,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check for null
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				string value = null;
 				validator.Name(ref value);
 				
@@ -30,7 +30,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Check is empty
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var value = "";
 				validator.Name(ref value);
 				
@@ -40,7 +40,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check without boundary crossing
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => ' ').ToArray());
 				validator.Name(ref value);
 				
@@ -50,7 +50,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Whitespaces check with boundary crossing
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => ' ').ToArray());
 				validator.Name(ref value);
 				
@@ -60,7 +60,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check without crossing
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var value = new string(Enumerable.Range(1, upperBoundary).Select(x => 'x').ToArray());
 				validator.Name(ref value);
 				
@@ -69,7 +69,7 @@ namespace Velvetech.UnitTests.Entities.Validators
 
 			// Upper boundary check with crossing
 			{
-				var validator = new GroupValidator();
+				var validator = new DefaultGroupValidator();
 				var value = new string(Enumerable.Range(1, upperBoundary + 1).Select(x => 'x').ToArray());
 				validator.Name(ref value);
 

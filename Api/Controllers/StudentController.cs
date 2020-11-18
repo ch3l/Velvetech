@@ -153,7 +153,7 @@ namespace Velvetech.Api.Controllers
 			})]
 		public async Task<ActionResult<StudentDto>> AddAsync(StudentDto dto)
 		{
-			var validator = new StudentValidator(_studentValidationService);
+			var validator = new DefaultStudentValidator(_studentValidationService);
 			var entry = await Student.BuildAsync(validator, dto.SexId, dto.Firstname, dto.Middlename, dto.Lastname, dto.Callsign);
 
 			if (entry.HasErrors)
@@ -183,7 +183,7 @@ namespace Velvetech.Api.Controllers
 			if (student is null)
 				return NotFound();
 
-			var validator = new StudentValidator(_studentValidationService);
+			var validator = new DefaultStudentValidator(_studentValidationService);
 			student.SelectValidator(validator);
 
 			student.SetFirstname(dto.Firstname);

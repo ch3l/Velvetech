@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 using Velvetech.Domain.Common.Validation.Errors.Base;
+
+[assembly: InternalsVisibleTo("Velvetech.UnitTests")]
 
 namespace Velvetech.Domain.Common.Validation
 {
@@ -40,10 +43,7 @@ namespace Velvetech.Domain.Common.Validation
 			BaseValidations = new BaseValidation(this);
 		}
 
-		public bool HasErrorsInProperty(string key)
-		{
-			return _errors != null && _errors.ContainsKey(key);
-		}
+		public bool HasErrorsInProperty(string key) => _errors != null && _errors.ContainsKey(key);
 
 		protected void ValidationFail(ValidationError validationError)
 		{

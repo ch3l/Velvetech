@@ -11,7 +11,7 @@ namespace Velvetech.UnitTests.Entities.Builders
 	{
 		public static async Task<Group> BuildAsync(IAsyncRepository<Group, Guid> repository, int index)
 		{
-			var validator = new GroupValidator();
+			var validator = new DefaultGroupValidator();
 			var group = Group.Build(validator, $"Name {index}");
 
 			group = await repository.AddAsync(group);

@@ -61,7 +61,7 @@ namespace Velvetech.Api.Controllers
 			})]
 		public async Task<ActionResult<GroupDto>> AddAsync(GroupDto dto)
 		{
-			var validator = new GroupValidator();
+			var validator = new DefaultGroupValidator();
 			var entry = Group.Build(validator, dto.Name);
 
 			if (entry.HasErrors)
@@ -93,7 +93,7 @@ namespace Velvetech.Api.Controllers
 			if (entry is null)
 				return NotFound();
 
-			var validator = new GroupValidator();
+			var validator = new DefaultGroupValidator();
 			entry.SelectValidator(validator);
 			entry.SetName(dto.Name);
 
