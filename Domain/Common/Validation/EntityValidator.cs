@@ -14,9 +14,9 @@ namespace Velvetech.Domain.Common.Validation
 	{
 		private Dictionary<string, HashSet<ValidationError>> _errors;
 
-		public bool HasErrors => _errors != null && _errors.Count > 0;
+		internal bool HasErrors => _errors != null && _errors.Count > 0;
 
-		public IReadOnlyDictionary<string, string[]> ErrorsStrings =>
+		internal IReadOnlyDictionary<string, string[]> ErrorsStrings =>
 			new ReadOnlyDictionary<string, string[]>(
 				_errors is null
 					? new Dictionary<string, string[]>()
@@ -26,7 +26,7 @@ namespace Velvetech.Domain.Common.Validation
 							.Select(error => error.ToString())
 							.ToArray()));
 
-		public IReadOnlyDictionary<string, ValidationError[]> Errors =>
+		internal IReadOnlyDictionary<string, ValidationError[]> Errors =>
 			new ReadOnlyDictionary<string, ValidationError[]>(
 				_errors is null
 					? new Dictionary<string, ValidationError[]>()
