@@ -11,9 +11,11 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+			"environmentVariables": {
+				"EXTERNALAPIURL": "WindowsApiUrl",
+				"APIURL": "WindowsApiUrl",
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
     },
     "Web": {
       "commandName": "Project",
