@@ -44,7 +44,7 @@ namespace Velvetech.Web.HttpClients
 			
 			return result.StatusCode switch
 			{
-				HttpStatusCode.OK => new SuccessfulEntityAction<StudentDto>(
+				HttpStatusCode.OK => new SuccessfullEntityAction<StudentDto>(
 					await result.Content.ReadFromJsonAsync<StudentDto>()),
 			
 				HttpStatusCode.BadRequest => new StudentErrors(
@@ -61,7 +61,7 @@ namespace Velvetech.Web.HttpClients
 			
 			return result.StatusCode switch
 			{
-				HttpStatusCode.OK => new SuccessfulEntityAction<StudentDto>(
+				HttpStatusCode.OK => new SuccessfullEntityAction<StudentDto>(
 					await result.Content.ReadFromJsonAsync<StudentDto>()),
 				
 				HttpStatusCode.BadRequest => new StudentErrors(

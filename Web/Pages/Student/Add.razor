@@ -146,7 +146,7 @@
 
 		//var result = await Http.PostAsJsonAsync($"api/Students/Add", Student);
 		var result = await StudentClient.AddAsync(Student);
-		if (result is SuccessfulEntityAction<StudentDto> student)
+		if (result is SuccessfullEntityAction<StudentDto> student)
 		{
 			await OnSave.InvokeAsync(null);
 			Close();

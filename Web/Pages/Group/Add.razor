@@ -81,7 +81,7 @@
 		}
 
 		var result = await GroupClient.AddAsync(Group);
-		if (result is SuccessfulEntityAction<GroupDto> group)
+		if (result is SuccessfullEntityAction<GroupDto> group)
 		{
 			await OnSave.InvokeAsync(null);
 			Close();

@@ -54,7 +54,6 @@ namespace Velvetech.Api.Controllers
 				"Controller: Student",
 				//"Action: List"
 			})]
-
 		public async Task<ActionResult<Page<StudentDto>>> ListAsync([FromQuery] StudentFilterPagedRequest request)
 		{
 			var pageSize = request.PageSize ?? 10;

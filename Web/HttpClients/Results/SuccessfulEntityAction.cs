@@ -2,11 +2,11 @@
 
 namespace Velvetech.Web.HttpClients.Results
 {
-	public class SuccessfulEntityAction<TEntity> : ClientActionResult
+	public class SuccessfullEntityAction<TEntity> : ClientActionResult
 	{
 		public TEntity Entity { get; }
 
-		public SuccessfulEntityAction(TEntity entity)
+		public SuccessfullEntityAction(TEntity entity)
 		{
 			Entity = entity;
 		}

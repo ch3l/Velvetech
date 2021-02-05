@@ -16,7 +16,7 @@ namespace Velvetech.Web.HttpClients
 	{
 		public GroupClient(HttpClient httpClient)
 			: base(httpClient)
-		{
+		{				
 		}
 
 		public async Task<GroupDto[]> ListAsync(string group) => 
@@ -28,7 +28,7 @@ namespace Velvetech.Web.HttpClients
 			var result = await HttpClient.PostAsJsonAsync("api/Group/Add", dto);
 			return result.StatusCode switch
 			{
-				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
+				HttpStatusCode.OK => new SuccessfullEntityAction<GroupDto>(
 					await result.Content.ReadFromJsonAsync<GroupDto>()),
 			
 				HttpStatusCode.BadRequest => new GroupErrors(
@@ -44,7 +44,7 @@ namespace Velvetech.Web.HttpClients
 			var result = await HttpClient.PutAsJsonAsync("api/Group/Update", dto);
 			return result.StatusCode switch
 			{
-				HttpStatusCode.OK => new SuccessfulEntityAction<GroupDto>(
+				HttpStatusCode.OK => new SuccessfullEntityAction<GroupDto>(
 					await result.Content.ReadFromJsonAsync<GroupDto>()),
 			
 				HttpStatusCode.BadRequest => new GroupErrors(
